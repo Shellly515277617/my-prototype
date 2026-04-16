@@ -386,7 +386,7 @@
   }
 
   .card-title { font-size: 14px; font-weight: 600; }
-  .card-body { padding: 12px 16px; }
+  .card-body { padding: 0 !important; }
 
   /* Product Grid */
   .product-grid {
@@ -1310,12 +1310,15 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 0 12px;
-  height: 44px;
+  padding: env(safe-area-inset-top, 0px) 12px 0;
+  min-height: 44px;
   overflow-x: auto;
   flex-shrink: 0;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  position: relative;
+  z-index: 100;
 }
 .mobile-role-bar::-webkit-scrollbar { display: none; }
 
@@ -1336,8 +1339,12 @@ body {
   cursor: pointer;
   border: 1.5px solid transparent;
   white-space: nowrap;
-  transition: all 0.2s;
+  transition: background 0.15s, color 0.15s;
   line-height: 1.5;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 .mrb-chip.active { color: #fff !important; }
 .mrb-chip[data-role="user"]     { border-color:#60A5FA; color:#60A5FA; }
@@ -1662,6 +1669,157 @@ input:focus, select:focus, textarea:focus {
 /* ═══════════ SAFE BOTTOM SPACER ═══════════ */
 .safe-bottom { height: calc(8px + var(--safe-b)); flex-shrink: 0; }
 
+</style>
+
+<style id="mobile-fix">
+/* ── CRITICAL MOBILE FIXES ── */
+
+/* 1. Remove all body/html padding that breaks layout */
+html, body { padding: 0 !important; margin: 0 !important; }
+body { 
+  height: 100vh !important; 
+  height: 100dvh !important; 
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* 2. Role bar always on top, always clickable */
+.mobile-role-bar {
+  position: relative !important;
+  z-index: 200 !important;
+  flex-shrink: 0 !important;
+  touch-action: pan-x !important;
+  pointer-events: auto !important;
+  min-height: 44px !important;
+  padding-top: env(safe-area-inset-top, 0px) !important;
+}
+
+/* 3. Chips must be clickable */
+.mrb-chip {
+  touch-action: manipulation !important;
+  pointer-events: auto !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  cursor: pointer !important;
+}
+.mrb-chip.on, .mrb-chip.active { color: #fff !important; }
+.mrb-chip[data-role="user"].on, .mrb-chip[data-role="user"].active { background: #60A5FA !important; border-color: #60A5FA !important; }
+.mrb-chip[data-role="sp"].on, .mrb-chip[data-role="sp"].active { background: #34D399 !important; border-color: #34D399 !important; }
+.mrb-chip[data-role="master"].on, .mrb-chip[data-role="master"].active { background: #FBBF24 !important; border-color: #FBBF24 !important; }
+.mrb-chip[data-role="supplier"].on, .mrb-chip[data-role="supplier"].active { background: #F472B6 !important; border-color: #F472B6 !important; }
+.mrb-chip[data-role="admin"].on, .mrb-chip[data-role="admin"].active { background: #A78BFA !important; border-color: #A78BFA !important; }
+
+/* 4. App shell fills remaining space */
+.app-shell {
+  flex: 1 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+}
+.app-content {
+  flex: 1 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  min-height: 0 !important;
+}
+
+/* 5. Phone frame fills all space */
+.phone-frame-wrap {
+  flex: 1 !important;
+  width: 100% !important;
+  padding: 0 !important;
+  display: flex !important;
+}
+.phone-frame {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+/* 6. Phone screen and pages */
+#phone-screen {
+  flex: 1 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+}
+.page { 
+  display: none !important; 
+  flex-direction: column !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  background: #F0F2F5;
+}
+.page.active { 
+  display: flex !important;
+}
+
+/* 7. Scrollable content areas */
+.page-scroll, .scroll-content {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+}
+.page-scroll::-webkit-scrollbar, .scroll-content::-webkit-scrollbar { display: none; }
+
+/* 8. Fix desktop sidebar hidden */
+.sidebar, .right-panel, .annotation-panel, .top-bar { display: none !important; }
+
+/* 9. Phone status bar hidden */
+.phone-status-bar { display: none !important; }
+
+/* 10. Tab bar safe area */
+.tab-bar { 
+  flex-shrink: 0 !important; 
+  padding-bottom: max(6px, env(safe-area-inset-bottom, 6px)) !important;
+}
+
+/* 11. Bottom action bars */
+.bottom-bar, .pay-bar, .action-bar, .submit-bar {
+  flex-shrink: 0 !important;
+  padding-bottom: max(12px, env(safe-area-inset-bottom, 12px)) !important;
+}
+
+/* 12. Inputs: prevent iOS zoom on focus */
+input, select, textarea {
+  font-size: 16px !important;
+}
+
+/* 13. All buttons & clickables work on touch */
+button, [onclick], .tab-item, .quick-item, .product-card, .list-item {
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: transparent !important;
+  cursor: pointer !important;
+}
+
+/* 14. Login page fills its page */
+.login-page {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 40px 28px !important;
+  min-height: 0 !important;
+}
+
+/* 15. Page animation */
+.page.active { animation: pgIn 0.17s ease; }
+@keyframes pgIn {
+  from { opacity: 0.5; transform: translateX(8px); }
+  to   { opacity: 1;   transform: translateX(0); }
+}
 </style>
 </head>
 <body>
@@ -3694,8 +3852,6 @@ input:focus, select:focus, textarea:focus {
 
 
 <script>
-
-// Annotation data per page
 const annotations = {
   'login': [
     { tag: 'action', text: '点击「微信一键登录」→ 微信OAuth授权 → 获取openid/昵称/头像 → 跳转手机号绑定（首次）或直接进首页' },
@@ -3844,59 +4000,44 @@ const annotations = {
   ],
 };
 
-let currentPage = 'login';
+// ─── PAGE ENGINE ───────────────────────────────────────────────
+var currentPage = 'login';
 
 function showPage(id) {
-  // Hide all pages
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  // Hide all
+  document.querySelectorAll('.page').forEach(function(p) {
+    p.classList.remove('active');
+  });
   // Show target
-  const target = document.getElementById('page-' + id);
-  if (target) {
-    target.classList.add('active');
-    document.getElementById('phone-screen').scrollTop = 0;
-  }
-
-  // Update sidebar
-  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-  const navItem = document.getElementById('nav-' + id);
-  if (navItem) navItem.classList.add('active');
-
+  var target = document.getElementById('page-' + id);
+  if (!target) { console.warn('Page not found: page-' + id); return; }
+  target.classList.add('active');
   currentPage = id;
-
-  // Update annotations
-  updateAnnotations(id);
+  // Scroll scroll-areas to top
+  target.querySelectorAll('.page-scroll, .scroll-content').forEach(function(el) {
+    el.scrollTop = 0;
+  });
+  // Update annotations panel (desktop only, no-op on mobile)
+  if (typeof updateAnnotations === 'function') updateAnnotations(id);
 }
 
 function updateAnnotations(id) {
-  const data = annotations[id] || [];
-  const container = document.getElementById('anno-content');
+  var container = document.getElementById('anno-content');
+  if (!container) return;
+  var data = annotations[id] || [];
   if (!data.length) {
-    container.innerHTML = '<div style="font-size:12px;color:var(--gray5);padding:8px 0">暂无标注数据</div>';
+    container.innerHTML = '<div style="font-size:12px;color:#bfbfbf;padding:8px 0">暂无标注数据</div>';
     return;
   }
-
-  const tagMap = {
-    action: ['tag-action', '操作'],
-    logic: ['tag-logic', '逻辑'],
-    error: ['tag-error', '边界'],
-    note: ['tag-note', '说明'],
-  };
-
-  container.innerHTML = data.map(item => {
-    const [cls, label] = tagMap[item.tag] || ['tag-note', '说明'];
-    return `<div class="anno-item">
-      <span class="anno-tag ${cls}">${label}</span>
-      <div class="anno-text">${item.text}</div>
-    </div>`;
+  var tagMap = { action: ['tag-action','操作'], logic: ['tag-logic','逻辑'], error: ['tag-error','边界'], note: ['tag-note','说明'] };
+  container.innerHTML = data.map(function(item) {
+    var tInfo = tagMap[item.tag] || ['tag-note','说明'];
+    return '<div class="anno-item"><span class="anno-tag ' + tInfo[0] + '">' + tInfo[1] + '</span><div class="anno-text">' + item.text + '</div></div>';
   }).join('');
 }
 
-// Init
-updateAnnotations('login');
-
-
-// ═══════════ MOBILE ROUTING OVERRIDE ═══════════
-const roleDefaults = {
+// ─── ROLE SWITCHER ──────────────────────────────────────────────
+var roleDefaults = {
   user: 'login',
   sp: 'sp-home',
   master: 'master-home',
@@ -3904,116 +4045,105 @@ const roleDefaults = {
   admin: 'admin-home'
 };
 
-const rolePageSets = {
-  user:     ['login','home','mall','product','cart','confirm-order','repair-order','order-list','repair-list','profile'],
-  sp:       ['sp-home','sp-grab','sp-master','sp-goods'],
-  master:   ['master-home','master-apply','master-orders'],
-  supplier: ['sup-home','sup-goods'],
-  admin:    ['admin-home','admin-review','admin-range','admin-commission','admin-orders','admin-withdraw','admin-accounts']
-};
-
-let currentRole = 'user';
-const pageHistory = [];
-
-// Override showPage to also scroll to top
-const _originalShowPage = window.showPage;
-window.showPage = function(id) {
-  pageHistory.push(id);
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const target = document.getElementById('page-' + id);
-  if (target) {
-    target.classList.add('active');
-    // Scroll all scroll areas to top
-    target.querySelectorAll('.page-scroll, .scroll-area, .phone-scroll').forEach(el => el.scrollTop = 0);
-  }
-};
-
-function mobileGoPage(id) { window.showPage(id); }
+var currentRole = 'user';
 
 function switchRole(role) {
   currentRole = role;
-  // Update chips
-  document.querySelectorAll('.mrb-chip').forEach(c => c.classList.remove('active'));
-  const chip = document.querySelector('.mrb-chip[data-role="' + role + '"]');
-  if (chip) chip.classList.add('active');
-  // Navigate to default page for this role
-  const def = roleDefaults[role] || 'login';
-  window.showPage(def);
+  // Update chip active states
+  document.querySelectorAll('.mrb-chip').forEach(function(chip) {
+    chip.classList.remove('active', 'on');
+  });
+  var activeChip = document.querySelector('.mrb-chip[data-role="' + role + '"]');
+  if (activeChip) activeChip.classList.add('active', 'on');
+  // Navigate
+  var dest = roleDefaults[role] || 'login';
+  showPage(dest);
 }
 
-// ═══════════ TOAST ═══════════
-let toastTimer = null;
-function showMobileToast(msg) {
-  let el = document.getElementById('mobile-toast');
+// ─── TOAST ──────────────────────────────────────────────────────
+var _toastTimer = null;
+
+function showToast(msg) {
+  var el = document.getElementById('__toast__');
   if (!el) {
     el = document.createElement('div');
-    el.id = 'mobile-toast';
-    el.className = 'toast-mobile';
+    el.id = '__toast__';
+    el.style.cssText = [
+      'position:fixed', 'top:68px', 'left:50%', 'transform:translateX(-50%)',
+      'background:rgba(0,0,0,0.82)', 'color:#fff', 'padding:9px 20px',
+      'border-radius:22px', 'font-size:13px', 'font-weight:500',
+      'z-index:99999', 'white-space:nowrap', 'max-width:88vw',
+      'text-align:center', 'pointer-events:none',
+      'opacity:0', 'transition:opacity 0.2s',
+      'word-break:keep-all'
+    ].join(';');
     document.body.appendChild(el);
   }
   el.textContent = msg;
-  el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+  el.style.opacity = '1';
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(function() { el.style.opacity = '0'; }, 2600);
 }
-// Override any existing toast function
-window.showToast = showMobileToast;
-window.toast = showMobileToast;
 
-// ═══════════ MODALS ═══════════
-function showMobileModal(id) {
-  const el = document.getElementById(id);
-  if (el) el.classList.add('show');
-}
-function closeMobileModal(id) {
-  const el = document.getElementById(id);
-  if (el) el.classList.remove('show');
-}
-window.showModal  = showMobileModal;
-window.closeModal = closeMobileModal;
+// also expose as showMobileToast
+var showMobileToast = showToast;
 
-// ═══════════ CHIP / TAB INTERACTIVITY ═══════════
+// ─── MODALS ─────────────────────────────────────────────────────
+function showModal(id) {
+  var el = document.getElementById(id);
+  if (el) {
+    el.style.display = 'flex';
+    el.classList.add('show');
+  }
+}
+function closeModal(id) {
+  var el = document.getElementById(id);
+  if (el) {
+    el.style.display = 'none';
+    el.classList.remove('show');
+  }
+}
+var showMobileModal  = showModal;
+var closeMobileModal = closeModal;
+
+// ─── CAT-TABS & CHIPS: delegate click ───────────────────────────
 document.addEventListener('click', function(e) {
-  // Cat tabs
-  const tab = e.target.closest('.cat-tab, .tab-option, [data-tab]');
-  if (tab) {
-    const parent = tab.parentElement;
+  // Category tabs
+  var tab = e.target;
+  if (tab.classList.contains('cat-tab') || tab.classList.contains('tab-option')) {
+    var parent = tab.parentElement;
     if (parent) {
-      parent.querySelectorAll('.cat-tab, .tab-option, [data-tab]').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
+      parent.querySelectorAll('.cat-tab, .tab-option').forEach(function(t) {
+        t.classList.remove('active', 'on');
+      });
+      tab.classList.add('active', 'on');
     }
   }
   // Spec chips
-  if (e.target.classList.contains('spec-chip') || e.target.classList.contains('option-chip')) {
-    const group = e.target.closest('.spec-group, .option-group');
-    if (group) {
-      group.querySelectorAll('.spec-chip, .option-chip').forEach(c => c.classList.remove('active', 'selected'));
-      e.target.classList.add('active', 'selected');
+  if (tab.classList.contains('spec-chip') || tab.classList.contains('cat-chip') || tab.classList.contains('option-chip')) {
+    var grp = tab.closest('.spec-group, .option-group, .chip-group');
+    if (grp) {
+      grp.querySelectorAll('.spec-chip, .cat-chip, .option-chip').forEach(function(c) {
+        c.classList.remove('active', 'selected', 'on');
+      });
+      tab.classList.add('active', 'selected', 'on');
     }
   }
-  // Toggle
-  if (e.target.classList.contains('toggle-switch')) {
-    e.target.classList.toggle('on');
+  // Toggle switch
+  if (tab.classList.contains('toggle-switch')) {
+    tab.classList.toggle('on');
   }
-});
+}, true); // useCapture=true ensures we get the event even with stopPropagation
 
-// ═══════════ PREVENT DOUBLE TAP ZOOM ═══════════
-let lastTap = 0;
-document.addEventListener('touchend', function(e) {
-  const now = Date.now();
-  if (now - lastTap < 300) { e.preventDefault(); }
-  lastTap = now;
-}, { passive: false });
-
-// ═══════════ INIT ═══════════
-window.addEventListener('DOMContentLoaded', function() {
-  // Ensure login page is shown first
-  window.showPage('login');
-  // Mark user role as default
-  const userChip = document.querySelector('.mrb-chip[data-role="user"]');
-  if (userChip) userChip.classList.add('active');
-});
-
+// ─── INIT ───────────────────────────────────────────────────────
+(function init() {
+  // Show login page on load
+  showPage('login');
+  // Mark C端用户 chip as active
+  var chip = document.querySelector('.mrb-chip[data-role="user"]');
+  if (chip) chip.classList.add('active', 'on');
+  updateAnnotations('login');
+})();
 </script>
 </body>
 </html>
