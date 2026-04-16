@@ -1,0 +1,4019 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#001529">
+<title>麻将机服务平台 · 小程序原型</title>
+<style>
+
+
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap');
+  /* Gestalt Enhancements */
+  body { font-family: 'DM Sans', 'Noto Sans SC', -apple-system, sans-serif; }
+  .topnav-brand-gestalt {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 17px;
+    color: #60A5FA;
+    margin-left: 4px;
+  }
+  /* 接近性: 减小组内间距，增大组间间距 */
+  .stat-card + .stat-card { margin-top: 2px; }
+  /* 闭合性: 强化卡片边框 */
+  .card { border: 1px solid var(--border); }
+  /* 相似性: 统一所有Badge的视觉风格 */
+  .tag { font-weight: 600; letter-spacing: 0.2px; }
+  /* 连续性: 步骤条增强 */
+  .step::after { transition: background 0.3s; }
+  /* 简洁律: 减少视觉噪音 */
+  .list-item-icon { box-shadow: none; }
+
+
+  :root {
+    --blue: #1677FF;
+    --blue-light: #E6F0FF;
+    --blue-dark: #0958D9;
+    --green: #52C41A;
+    --green-light: #F6FFED;
+    --orange: #FA8C16;
+    --orange-light: #FFF7E6;
+    --red: #FF4D4F;
+    --red-light: #FFF1F0;
+    --gray1: #141414;
+    --gray2: #262626;
+    --gray3: #434343;
+    --gray4: #8C8C8C;
+    --gray5: #BFBFBF;
+    --gray6: #D9D9D9;
+    --gray7: #F0F0F0;
+    --gray8: #F5F5F5;
+    --gray9: #FAFAFA;
+    --white: #FFFFFF;
+    --border: #E8E8E8;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+    --radius: 8px;
+    --radius-sm: 4px;
+    --radius-lg: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #F0F2F5;
+    color: var(--gray1);
+    min-height: 100vh;
+  }
+
+  /* ─── Layout ─── */
+  .app-shell {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .top-bar {
+    background: #001529;
+    color: white;
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #002140;
+  }
+
+  .top-bar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.5px;
+  }
+
+  .top-bar-subtitle {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .top-bar-badge {
+    background: var(--blue);
+    color: white;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+
+  .main-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ─── Sidebar ─── */
+  .sidebar {
+    width: 220px;
+    background: #001529;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+
+  .sidebar-section {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .sidebar-section-title {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    padding: 8px 16px 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 500;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.65);
+    font-size: 13px;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+  }
+
+  .sidebar-item:hover {
+    background: rgba(255,255,255,0.06);
+    color: white;
+  }
+
+  .sidebar-item.active {
+    background: var(--blue);
+    color: white;
+    border-left-color: #40a9ff;
+  }
+
+  .sidebar-item .icon { font-size: 14px; width: 16px; text-align: center; }
+
+  /* ─── Content ─── */
+  .content-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    background: #F0F2F5;
+  }
+
+  /* ─── Phone Frame ─── */
+  .phone-frame-wrap {
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+  }
+
+  .phone-frame {
+    width: 375px;
+    height: 700px;
+    background: white;
+    border-radius: 36px;
+    border: 3px solid #1a1a2e;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.1);
+  }
+
+  .phone-notch {
+    position: absolute;
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 130px; height: 28px;
+    background: #1a1a2e;
+    border-radius: 0 0 18px 18px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .phone-notch::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: #2a2a4a;
+    border-radius: 50%;
+  }
+
+  .phone-notch::after {
+    content: '';
+    width: 50px; height: 5px;
+    background: #2a2a4a;
+    border-radius: 3px;
+  }
+
+  .phone-status-bar {
+    height: 44px;
+    background: var(--blue);
+    display: flex;
+    align-items: flex-end;
+    padding: 0 16px 8px;
+    justify-content: space-between;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .phone-status-bar.white-bar {
+    background: white;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .phone-status-bar.white-bar .status-time,
+  .phone-status-bar.white-bar .status-icons { color: var(--gray1); }
+
+  .status-time { font-size: 13px; font-weight: 600; color: white; }
+  .status-icons { font-size: 11px; color: white; }
+
+  .phone-screen {
+    height: calc(700px - 44px - 3px - 3px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    scroll-behavior: smooth;
+  }
+
+  .phone-screen::-webkit-scrollbar { display: none; }
+
+  /* ─── Annotation Panel ─── */
+  .annotation-panel {
+    flex: 1;
+    min-width: 280px;
+    max-width: 400px;
+  }
+
+  .anno-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+  }
+
+  .anno-card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gray1);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .anno-card-title .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--blue);
+  }
+
+  .anno-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+
+  .anno-tag {
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-weight: 600;
+  }
+
+  .tag-action { background: #E6F0FF; color: var(--blue); }
+  .tag-logic { background: #F6FFED; color: var(--green); }
+  .tag-error { background: #FFF1F0; color: var(--red); }
+  .tag-note { background: #FFF7E6; color: var(--orange); }
+
+  .anno-text { font-size: 12px; color: var(--gray3); line-height: 1.6; }
+
+  /* ─── Page Components ─── */
+  .page { display: none; flex-direction: column; flex: 1; }
+  .page.active { display: flex; }
+
+  /* NavBar */
+  .nav-bar {
+    background: var(--blue);
+    color: white;
+    padding: 8px 16px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .nav-bar.white {
+    background: white;
+    color: var(--gray1);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-back { font-size: 18px; cursor: pointer; }
+  .nav-title { font-size: 16px; font-weight: 600; flex: 1; text-align: center; }
+  .nav-action { font-size: 13px; opacity: 0.85; }
+
+  /* Tab Bar */
+  .tab-bar {
+    display: flex;
+    background: white;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+    margin-top: auto;
+  }
+
+  .tab-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 0;
+    cursor: pointer;
+    color: var(--gray4);
+    font-size: 10px;
+    gap: 2px;
+    transition: color 0.15s;
+  }
+
+  .tab-item.active { color: var(--blue); }
+  .tab-item .tab-icon { font-size: 20px; }
+
+  /* Scroll Content */
+  .scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    background: var(--gray8);
+  }
+
+  .scroll-content::-webkit-scrollbar { display: none; }
+
+  /* Cards */
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    margin: 8px 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .card-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-title { font-size: 14px; font-weight: 600; }
+  .card-body { padding: 12px 16px; }
+
+  /* Product Grid */
+  .product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+
+  .product-card {
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+  }
+
+  .product-img {
+    width: 100%;
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, var(--gray7), var(--gray6));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: var(--gray5);
+  }
+
+  .product-info { padding: 8px; }
+  .product-name { font-size: 12px; color: var(--gray2); margin-bottom: 4px; line-height: 1.4; }
+  .product-price { font-size: 14px; color: var(--red); font-weight: 700; }
+  .product-sales { font-size: 10px; color: var(--gray4); margin-top: 2px; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+
+  .btn-primary { background: var(--blue); color: white; }
+  .btn-primary:hover { background: var(--blue-dark); }
+  .btn-success { background: var(--green); color: white; }
+  .btn-danger { background: var(--red); color: white; }
+  .btn-outline { background: white; color: var(--blue); border: 1px solid var(--blue); }
+  .btn-ghost { background: var(--gray8); color: var(--gray3); }
+  .btn-sm { font-size: 12px; padding: 5px 12px; border-radius: var(--radius-sm); }
+  .btn-lg { font-size: 16px; padding: 12px 24px; }
+  .btn-block { width: 100%; border-radius: 0; }
+  .btn-disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Form */
+  .form-item {
+    margin-bottom: 12px;
+  }
+
+  .form-label {
+    font-size: 12px;
+    color: var(--gray4);
+    margin-bottom: 4px;
+    display: flex;
+    gap: 2px;
+  }
+
+  .form-label .required { color: var(--red); }
+
+  .form-input {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    font-size: 13px;
+    color: var(--gray2);
+    background: white;
+    outline: none;
+    font-family: inherit;
+  }
+
+  .form-input:focus { border-color: var(--blue); }
+  .form-input::placeholder { color: var(--gray5); }
+
+  /* Tags / Status */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+
+  .tag-blue { background: var(--blue-light); color: var(--blue); }
+  .tag-green { background: var(--green-light); color: var(--green); }
+  .tag-orange { background: var(--orange-light); color: var(--orange); }
+  .tag-red { background: var(--red-light); color: var(--red); }
+  .tag-gray { background: var(--gray7); color: var(--gray4); }
+
+  /* List Items */
+  .list-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    gap: 10px;
+    cursor: pointer;
+  }
+
+  .list-item:last-child { border-bottom: none; }
+  .list-item:hover { background: var(--gray9); }
+
+  .list-item-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--blue-light);
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .list-item-content { flex: 1; min-width: 0; }
+  .list-item-title { font-size: 13px; color: var(--gray1); font-weight: 500; }
+  .list-item-sub { font-size: 11px; color: var(--gray4); margin-top: 2px; }
+  .list-item-right { color: var(--gray5); font-size: 14px; }
+
+  /* Banner */
+  .banner {
+    margin: 8px 12px;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #1677FF, #0050B3);
+    padding: 20px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .banner::after {
+    content: '';
+    position: absolute;
+    right: -20px; top: -20px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .banner-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .banner-sub { font-size: 12px; opacity: 0.8; }
+
+  /* Category Tabs */
+  .category-tabs {
+    display: flex;
+    background: white;
+    padding: 0 12px;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    flex-shrink: 0;
+  }
+
+  .category-tabs::-webkit-scrollbar { display: none; }
+
+  .cat-tab {
+    flex-shrink: 0;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--gray4);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .cat-tab.active {
+    color: var(--blue);
+    border-bottom-color: var(--blue);
+    font-weight: 600;
+  }
+
+  /* Divider */
+  .divider {
+    height: 8px;
+    background: var(--gray8);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Order Card */
+  .order-card {
+    background: white;
+    margin: 8px 12px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .order-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--gray9);
+  }
+
+  .order-no { font-size: 11px; color: var(--gray4); }
+  .order-status { font-size: 12px; color: var(--blue); font-weight: 600; }
+
+  .order-body { padding: 12px 14px; }
+  .order-product { display: flex; gap: 10px; margin-bottom: 8px; }
+
+  .order-product-img {
+    width: 60px; height: 60px;
+    border-radius: var(--radius-sm);
+    background: var(--gray7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .order-product-info { flex: 1; }
+  .order-product-name { font-size: 12px; color: var(--gray2); line-height: 1.4; }
+  .order-product-spec { font-size: 11px; color: var(--gray4); margin-top: 2px; }
+  .order-product-price { font-size: 13px; color: var(--red); font-weight: 600; margin-top: 4px; }
+
+  .order-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .order-total { font-size: 12px; color: var(--gray4); }
+  .order-total span { color: var(--red); font-weight: 600; }
+
+  /* Repair Card */
+  .repair-card {
+    background: white;
+    margin: 8px 12px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border-left: 3px solid var(--blue);
+  }
+
+  .repair-card.urgent { border-left-color: var(--red); }
+
+  .repair-body { padding: 12px 14px; }
+  .repair-type { font-size: 14px; font-weight: 700; color: var(--gray1); }
+  .repair-meta { font-size: 11px; color: var(--gray4); margin-top: 4px; }
+  .repair-distance {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: var(--blue-light);
+    color: var(--blue);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+
+  .repair-actions {
+    display: flex;
+    gap: 8px;
+    padding: 0 14px 12px;
+  }
+
+  /* Avatar */
+  .avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1677FF, #0050B3);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* Info Row */
+  .info-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .info-row-label { font-size: 13px; color: var(--gray4); }
+  .info-row-value { font-size: 13px; color: var(--gray1); font-weight: 500; }
+
+  /* Modal Overlay */
+  .modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: flex-end;
+    z-index: 200;
+    display: none;
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal-sheet {
+    width: 100%;
+    background: white;
+    border-radius: 16px 16px 0 0;
+    padding: 20px 16px;
+    max-height: 75%;
+    overflow-y: auto;
+  }
+
+  .modal-handle {
+    width: 40px; height: 4px;
+    background: var(--gray6);
+    border-radius: 2px;
+    margin: 0 auto 16px;
+  }
+
+  .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; text-align: center; }
+
+  /* Data Stats */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+
+  .stat-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 14px;
+    box-shadow: var(--shadow);
+  }
+
+  .stat-label { font-size: 11px; color: var(--gray4); margin-bottom: 4px; }
+  .stat-value { font-size: 22px; font-weight: 700; color: var(--gray1); }
+  .stat-value.blue { color: var(--blue); }
+  .stat-value.green { color: var(--green); }
+  .stat-value.red { color: var(--red); }
+  .stat-value.orange { color: var(--orange); }
+
+  /* Range Config Table */
+  .config-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .config-table th {
+    background: var(--gray8);
+    padding: 8px 10px;
+    text-align: left;
+    color: var(--gray4);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+  .config-table td {
+    padding: 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--gray2);
+    vertical-align: middle;
+  }
+  .config-table tr:last-child td { border-bottom: none; }
+
+  /* Empty State */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    color: var(--gray5);
+    gap: 8px;
+  }
+
+  .empty-icon { font-size: 48px; }
+  .empty-text { font-size: 14px; }
+  .empty-sub { font-size: 12px; }
+
+  /* Search Bar */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gray8);
+    border-radius: 20px;
+    padding: 6px 12px;
+    margin: 8px 12px;
+    border: 1px solid var(--border);
+  }
+
+  .search-icon { color: var(--gray4); font-size: 14px; }
+  .search-input {
+    border: none;
+    background: transparent;
+    flex: 1;
+    font-size: 13px;
+    color: var(--gray2);
+    outline: none;
+    font-family: inherit;
+  }
+  .search-input::placeholder { color: var(--gray5); }
+
+  /* Section Header */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px 6px;
+  }
+
+  .section-title { font-size: 14px; font-weight: 700; color: var(--gray1); }
+  .section-more { font-size: 12px; color: var(--blue); cursor: pointer; }
+
+  /* Progress Steps */
+  .steps {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 0;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+  }
+
+  .step::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: var(--border);
+  }
+
+  .step:last-child::after { display: none; }
+  .step.done::after { background: var(--blue); }
+
+  .step-circle {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gray5);
+    position: relative;
+    z-index: 1;
+  }
+
+  .step.done .step-circle { background: var(--blue); border-color: var(--blue); color: white; }
+  .step.active .step-circle { border-color: var(--blue); color: var(--blue); }
+
+  .step-label { font-size: 10px; color: var(--gray4); margin-top: 4px; text-align: center; }
+  .step.done .step-label, .step.active .step-label { color: var(--blue); }
+
+  /* Quick Action Grid */
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    background: white;
+    padding: 8px 0;
+  }
+
+  .quick-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 4px;
+    gap: 6px;
+    cursor: pointer;
+  }
+
+  .quick-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    background: var(--blue-light);
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+  }
+
+  .quick-label { font-size: 11px; color: var(--gray3); }
+
+  /* Tooltip / Annotation Bubble */
+  .hint-bubble {
+    background: rgba(22, 119, 255, 0.1);
+    border: 1px solid rgba(22, 119, 255, 0.25);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    font-size: 11px;
+    color: var(--blue-dark);
+    margin: 4px 12px;
+    line-height: 1.5;
+  }
+
+  .hint-bubble.warn {
+    background: rgba(250, 140, 22, 0.08);
+    border-color: rgba(250, 140, 22, 0.3);
+    color: #874d00;
+  }
+
+  .hint-bubble.success {
+    background: rgba(82, 196, 26, 0.08);
+    border-color: rgba(82, 196, 26, 0.3);
+    color: #237804;
+  }
+
+  /* ─── Navigation Controller ─── */
+  .nav-dot-bar {
+    display: flex;
+    gap: 6px;
+    margin: 16px 0 8px;
+    flex-wrap: wrap;
+  }
+
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gray6);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .nav-dot.active { background: var(--blue); width: 24px; border-radius: 4px; }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--gray4);
+    padding: 8px 12px;
+    background: var(--gray9);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .breadcrumb span { color: var(--blue); cursor: pointer; }
+  .breadcrumb span:last-child { color: var(--gray2); cursor: default; }
+
+  /* Switch Toggle */
+  .switch {
+    width: 44px; height: 24px;
+    border-radius: 12px;
+    background: var(--gray6);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+
+  .switch.on { background: var(--blue); }
+
+  .switch::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: white;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+
+  .switch.on::after { transform: translateX(20px); }
+
+  /* Loading Skeleton */
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, var(--gray7) 25%, var(--gray8) 50%, var(--gray7) 75%);
+    background-size: 200% auto;
+    animation: shimmer 1.5s infinite;
+    border-radius: var(--radius-sm);
+  }
+
+  /* ── SPECIFIC PAGE STYLES ── */
+
+  /* Login Page */
+  .login-page {
+    background: linear-gradient(160deg, #0050B3 0%, #1677FF 60%, #40A9FF 100%);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    color: white;
+  }
+
+  .login-logo {
+    width: 72px; height: 72px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    margin-bottom: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+
+  .login-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .login-sub { font-size: 13px; opacity: 0.75; margin-bottom: 40px; text-align: center; }
+
+  .login-btn {
+    width: 100%;
+    padding: 14px;
+    background: white;
+    color: var(--blue);
+    border: none;
+    border-radius: var(--radius);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .login-terms {
+    font-size: 11px;
+    opacity: 0.6;
+    text-align: center;
+    margin-top: 16px;
+  }
+
+  /* Address Component */
+  .address-card {
+    margin: 8px 12px;
+    background: white;
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+  }
+
+  .address-icon { font-size: 20px; color: var(--red); }
+  .address-info { flex: 1; }
+  .address-name { font-size: 14px; font-weight: 600; }
+  .address-detail { font-size: 11px; color: var(--gray4); margin-top: 2px; }
+
+  /* Payment Bar */
+  .pay-bar {
+    background: white;
+    border-top: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .pay-total { font-size: 12px; color: var(--gray4); }
+  .pay-amount { font-size: 18px; color: var(--red); font-weight: 700; }
+
+  /* Hint */
+  .page-tip {
+    margin: 0 12px 8px;
+    background: var(--blue-light);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    font-size: 11px;
+    color: var(--blue-dark);
+    border-left: 3px solid var(--blue);
+    line-height: 1.6;
+  }
+
+  /* Master flow indicator */
+  .flow-arrow {
+    position: absolute;
+    right: -24px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: var(--blue);
+  }
+
+  .page-section-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gray4);
+    padding: 10px 16px 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Clerk/staff card */
+  .staff-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .staff-info { flex: 1; }
+  .staff-name { font-size: 13px; font-weight: 600; }
+  .staff-meta { font-size: 11px; color: var(--gray4); margin-top: 2px; }
+  .staff-actions { display: flex; gap: 6px; }
+
+  /* Range Map Illustration */
+  .range-map {
+    background: #E8F4FD;
+    border-radius: var(--radius);
+    margin: 8px 12px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #BAE0FF;
+  }
+
+  .range-circle {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 2px dashed var(--blue);
+    background: rgba(22, 119, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .range-center {
+    width: 12px; height: 12px;
+    background: var(--red);
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }
+
+  .range-dot {
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+
+  .range-dot.in { background: var(--green); }
+  .range-dot.out { background: var(--gray5); }
+
+  .range-label {
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    font-size: 10px;
+    color: var(--blue-dark);
+    font-weight: 600;
+  }
+
+  /* Pagination dots */
+  .img-dots {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 6px;
+    background: white;
+  }
+
+  .img-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gray6);
+  }
+
+  .img-dot.active { background: var(--blue); width: 16px; border-radius: 3px; }
+
+  /* Radio */
+  .radio-group { display: flex; flex-direction: column; gap: 10px; }
+
+  .radio-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+
+  .radio-item.selected {
+    border-color: var(--blue);
+    background: var(--blue-light);
+  }
+
+  .radio-circle {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .radio-item.selected .radio-circle {
+    border-color: var(--blue);
+    background: var(--blue);
+  }
+
+  .radio-item.selected .radio-circle::after {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: white;
+  }
+
+  /* Chip tags */
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 0 8px; }
+
+  .chip {
+    display: inline-flex;
+    padding: 4px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--gray3);
+    cursor: pointer;
+  }
+
+  .chip.selected {
+    background: var(--blue-light);
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+
+  /* Sticky bottom */
+  .sticky-bottom {
+    flex-shrink: 0;
+    background: white;
+    border-top: 1px solid var(--border);
+    padding: 10px 16px;
+  }
+
+  /* Role Badge */
+  .role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .role-c { background: #F0F5FF; color: #597EF7; }
+  .role-sp { background: #F6FFED; color: #52C41A; }
+  .role-master { background: #FFF7E6; color: #FA8C16; }
+  .role-sup { background: #FFF0F6; color: #EB2F96; }
+  .role-admin { background: #F9F0FF; color: #722ED1; }
+
+
+
+/* ═══════════ MOBILE OVERRIDE ═══════════ */
+:root {
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+*, *::before, *::after {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+html {
+  font-size: 14px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #F0F2F5;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ═══════════ ROLE SWITCHER (replaces desktop sidebar) ═══════════ */
+.mobile-role-bar {
+  background: #001529;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  height: 44px;
+  overflow-x: auto;
+  flex-shrink: 0;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.mobile-role-bar::-webkit-scrollbar { display: none; }
+
+.mrb-label {
+  font-size: 10px;
+  color: rgba(255,255,255,0.35);
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-weight: 500;
+}
+
+.mrb-chip {
+  flex-shrink: 0;
+  padding: 4px 11px;
+  border-radius: 14px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s;
+  line-height: 1.5;
+}
+.mrb-chip.active { color: #fff !important; }
+.mrb-chip[data-role="user"]     { border-color:#60A5FA; color:#60A5FA; }
+.mrb-chip[data-role="user"].active     { background:#60A5FA; }
+.mrb-chip[data-role="sp"]       { border-color:#34D399; color:#34D399; }
+.mrb-chip[data-role="sp"].active       { background:#34D399; }
+.mrb-chip[data-role="master"]   { border-color:#FBBF24; color:#FBBF24; }
+.mrb-chip[data-role="master"].active   { background:#FBBF24; }
+.mrb-chip[data-role="supplier"] { border-color:#F472B6; color:#F472B6; }
+.mrb-chip[data-role="supplier"].active { background:#F472B6; }
+.mrb-chip[data-role="admin"]    { border-color:#A78BFA; color:#A78BFA; }
+.mrb-chip[data-role="admin"].active    { background:#A78BFA; }
+
+/* ═══════════ HIDE DESKTOP SHELL ═══════════ */
+.app-shell { display: flex; flex-direction: column; flex: 1; overflow: hidden; height: auto !important; }
+.top-bar { display: none !important; }
+.app-content { flex: 1; overflow: hidden; display: flex; }
+.sidebar { display: none !important; }
+.right-panel { display: none !important; }
+.annotation-panel { display: none !important; }
+
+/* ═══════════ PHONE FRAME → FULL SCREEN ═══════════ */
+.phone-frame-wrap {
+  flex: 1 !important;
+  width: 100% !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
+  background: transparent !important;
+}
+
+.phone-frame {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ═══════════ PAGES ═══════════ */
+#phone-screen {
+  height: 100% !important;
+  overflow: hidden !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.page {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+.page.active {
+  display: flex;
+  animation: pgSlideIn 0.18s ease;
+}
+
+@keyframes pgSlideIn {
+  from { opacity: 0.5; transform: translateX(12px); }
+  to   { opacity: 1;   transform: translateX(0); }
+}
+
+/* ═══════════ PHONE STATUS BAR → HIDDEN ═══════════ */
+.phone-status-bar { display: none !important; }
+
+/* ═══════════ SCROLL AREAS ═══════════ */
+.page-scroll,
+.phone-scroll,
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+.page-scroll::-webkit-scrollbar,
+.phone-scroll::-webkit-scrollbar,
+.scroll-area::-webkit-scrollbar { display: none; }
+
+/* ═══════════ TAB BAR SAFE AREA ═══════════ */
+.tab-bar {
+  flex-shrink: 0 !important;
+  padding-bottom: calc(6px + var(--safe-b)) !important;
+}
+
+/* ═══════════ BOTTOM ACTION BARS ═══════════ */
+.bottom-bar,
+.action-bar,
+.pay-bar,
+.submit-bar {
+  flex-shrink: 0 !important;
+  padding-bottom: calc(10px + var(--safe-b)) !important;
+}
+
+/* ═══════════ LOGIN PAGE ═══════════ */
+.login-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 28px;
+  min-height: 0;
+}
+
+/* ═══════════ TOAST (mobile position) ═══════════ */
+.toast-mobile {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.82);
+  color: #fff;
+  padding: 9px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 9999;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  max-width: 90vw;
+  text-align: center;
+  word-break: keep-all;
+}
+.toast-mobile.show { opacity: 1; }
+
+/* ═══════════ MODAL SHEET ═══════════ */
+.modal-mobile {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: flex-end;
+  z-index: 9998;
+}
+.modal-mobile.show { display: flex; }
+.modal-sheet-inner {
+  width: 100%;
+  background: #fff;
+  border-radius: 16px 16px 0 0;
+  padding: 0 16px calc(16px + var(--safe-b));
+  max-height: 78vh;
+  overflow-y: auto;
+}
+.modal-sheet-inner::-webkit-scrollbar { display: none; }
+.modal-handle {
+  width: 40px;
+  height: 4px;
+  background: #E8E8E8;
+  border-radius: 2px;
+  margin: 14px auto 10px;
+}
+
+/* ═══════════ TOUCH FEEDBACK ═══════════ */
+button, .list-item, .tab-item, .nav-item, .card,
+[onclick], .clickable {
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+button:active, [onclick]:active { opacity: 0.75; }
+
+/* ═══════════ FORM INPUTS ═══════════ */
+input, select, textarea {
+  font-size: 16px !important; /* prevents iOS zoom on focus */
+  -webkit-appearance: none;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+}
+
+/* ═══════════ DISTANCE CHIP ═══════════ */
+.distance-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+.distance-chip.in-range { background: #F6FFED; color: #52C41A; }
+.distance-chip.out-range { background: #F0F0F0; color: #8C8C8C; }
+
+/* ═══════════ RANGE DIAGRAM ═══════════ */
+.range-diagram-wrap {
+  background: linear-gradient(135deg, #DBEAFE, #EFF6FF);
+  border: 1.5px solid #BFDBFE;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 8px 12px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.range-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px dashed #93C5FD;
+  background: rgba(147,197,253,0.1);
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.range-circle::before {
+  content: '';
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px dashed #1677FF;
+  background: rgba(22,119,255,0.08);
+}
+.range-center-dot {
+  width: 12px;
+  height: 12px;
+  background: #FF4D4F;
+  border-radius: 50%;
+  border: 2.5px solid white;
+  box-shadow: 0 2px 6px rgba(255,77,79,0.4);
+  position: relative;
+  z-index: 1;
+}
+.range-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+.range-dot.in  { background: #52C41A; }
+.range-dot.out { background: #BFBFBF; }
+.range-desc {
+  flex: 1;
+  font-size: 11.5px;
+  color: #1E40AF;
+  line-height: 1.7;
+  font-weight: 500;
+}
+.range-desc strong { color: #1D4ED8; }
+
+/* ═══════════ STEPS FLOW ═══════════ */
+.steps-flow {
+  display: flex;
+  align-items: center;
+  padding: 14px 12px;
+  background: white;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex-shrink: 0;
+}
+.steps-flow::-webkit-scrollbar { display: none; }
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative;
+  width: 64px;
+}
+.step-item::after {
+  content: '';
+  position: absolute;
+  top: 13px;
+  left: calc(50% + 13px);
+  width: calc(100% - 26px);
+  height: 2px;
+  background: #E8E8E8;
+}
+.step-item.done::after { background: #1677FF; }
+.step-item:last-child::after { display: none; }
+.step-circle {
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  border: 2px solid #E8E8E8;
+  background: white;
+  color: #BFBFBF;
+  position: relative;
+  z-index: 1;
+}
+.step-item.done .step-circle { background: #1677FF; border-color: #1677FF; color: white; }
+.step-item.active .step-circle { border-color: #1677FF; color: #1677FF; }
+.step-label {
+  font-size: 9.5px;
+  color: #8C8C8C;
+  margin-top: 4px;
+  text-align: center;
+  line-height: 1.3;
+}
+.step-item.done .step-label, .step-item.active .step-label {
+  color: #1677FF;
+  font-weight: 600;
+}
+
+/* ═══════════ B端 LOGIN ═══════════ */
+.b-login-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 28px;
+  min-height: 0;
+}
+
+/* ═══════════ SAFE BOTTOM SPACER ═══════════ */
+.safe-bottom { height: calc(8px + var(--safe-b)); flex-shrink: 0; }
+
+</style>
+</head>
+<body>
+
+<div class="mobile-role-bar">
+  <span class="mrb-label">端切换:</span>
+  <div class="mrb-chip active" data-role="user" onclick="switchRole('user')">C端用户</div>
+  <div class="mrb-chip" data-role="sp" onclick="switchRole('sp')">服务商</div>
+  <div class="mrb-chip" data-role="master" onclick="switchRole('master')">维修师傅</div>
+  <div class="mrb-chip" data-role="supplier" onclick="switchRole('supplier')">供应商</div>
+  <div class="mrb-chip" data-role="admin" onclick="switchRole('admin')">管理员</div>
+</div>
+
+<div class="app-shell">
+  <div class="app-content">
+    <div class="phone-frame-wrap">
+      <div class="phone-frame">
+        <div id="phone-screen">
+
+            <!-- ══════════════════════════════════════
+   C端：登录页
+            ══════════════════════════════════════ -->
+            <div class="page active" id="page-login">
+<div class="login-page">
+  <div class="login-logo">🀄</div>
+  <div class="login-title">麻将机服务平台</div>
+  <div class="login-sub">麻将机销售 · 零食饮料 · 维修服务<br>一体化微信小程序</div>
+  <button class="login-btn" onclick="showPage('home')">
+    <span>💬</span> 微信一键登录
+  </button>
+  <div style="font-size:12px;opacity:0.5;color:white;margin-top:8px">
+    首次登录需绑定手机号
+  </div>
+  <div class="login-terms">
+    登录即代表您同意《用户服务协议》和《隐私政策》
+  </div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   C端：首页
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-home">
+<div class="phone-status-bar">
+  <span class="status-time">9:41</span>
+  <span class="status-icons">📶 🔋</span>
+</div>
+<div class="nav-bar">
+  <div class="nav-title" style="text-align:left;font-size:18px;font-weight:800">🀄 麻将机平台</div>
+  <div class="nav-action">📍 上海</div>
+</div>
+<div class="scroll-content">
+  <!-- Banner -->
+  <div class="banner">
+    <div class="banner-title">🎉 新品上市·四口国标麻将机</div>
+    <div class="banner-sub">全自动洗牌 · 超静音设计 · 限时优惠</div>
+    <div style="margin-top:12px;display:flex;gap:8px">
+      <button class="btn btn-sm" style="background:white;color:var(--blue)">立即购买</button>
+      <button class="btn btn-sm" style="background:rgba(255,255,255,0.2);color:white">了解详情</button>
+    </div>
+  </div>
+  <div class="img-dots">
+    <div class="img-dot active"></div>
+    <div class="img-dot"></div>
+    <div class="img-dot"></div>
+  </div>
+
+  <!-- Quick Entry -->
+  <div class="quick-grid">
+    <div class="quick-item" onclick="showPage('mall')">
+      <div class="quick-icon">🀄</div>
+      <div class="quick-label">麻将机商城</div>
+    </div>
+    <div class="quick-item" onclick="showPage('mall')">
+      <div class="quick-icon" style="background:#FFF0F6;color:#EB2F96">🍿</div>
+      <div class="quick-label">零食饮料</div>
+    </div>
+    <div class="quick-item" onclick="showPage('repair-order')">
+      <div class="quick-icon" style="background:#F6FFED;color:#52C41A">🔧</div>
+      <div class="quick-label">我要维修</div>
+    </div>
+    <div class="quick-item" onclick="showPage('order-list')">
+      <div class="quick-icon" style="background:#FFF7E6;color:#FA8C16">📦</div>
+      <div class="quick-label">我的订单</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-header">
+    <div class="section-title">🔥 热销麻将机</div>
+    <div class="section-more" onclick="showPage('mall')">查看全部 ›</div>
+  </div>
+
+  <div class="product-grid">
+    <div class="product-card" onclick="showPage('product')">
+      <div class="product-img">🀄</div>
+      <div class="product-info">
+        <div class="product-name">四口全自动麻将机 豪华版</div>
+        <div class="product-price">¥2,980</div>
+        <div class="product-sales">月销 328</div>
+      </div>
+    </div>
+    <div class="product-card" onclick="showPage('product')">
+      <div class="product-img">🎮</div>
+      <div class="product-info">
+        <div class="product-name">旋翼三口麻将机 静音款</div>
+        <div class="product-price">¥1,680</div>
+        <div class="product-sales">月销 156</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-title">✨ 周边推荐</div>
+    <div class="section-more">查看全部 ›</div>
+  </div>
+
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-img">🪑</div>
+      <div class="product-info">
+        <div class="product-name">麻将桌专用椅 加厚款</div>
+        <div class="product-price">¥480</div>
+        <div class="product-sales">月销 89</div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">💡</div>
+      <div class="product-info">
+        <div class="product-name">麻将机吸烟灯 防雾款</div>
+        <div class="product-price">¥198</div>
+        <div class="product-sales">月销 201</div>
+      </div>
+    </div>
+  </div>
+  <div style="height:70px"></div>
+</div>
+<div class="tab-bar">
+  <div class="tab-item active"><div class="tab-icon">🏠</div>首页</div>
+  <div class="tab-item" onclick="showPage('mall')"><div class="tab-icon">🛒</div>商城</div>
+  <div class="tab-item" onclick="showPage('repair-order')"><div class="tab-icon">🔧</div>维修</div>
+  <div class="tab-item" onclick="showPage('order-list')"><div class="tab-icon">📄</div>订单</div>
+  <div class="tab-item" onclick="showPage('profile')"><div class="tab-icon">👤</div>我的</div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   C端：商城页
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-mall">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="search-bar" style="margin-top:8px">
+  <span class="search-icon">🔍</span>
+  <input class="search-input" placeholder="搜索麻将机品牌/型号...">
+</div>
+<div class="category-tabs">
+  <div class="cat-tab active">全部</div>
+  <div class="cat-tab">麻将机</div>
+  <div class="cat-tab">吸烟灯</div>
+  <div class="cat-tab">桌椅</div>
+</div>
+<div class="hint-bubble">
+  📢 统一商城模式：所有商品由平台统一展示，不显示商家名称和店铺入口
+</div>
+<div class="scroll-content">
+  <div class="product-grid">
+    <div class="product-card" onclick="showPage('product')">
+      <div class="product-img">🀄</div>
+      <div class="product-info">
+        <div class="product-name">四口全自动麻将机 豪华版</div>
+        <div class="product-price">¥2,980</div>
+        <div class="product-sales">月销 328</div>
+      </div>
+    </div>
+    <div class="product-card" onclick="showPage('product')">
+      <div class="product-img">🎮</div>
+      <div class="product-info">
+        <div class="product-name">旋翼三口麻将机 静音款</div>
+        <div class="product-price">¥1,680</div>
+        <div class="product-sales">月销 156</div>
+      </div>
+    </div>
+    <div class="product-card" onclick="showPage('product')">
+      <div class="product-img">🀄</div>
+      <div class="product-info">
+        <div class="product-name">三口麻将机 入门款</div>
+        <div class="product-price">¥980</div>
+        <div class="product-sales">月销 412</div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">🪑</div>
+      <div class="product-info">
+        <div class="product-name">麻将桌专用椅 加厚款</div>
+        <div class="product-price">¥480</div>
+        <div class="product-sales" style="display:flex;align-items:center;gap:4px">
+          <span style="background:var(--gray7);color:var(--gray4);font-size:10px;padding:1px 5px;border-radius:4px">暂无库存</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="height:70px"></div>
+</div>
+<div class="tab-bar">
+  <div class="tab-item" onclick="showPage('home')"><div class="tab-icon">🏠</div>首页</div>
+  <div class="tab-item active"><div class="tab-icon">🛒</div>商城</div>
+  <div class="tab-item" onclick="showPage('repair-order')"><div class="tab-icon">🔧</div>维修</div>
+  <div class="tab-item" onclick="showPage('order-list')"><div class="tab-icon">📄</div>订单</div>
+  <div class="tab-item" onclick="showPage('profile')"><div class="tab-icon">👤</div>我的</div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   C端：商品详情
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-product">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('mall')">‹</div>
+  <div class="nav-title">商品详情</div>
+  <div class="nav-action">⋯</div>
+</div>
+<div class="scroll-content">
+  <!-- Product Images -->
+  <div style="background:var(--gray7);height:220px;display:flex;align-items:center;justify-content:center;font-size:64px;color:var(--gray5)">🀄</div>
+  <div class="img-dots">
+    <div class="img-dot active"></div>
+    <div class="img-dot"></div>
+    <div class="img-dot"></div>
+  </div>
+
+  <div style="background:white;padding:14px 16px">
+    <div style="font-size:20px;color:var(--red);font-weight:800;margin-bottom:4px">¥2,980</div>
+    <div style="font-size:15px;font-weight:700;color:var(--gray1);margin-bottom:8px;line-height:1.4">四口全自动麻将机 豪华国标版 超静音</div>
+    <div style="font-size:12px;color:var(--gray4)">月销 328 件 &nbsp;|&nbsp; 好评率 98%</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Spec Selection -->
+  <div style="background:white;padding:14px 16px">
+    <div style="font-size:13px;font-weight:700;margin-bottom:10px">选择规格</div>
+    <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">颜色</div>
+    <div class="chips">
+      <div class="chip selected">棕色木纹</div>
+      <div class="chip">黑色简约</div>
+      <div class="chip">白色清新</div>
+    </div>
+    <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">型号</div>
+    <div class="chips">
+      <div class="chip selected">四口标准</div>
+      <div class="chip">四口豪华</div>
+      <div class="chip btn-disabled">三口（暂无货）</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Reviews -->
+  <div style="background:white;padding:14px 16px">
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+      <div style="font-size:14px;font-weight:700">用户评价</div>
+      <div style="font-size:12px;color:var(--blue);cursor:pointer">查看全部 ›</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
+      <span style="font-size:20px;font-weight:800;color:var(--orange)">4.9</span>
+      <span style="color:var(--orange)">★★★★★</span>
+      <span style="font-size:11px;color:var(--gray4)">共 187 条</span>
+    </div>
+    <div style="background:var(--gray9);border-radius:var(--radius-sm);padding:10px;margin-bottom:8px">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+        <div style="width:24px;height:24px;border-radius:50%;background:var(--blue);color:white;font-size:11px;display:flex;align-items:center;justify-content:center">张</div>
+        <span style="font-size:12px;color:var(--gray2);font-weight:600">张**</span>
+        <span style="color:var(--orange);font-size:11px">★★★★★</span>
+      </div>
+      <div style="font-size:12px;color:var(--gray3)">质量很好，洗牌速度快，声音很小，家人满意！</div>
+      <div style="font-size:10px;color:var(--gray5);margin-top:4px">2024-12-01 &nbsp;四口标准/棕色木纹</div>
+    </div>
+  </div>
+
+  <div style="height:80px"></div>
+</div>
+
+<!-- Action Bar -->
+<div class="sticky-bottom">
+  <div style="display:flex;gap:8px">
+    <button class="btn btn-outline" onclick="showPage('cart')" style="flex:1">加入购物车</button>
+    <button class="btn btn-primary" onclick="showPage('confirm-order')" style="flex:1">立即购买</button>
+  </div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   C端：购物车
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-cart">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-title">购物车</div>
+  <div class="nav-action" style="color:var(--blue)">编辑</div>
+</div>
+<div class="scroll-content">
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)">
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border)">
+      <div style="width:20px;height:20px;border-radius:50%;border:2px solid var(--blue);background:var(--blue);display:flex;align-items:center;justify-content:center;color:white;font-size:12px">✓</div>
+      <span style="font-size:13px;font-weight:600">全选</span>
+    </div>
+    <!-- Cart Item 1 -->
+    <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="width:20px;height:20px;border-radius:50%;border:2px solid var(--blue);background:var(--blue);display:flex;align-items:center;justify-content:center;color:white;font-size:12px">✓</div>
+      <div style="width:60px;height:60px;border-radius:8px;background:var(--gray7);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🀄</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;color:var(--gray2);line-height:1.4;margin-bottom:2px">四口全自动麻将机 豪华国标版</div>
+        <div style="font-size:11px;color:var(--gray4)">棕色木纹/四口标准</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
+          <span style="font-size:14px;color:var(--red);font-weight:700">¥2,980</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button class="btn btn-sm btn-ghost" style="padding:2px 8px;font-size:14px">−</button>
+            <span style="font-size:13px;min-width:20px;text-align:center">1</span>
+            <button class="btn btn-sm btn-primary" style="padding:2px 8px;font-size:14px">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Cart Item 2 -->
+    <div style="display:flex;align-items:center;gap:10px;padding:12px 14px">
+      <div style="width:20px;height:20px;border-radius:50%;border:2px solid var(--blue);background:var(--blue);display:flex;align-items:center;justify-content:center;color:white;font-size:12px">✓</div>
+      <div style="width:60px;height:60px;border-radius:8px;background:var(--gray7);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">💡</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;color:var(--gray2);line-height:1.4;margin-bottom:2px">麻将机吸烟灯 防雾款</div>
+        <div style="font-size:11px;color:var(--gray4)">标准尺寸</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
+          <span style="font-size:14px;color:var(--red);font-weight:700">¥198</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button class="btn btn-sm btn-ghost" style="padding:2px 8px;font-size:14px">−</button>
+            <span style="font-size:13px;min-width:20px;text-align:center">2</span>
+            <button class="btn btn-sm btn-primary" style="padding:2px 8px;font-size:14px">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="height:80px"></div>
+</div>
+
+<div class="pay-bar">
+  <div>
+    <div class="pay-total">合计（2件）</div>
+    <div class="pay-amount">¥3,376</div>
+  </div>
+  <button class="btn btn-primary btn-lg" onclick="showPage('confirm-order')">去结算（2件）</button>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   C端：确认订单页
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-confirm-order">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('cart')">‹</div>
+  <div class="nav-title">确认订单</div>
+</div>
+<div class="scroll-content">
+  <!-- Address -->
+  <div class="address-card">
+    <div class="address-icon">📍</div>
+    <div class="address-info">
+      <div class="address-name">张三 &nbsp; 138****0001</div>
+      <div class="address-detail">上海市浦东新区张江高科技园区博云路2号</div>
+    </div>
+    <div style="color:var(--gray5)">›</div>
+  </div>
+
+  <!-- Products -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">商品清单</div>
+      <div class="hint-bubble" style="margin:0;padding:2px 8px;font-size:10px">统一商城 · 不显示商家</div>
+    </div>
+    <div style="padding:12px 14px">
+      <div style="display:flex;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+        <div style="width:52px;height:52px;background:var(--gray7);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">🀄</div>
+        <div style="flex:1">
+          <div style="font-size:12px;color:var(--gray2)">四口全自动麻将机 豪华国标版</div>
+          <div style="font-size:11px;color:var(--gray4);margin-top:2px">棕色木纹/四口标准 × 1</div>
+          <div style="font-size:13px;color:var(--red);font-weight:600;margin-top:4px">¥2,980</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <div style="width:52px;height:52px;background:var(--gray7);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">💡</div>
+        <div style="flex:1">
+          <div style="font-size:12px;color:var(--gray2)">麻将机吸烟灯 防雾款</div>
+          <div style="font-size:11px;color:var(--gray4);margin-top:2px">标准尺寸 × 2</div>
+          <div style="font-size:13px;color:var(--red);font-weight:600;margin-top:4px">¥396</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="card">
+    <div class="info-row">
+      <div class="info-row-label">商品总价</div>
+      <div class="info-row-value">¥3,376</div>
+    </div>
+    <div class="info-row">
+      <div class="info-row-label">运费</div>
+      <div class="info-row-value" style="color:var(--green)">免运费</div>
+    </div>
+    <div class="info-row" style="border:none">
+      <div class="info-row-label" style="font-weight:700;color:var(--gray1)">实付金额</div>
+      <div class="info-row-value" style="font-size:18px;color:var(--red);font-weight:800">¥3,376</div>
+    </div>
+  </div>
+  <div style="height:80px"></div>
+</div>
+
+<div class="pay-bar">
+  <div>
+    <div class="pay-total">实付</div>
+    <div class="pay-amount">¥3,376</div>
+  </div>
+  <button class="btn btn-primary btn-lg">提交订单</button>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   C端：维修下单页
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-repair-order">
+<div class="phone-status-bar">
+  <span class="status-time">9:41</span>
+  <span class="status-icons">📶 🔋</span>
+</div>
+<div class="nav-bar">
+  <div class="nav-back" onclick="showPage('home')">‹</div>
+  <div class="nav-title">发布维修需求</div>
+</div>
+<div class="scroll-content">
+  <div class="page-tip">
+    📍 系统将以您填写的<strong>维修地址</strong>为中心，向5km范围内的服务商/师傅推送抢单通知
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="form-item">
+        <div class="form-label"><span class="required">*</span> 故障类型</div>
+        <select class="form-input">
+          <option>请选择故障类型</option>
+          <option>不上牌</option>
+          <option>换桌面</option>
+          <option>卡牌</option>
+          <option>安装调试</option>
+          <option>其他</option>
+        </select>
+      </div>
+      <div class="form-item">
+        <div class="form-label"><span class="required">*</span> 维修地址</div>
+        <div style="display:flex;gap:8px">
+          <input class="form-input" style="flex:1" value="上海市浦东新区张江路88号">
+          <button class="btn btn-outline btn-sm" style="white-space:nowrap">📍 定位</button>
+        </div>
+      </div>
+      <div class="form-item">
+        <div class="form-label"><span class="required">*</span> 联系人</div>
+        <input class="form-input" placeholder="请输入真实姓名">
+      </div>
+      <div class="form-item">
+        <div class="form-label"><span class="required">*</span> 联系电话</div>
+        <input class="form-input" placeholder="11位手机号" type="tel">
+      </div>
+      <div class="form-item">
+        <div class="form-label"><span class="required">*</span> 故障图片（最多6张）</div>
+        <div style="display:flex;gap:8px">
+          <div style="width:60px;height:60px;border:1.5px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--gray5)">+</div>
+          <div style="width:60px;height:60px;background:var(--gray7);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px">📷</div>
+        </div>
+      </div>
+      <div class="form-item">
+        <div class="form-label"><span class="required">*</span> 预约上门时间</div>
+        <select class="form-input">
+          <option>选择日期</option>
+        </select>
+        <select class="form-input" style="margin-top:6px">
+          <option>09:00-11:00</option>
+          <option>11:00-13:00</option>
+          <option>14:00-16:00</option>
+          <option>16:00-18:00</option>
+        </select>
+      </div>
+      <div class="form-item">
+        <div class="form-label">备注（选填，最多100字）</div>
+        <textarea class="form-input" rows="2" placeholder="描述故障详情或其他特殊需求"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:white;margin:0 12px;border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:13px;color:var(--gray4)">上门服务费</div>
+        <div style="font-size:18px;color:var(--red);font-weight:800;margin-top:2px">¥30.00</div>
+      </div>
+      <div style="font-size:11px;color:var(--gray4);text-align:right">支付后提交订单<br>无人抢单可申请退款</div>
+    </div>
+  </div>
+  <div style="height:80px"></div>
+</div>
+<div class="sticky-bottom">
+  <button class="btn btn-primary" style="width:100%;padding:13px;font-size:16px">提交并支付上门费 ¥30.00</button>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   C端：商品订单列表
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-order-list">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('home')">‹</div>
+  <div class="nav-title">我的商品订单</div>
+</div>
+<div class="category-tabs">
+  <div class="cat-tab active">全部</div>
+  <div class="cat-tab">待付款</div>
+  <div class="cat-tab">待发货</div>
+  <div class="cat-tab">已发货</div>
+  <div class="cat-tab">已完成</div>
+</div>
+<div class="scroll-content">
+  <div class="order-card">
+    <div class="order-header">
+      <div class="order-no">单号：DD2024120001</div>
+      <div class="order-status">待发货</div>
+    </div>
+    <div class="order-body">
+      <div class="order-product">
+        <div class="order-product-img">🀄</div>
+        <div class="order-product-info">
+          <div class="order-product-name">四口全自动麻将机 豪华国标版</div>
+          <div class="order-product-spec">棕色木纹/四口标准</div>
+          <div class="order-product-price">¥2,980 × 1</div>
+        </div>
+      </div>
+    </div>
+    <div class="order-footer">
+      <div class="order-total">实付：<span>¥2,980</span></div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-sm btn-ghost">联系客服</button>
+        <button class="btn btn-sm btn-outline">查看详情</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="order-card">
+    <div class="order-header">
+      <div class="order-no">单号：DD2024110028</div>
+      <div class="order-status" style="color:var(--green)">已完成</div>
+    </div>
+    <div class="order-body">
+      <div class="order-product">
+        <div class="order-product-img">💡</div>
+        <div class="order-product-info">
+          <div class="order-product-name">麻将机吸烟灯 防雾款</div>
+          <div class="order-product-spec">标准尺寸</div>
+          <div class="order-product-price">¥198 × 2</div>
+        </div>
+      </div>
+    </div>
+    <div class="order-footer">
+      <div class="order-total">实付：<span>¥396</span></div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-sm btn-ghost">查看物流</button>
+        <button class="btn btn-sm btn-outline" style="color:var(--orange);border-color:var(--orange)">去评价</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:20px"></div>
+</div>
+<div class="tab-bar">
+  <div class="tab-item" onclick="showPage('home')"><div class="tab-icon">🏠</div>首页</div>
+  <div class="tab-item" onclick="showPage('mall')"><div class="tab-icon">🛒</div>商城</div>
+  <div class="tab-item" onclick="showPage('repair-order')"><div class="tab-icon">🔧</div>维修</div>
+  <div class="tab-item active"><div class="tab-icon">📄</div>订单</div>
+  <div class="tab-item" onclick="showPage('profile')"><div class="tab-icon">👤</div>我的</div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   C端：维修订单列表
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-repair-list">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('profile')">‹</div>
+  <div class="nav-title">我的维修订单</div>
+</div>
+<div class="category-tabs">
+  <div class="cat-tab active">全部</div>
+  <div class="cat-tab">待抢单</div>
+  <div class="cat-tab">已接单</div>
+  <div class="cat-tab">待确认</div>
+  <div class="cat-tab">已完成</div>
+</div>
+<div class="scroll-content">
+  <!-- Pending Grab -->
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;border-left:3px solid var(--orange)">
+    <div class="order-header">
+      <div class="order-no">WX2024120008</div>
+      <div class="order-status" style="color:var(--orange)">待抢单</div>
+    </div>
+    <div style="padding:10px 14px">
+      <div style="font-size:14px;font-weight:700;margin-bottom:4px">🔧 卡牌故障</div>
+      <div style="font-size:11px;color:var(--gray4)">📍 上海市浦东新区张江路88号</div>
+      <div style="font-size:11px;color:var(--gray4);margin-top:2px">🕐 预约：12月15日 09:00-11:00</div>
+      <div style="font-size:11px;color:var(--gray4);margin-top:2px">💰 上门费：¥30.00 已支付</div>
+    </div>
+    <div style="padding:0 14px 12px">
+      <button class="btn btn-sm btn-ghost">查看详情</button>
+    </div>
+  </div>
+
+  <!-- Confirmed -->
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;border-left:3px solid var(--blue)">
+    <div class="order-header">
+      <div class="order-no">WX2024110032</div>
+      <div class="order-status">待确认支付</div>
+    </div>
+    <div style="padding:10px 14px">
+      <div style="font-size:14px;font-weight:700;margin-bottom:4px">🔧 安装调试</div>
+      <div style="font-size:11px;color:var(--gray4)">📍 上海市杨浦区五角场路30号</div>
+      <div style="font-size:11px;color:var(--gray4);margin-top:2px">👨‍🔧 接单师傅：李师傅 &nbsp; 📞 138****8888</div>
+      <div style="background:var(--gray9);border-radius:6px;padding:8px;margin-top:8px">
+        <div style="font-size:11px;color:var(--gray4)">维修费：¥200 &nbsp; 配件费：¥80 &nbsp; <strong style="color:var(--gray2)">合计：¥280</strong></div>
+      </div>
+    </div>
+    <div style="padding:0 14px 12px">
+      <button class="btn btn-sm btn-primary">确认完成并支付 ¥280</button>
+    </div>
+  </div>
+  <div style="height:20px"></div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   C端：个人中心
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-profile">
+<div class="phone-status-bar">
+  <span class="status-time">9:41</span>
+  <span class="status-icons">📶 🔋</span>
+</div>
+<div style="background:linear-gradient(135deg,#1677FF,#0958D9);padding:20px 16px 30px;color:white">
+  <div style="display:flex;align-items:center;gap:14px">
+    <div style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:28px;border:2px solid rgba(255,255,255,0.4)">👤</div>
+    <div>
+      <div style="font-size:17px;font-weight:700">张三</div>
+      <div style="font-size:13px;opacity:0.75;margin-top:2px">📱 138****0001</div>
+      <div class="role-badge role-c" style="margin-top:4px">C端用户</div>
+    </div>
+  </div>
+</div>
+<div class="scroll-content">
+  <div class="card" style="margin-top:-20px;position:relative;z-index:1">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;padding:12px 0">
+      <div style="cursor:pointer" onclick="showPage('order-list')">
+        <div style="font-size:18px;font-weight:700;color:var(--blue)">3</div>
+        <div style="font-size:11px;color:var(--gray4);margin-top:2px">待发货</div>
+      </div>
+      <div style="cursor:pointer;border-left:1px solid var(--border);border-right:1px solid var(--border)" onclick="showPage('repair-list')">
+        <div style="font-size:18px;font-weight:700;color:var(--orange)">1</div>
+        <div style="font-size:11px;color:var(--gray4);margin-top:2px">待抢单</div>
+      </div>
+      <div style="cursor:pointer">
+        <div style="font-size:18px;font-weight:700;color:var(--green)">12</div>
+        <div style="font-size:11px;color:var(--gray4);margin-top:2px">已完成</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="list-item" onclick="showPage('order-list')">
+      <div class="list-item-icon">📦</div>
+      <div class="list-item-content">
+        <div class="list-item-title">我的商品订单</div>
+      </div>
+      <div class="list-item-right">›</div>
+    </div>
+    <div class="list-item" onclick="showPage('repair-list')">
+      <div class="list-item-icon" style="background:var(--green-light);color:var(--green)">🔧</div>
+      <div class="list-item-content">
+        <div class="list-item-title">我的维修订单</div>
+      </div>
+      <div class="list-item-right">›</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-icon" style="background:var(--orange-light);color:var(--orange)">📍</div>
+      <div class="list-item-content">
+        <div class="list-item-title">收货地址管理</div>
+      </div>
+      <div class="list-item-right">›</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-icon" style="background:var(--red-light);color:var(--red)">💬</div>
+      <div class="list-item-content">
+        <div class="list-item-title">联系客服</div>
+      </div>
+      <div class="list-item-right">›</div>
+    </div>
+  </div>
+
+  <div style="margin:8px 12px">
+    <button class="btn btn-ghost" style="width:100%;color:var(--red)">退出登录</button>
+  </div>
+  <div style="height:70px"></div>
+</div>
+<div class="tab-bar">
+  <div class="tab-item" onclick="showPage('home')"><div class="tab-icon">🏠</div>首页</div>
+  <div class="tab-item" onclick="showPage('mall')"><div class="tab-icon">🛒</div>商城</div>
+  <div class="tab-item" onclick="showPage('repair-order')"><div class="tab-icon">🔧</div>维修</div>
+  <div class="tab-item" onclick="showPage('order-list')"><div class="tab-icon">📄</div>订单</div>
+  <div class="tab-item active"><div class="tab-icon">👤</div>我的</div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   B端：服务商首页
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-sp-home">
+<div class="phone-status-bar">
+  <span class="status-time">9:41</span>
+  <span class="status-icons">📶 🔋</span>
+</div>
+<div class="nav-bar">
+  <div style="flex:1">
+    <div style="font-size:14px;font-weight:700">欢迎，麻将王服务商</div>
+    <div class="role-badge role-sp" style="margin-top:4px">服务商</div>
+  </div>
+  <div class="nav-action">🔔</div>
+</div>
+<div class="scroll-content">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">今日订单</div>
+      <div class="stat-value blue">8</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">本月销售额</div>
+      <div class="stat-value green">¥23,800</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">待抢维修单</div>
+      <div class="stat-value red">3</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">待处理商品单</div>
+      <div class="stat-value orange">5</div>
+    </div>
+  </div>
+
+  <div class="quick-grid" style="margin:0 12px;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)">
+    <div class="quick-item" onclick="showPage('sp-goods')">
+      <div class="quick-icon">📦</div>
+      <div class="quick-label">商品管理</div>
+    </div>
+    <div class="quick-item" onclick="showPage('sp-grab')">
+      <div class="quick-icon" style="background:var(--red-light);color:var(--red)">⚡</div>
+      <div class="quick-label">抢单大厅</div>
+    </div>
+    <div class="quick-item" onclick="showPage('sp-master')">
+      <div class="quick-icon" style="background:var(--green-light);color:var(--green)">👨‍🔧</div>
+      <div class="quick-label">师傅管理</div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon" style="background:var(--orange-light);color:var(--orange)">📊</div>
+      <div class="quick-label">数据统计</div>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top:8px">
+    <div class="section-title">⚡ 最新待抢单</div>
+    <div class="section-more" onclick="showPage('sp-grab')">查看全部 ›</div>
+  </div>
+
+  <div class="repair-card urgent">
+    <div class="repair-body">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="repair-type">卡牌故障</div>
+        <span class="tag tag-red">🔥 紧急</span>
+      </div>
+      <div class="repair-meta">📍 上海浦东张江路88号 &nbsp;|&nbsp; 🕐 今日14:00-16:00</div>
+      <div class="repair-distance">📍 距用户地址 2.3km</div>
+    </div>
+    <div class="repair-actions">
+      <button class="btn btn-sm btn-ghost">查看详情</button>
+      <button class="btn btn-sm btn-danger" onclick="showPage('sp-grab')">立即抢单</button>
+    </div>
+  </div>
+</div>
+<div class="tab-bar">
+  <div class="tab-item active"><div class="tab-icon">🏠</div>首页</div>
+  <div class="tab-item" onclick="showPage('sp-goods')"><div class="tab-icon">📦</div>商品</div>
+  <div class="tab-item" onclick="showPage('sp-grab')"><div class="tab-icon">⚡</div>抢单</div>
+  <div class="tab-item"><div class="tab-icon">📄</div>订单</div>
+  <div class="tab-item"><div class="tab-icon">👤</div>我的</div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   B端：抢单大厅
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-sp-grab">
+<div class="phone-status-bar">
+  <span class="status-time">9:41</span>
+  <span class="status-icons">📶 🔋</span>
+</div>
+<div class="nav-bar">
+  <div class="nav-back" onclick="showPage('sp-home')">‹</div>
+  <div class="nav-title">抢单大厅</div>
+  <div class="nav-action">筛选</div>
+</div>
+<div style="background:white;flex-shrink:0">
+  <div class="hint-bubble" style="margin:8px 12px 4px">
+    📍 <strong>接单范围逻辑：</strong>以<strong>用户下单地址</strong>为中心，您在用户地址5km范围内方可见到此订单并抢单
+  </div>
+  <div class="range-map">
+    <div style="position:relative">
+      <div class="range-circle">
+        <div class="range-center"></div>
+      </div>
+      <div class="range-dot in" style="position:absolute;top:-10px;right:-25px"></div>
+      <div class="range-dot in" style="position:absolute;bottom:-8px;left:-20px"></div>
+      <div class="range-dot out" style="position:absolute;top:10px;right:-55px"></div>
+    </div>
+    <div class="range-label">🔴 用户地址 🟢 在范围内 ⚫ 超出范围</div>
+  </div>
+  <div style="padding:0 12px 8px;display:flex;gap:8px">
+    <span class="tag tag-green">✅ 您当前在接单范围内</span>
+    <span class="tag tag-blue">接单半径：5km</span>
+  </div>
+</div>
+<div class="scroll-content">
+  <!-- Urgent Order -->
+  <div class="repair-card urgent">
+    <div class="repair-body">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="repair-type">卡牌故障</div>
+          <span class="tag tag-red">🔥 紧急（3小时内）</span>
+        </div>
+        <div style="font-size:10px;color:var(--gray4)">2分钟前</div>
+      </div>
+      <div class="repair-meta">📅 今日14:00-16:00</div>
+      <div class="repair-meta">🔢 WX2024120041</div>
+      <div class="repair-distance">📍 距用户地址 2.3km ✅ 在范围内</div>
+    </div>
+    <div class="repair-actions">
+      <button class="btn btn-sm btn-ghost" style="flex:1">查看详情</button>
+      <button class="btn btn-sm btn-danger" style="flex:1">⚡ 立即抢单</button>
+    </div>
+  </div>
+
+  <!-- Normal Order -->
+  <div class="repair-card">
+    <div class="repair-body">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div class="repair-type">安装调试</div>
+        <div style="font-size:10px;color:var(--gray4)">18分钟前</div>
+      </div>
+      <div class="repair-meta">📅 明日09:00-11:00</div>
+      <div class="repair-meta">🔢 WX2024120038</div>
+      <div class="repair-distance">📍 距用户地址 4.1km ✅ 在范围内</div>
+    </div>
+    <div class="repair-actions">
+      <button class="btn btn-sm btn-ghost" style="flex:1">查看详情</button>
+      <button class="btn btn-sm btn-primary" style="flex:1">立即抢单</button>
+    </div>
+  </div>
+
+  <!-- Empty state hint -->
+  <div class="hint-bubble warn">
+    ⚠️ 超出5km范围的维修单对您不可见。如需扩大接单范围，请联系平台管理员修改配置。
+  </div>
+
+  <div style="height:20px"></div>
+</div>
+<div class="tab-bar">
+  <div class="tab-item" onclick="showPage('sp-home')"><div class="tab-icon">🏠</div>首页</div>
+  <div class="tab-item" onclick="showPage('sp-goods')"><div class="tab-icon">📦</div>商品</div>
+  <div class="tab-item active"><div class="tab-icon">⚡</div>抢单</div>
+  <div class="tab-item"><div class="tab-icon">📄</div>订单</div>
+  <div class="tab-item"><div class="tab-icon">👤</div>我的</div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   B端：师傅管理页
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-sp-master">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('sp-home')">‹</div>
+  <div class="nav-title">旗下师傅管理</div>
+</div>
+<div class="page-tip">
+  👨‍🔧 师傅挂靠审核由<strong>服务商</strong>完成，通过后管理员可查看但不可替代审核操作
+</div>
+<div class="category-tabs">
+  <div class="cat-tab active">全部</div>
+  <div class="cat-tab">审核中 <span class="tag tag-red" style="font-size:10px;padding:0 5px;margin-left:2px">2</span></div>
+  <div class="cat-tab">已通过</div>
+  <div class="cat-tab">已禁用</div>
+</div>
+<div class="scroll-content">
+  <!-- Pending Master -->
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div class="staff-row" style="background:var(--orange-light)">
+      <div class="avatar" style="background:linear-gradient(135deg,#FA8C16,#D46B08)">李</div>
+      <div class="staff-info">
+        <div class="staff-name">李师傅</div>
+        <div class="staff-meta">📱 138****5566 &nbsp;|&nbsp; 🔧 卡牌维修/安装调试</div>
+        <span class="tag tag-orange" style="margin-top:4px">⏳ 审核中</span>
+      </div>
+      <div class="staff-actions">
+        <button class="btn btn-sm btn-success">通过</button>
+        <button class="btn btn-sm btn-danger">拒绝</button>
+      </div>
+    </div>
+
+    <div class="staff-row" style="background:var(--orange-light)">
+      <div class="avatar" style="background:linear-gradient(135deg,#FA8C16,#D46B08)">王</div>
+      <div class="staff-info">
+        <div class="staff-name">王师傅</div>
+        <div class="staff-meta">📱 139****7788 &nbsp;|&nbsp; 🔧 全故障类型</div>
+        <span class="tag tag-orange" style="margin-top:4px">⏳ 审核中</span>
+      </div>
+      <div class="staff-actions">
+        <button class="btn btn-sm btn-success">通过</button>
+        <button class="btn btn-sm btn-danger">拒绝</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Approved Master -->
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div class="staff-row">
+      <div class="avatar">张</div>
+      <div class="staff-info">
+        <div class="staff-name">张师傅</div>
+        <div class="staff-meta">📱 136****3344 &nbsp;|&nbsp; 🔧 卡牌/换桌面</div>
+        <span class="tag tag-green" style="margin-top:4px">✅ 已通过</span>
+      </div>
+      <div class="staff-actions">
+        <button class="btn btn-sm btn-ghost">禁用</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hint-bubble warn">
+    ⚠️ 禁用仅影响本服务商旗下，不影响师傅在其他服务商处的状态。一个师傅可挂靠多个服务商，各自独立审核。
+  </div>
+  <div style="height:20px"></div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   B端：服务商商品管理
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-sp-goods">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('sp-home')">‹</div>
+  <div class="nav-title">商品管理</div>
+  <button class="btn btn-primary btn-sm">+ 上架</button>
+</div>
+<div class="category-tabs">
+  <div class="cat-tab active">全部</div>
+  <div class="cat-tab">在售</div>
+  <div class="cat-tab">审核中</div>
+  <div class="cat-tab">已下架</div>
+</div>
+<div class="scroll-content">
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="width:60px;height:60px;background:var(--gray7);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🀄</div>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div style="font-size:13px;font-weight:600;color:var(--gray1);flex:1">四口全自动麻将机 豪华版</div>
+          <span class="tag tag-green">在售</span>
+        </div>
+        <div style="font-size:12px;color:var(--red);font-weight:700;margin-top:4px">¥2,980</div>
+        <div style="font-size:11px;color:var(--gray4);margin-top:2px">库存：15件 &nbsp;|&nbsp; 月销：28</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;padding:8px 14px;background:var(--gray9)">
+      <button class="btn btn-sm btn-outline" style="flex:1">编辑</button>
+      <button class="btn btn-sm btn-ghost" style="flex:1">下架</button>
+    </div>
+  </div>
+
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="width:60px;height:60px;background:var(--gray7);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🎮</div>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div style="font-size:13px;font-weight:600;color:var(--gray1);flex:1">旋翼三口麻将机 新款</div>
+          <span class="tag tag-orange">审核中</span>
+        </div>
+        <div style="font-size:12px;color:var(--red);font-weight:700;margin-top:4px">¥1,880</div>
+        <div style="font-size:11px;color:var(--orange);margin-top:2px">⏳ 等待平台管理员审核</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;padding:8px 14px;background:var(--gray9)">
+      <button class="btn btn-sm btn-ghost btn-disabled" style="flex:1">审核中不可编辑</button>
+    </div>
+  </div>
+  <div style="height:20px"></div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   B端：维修师傅首页
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-master-home">
+<div class="phone-status-bar">
+  <span class="status-time">9:41</span>
+  <span class="status-icons">📶 🔋</span>
+</div>
+<div class="nav-bar">
+  <div style="flex:1">
+    <div style="font-size:14px;font-weight:700">欢迎，张师傅</div>
+    <div class="role-badge role-master" style="margin-top:4px">维修师傅</div>
+  </div>
+  <div class="nav-action">🔔</div>
+</div>
+<div class="scroll-content">
+  <!-- Affiliation Status -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">挂靠状态</div>
+      <button class="btn btn-sm btn-outline" onclick="showPage('master-apply')">+ 申请挂靠</button>
+    </div>
+    <div class="card-body">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+        <div>
+          <div style="font-size:13px;font-weight:600">麻将王服务商</div>
+          <div style="font-size:11px;color:var(--gray4);margin-top:2px">申请时间：2024-11-20</div>
+        </div>
+        <span class="tag tag-green">✅ 已通过</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0">
+        <div>
+          <div style="font-size:13px;font-weight:600">全城麻将服务</div>
+          <div style="font-size:11px;color:var(--gray4);margin-top:2px">申请时间：2024-12-01</div>
+        </div>
+        <span class="tag tag-orange">⏳ 审核中</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">本月接单</div>
+      <div class="stat-value blue">12</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">本月收入</div>
+      <div class="stat-value green">¥3,640</div>
+    </div>
+  </div>
+
+  <div class="quick-grid" style="margin:0 12px;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)">
+    <div class="quick-item" onclick="showPage('sp-grab')">
+      <div class="quick-icon" style="background:var(--red-light);color:var(--red)">⚡</div>
+      <div class="quick-label">抢单大厅</div>
+    </div>
+    <div class="quick-item" onclick="showPage('master-orders')">
+      <div class="quick-icon" style="background:var(--blue-light);color:var(--blue)">📋</div>
+      <div class="quick-label">我的任务</div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon" style="background:var(--green-light);color:var(--green)">💰</div>
+      <div class="quick-label">申请提现</div>
+    </div>
+    <div class="quick-item" onclick="showPage('master-apply')">
+      <div class="quick-icon" style="background:var(--orange-light);color:var(--orange)">📝</div>
+      <div class="quick-label">挂靠申请</div>
+    </div>
+  </div>
+  <div style="height:70px"></div>
+</div>
+<div class="tab-bar">
+  <div class="tab-item active"><div class="tab-icon">🏠</div>首页</div>
+  <div class="tab-item" onclick="showPage('sp-grab')"><div class="tab-icon">⚡</div>抢单</div>
+  <div class="tab-item" onclick="showPage('master-orders')"><div class="tab-icon">📋</div>任务</div>
+  <div class="tab-item"><div class="tab-icon">👤</div>我的</div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   B端：师傅挂靠申请
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-master-apply">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('master-home')">‹</div>
+  <div class="nav-title">申请挂靠服务商</div>
+</div>
+<div class="page-tip">
+  📋 挂靠流程：提交申请 → 服务商审核通过 → 管理员可查看 → 方可接此服务商旗下订单
+</div>
+<!-- Steps -->
+<div style="background:white;padding:12px;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow)">
+  <div class="steps">
+    <div class="step done">
+      <div class="step-circle">✓</div>
+      <div class="step-label">师傅注册</div>
+    </div>
+    <div class="step done">
+      <div class="step-circle">✓</div>
+      <div class="step-label">管理员审核</div>
+    </div>
+    <div class="step active">
+      <div class="step-circle">3</div>
+      <div class="step-label">提交挂靠</div>
+    </div>
+    <div class="step">
+      <div class="step-circle">4</div>
+      <div class="step-label">服务商审核</div>
+    </div>
+    <div class="step">
+      <div class="step-circle">5</div>
+      <div class="step-label">接单</div>
+    </div>
+  </div>
+</div>
+
+<div class="scroll-content">
+  <div class="card">
+    <div class="card-body">
+      <div class="form-item">
+        <div class="form-label">搜索目标服务商</div>
+        <div class="search-bar" style="margin:0">
+          <span class="search-icon">🔍</span>
+          <input class="search-input" placeholder="输入服务商名称搜索...">
+        </div>
+        <!-- Search Result -->
+        <div style="border:1px solid var(--border);border-radius:var(--radius-sm);margin-top:6px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--blue-light)">
+            <div>
+              <div style="font-size:13px;font-weight:600">麻将王服务商</div>
+              <div style="font-size:11px;color:var(--gray4)">📍 上海市浦东新区</div>
+            </div>
+            <button class="btn btn-sm btn-primary">选择</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-item">
+        <div class="form-label"><span class="required">*</span> 真实姓名</div>
+        <input class="form-input" value="张三">
+      </div>
+      <div class="form-item">
+        <div class="form-label"><span class="required">*</span> 身份证号</div>
+        <input class="form-input" placeholder="请输入身份证号（脱敏存储）">
+      </div>
+      <div class="form-item">
+        <div class="form-label"><span class="required">*</span> 联系手机号</div>
+        <input class="form-input" value="138****3344" type="tel">
+      </div>
+      <div class="form-item">
+        <div class="form-label">维修技能证书（最多3张）</div>
+        <div style="display:flex;gap:8px">
+          <div style="width:60px;height:60px;border:1.5px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--gray5)">+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="height:80px"></div>
+</div>
+<div class="sticky-bottom">
+  <button class="btn btn-primary" style="width:100%;padding:13px">提交挂靠申请</button>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   B端：师傅维修任务
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-master-orders">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('master-home')">‹</div>
+  <div class="nav-title">我的维修任务</div>
+</div>
+<div class="category-tabs">
+  <div class="cat-tab active">待接单</div>
+  <div class="cat-tab">进行中</div>
+  <div class="cat-tab">已完成</div>
+</div>
+<div class="scroll-content">
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;border-left:3px solid var(--blue)">
+    <div style="padding:12px 14px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <div style="font-size:14px;font-weight:700">安装调试</div>
+        <span class="tag tag-blue">待接单</span>
+      </div>
+      <div style="font-size:11px;color:var(--gray4)">📍 上海市静安区南京西路100号</div>
+      <div style="font-size:11px;color:var(--gray4);margin-top:2px">📅 12月16日 09:00-11:00</div>
+      <div style="font-size:11px;color:var(--gray4);margin-top:2px">🔢 WX2024120035</div>
+    </div>
+    <div style="padding:0 14px 12px;display:flex;gap:8px">
+      <button class="btn btn-sm btn-ghost">查看详情</button>
+      <button class="btn btn-sm btn-primary">立即接单</button>
+    </div>
+  </div>
+
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;border-left:3px solid var(--green)">
+    <div style="padding:12px 14px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <div style="font-size:14px;font-weight:700">卡牌维修</div>
+        <span class="tag tag-green">进行中</span>
+      </div>
+      <div style="font-size:11px;color:var(--gray4)">📍 上海市徐汇区漕溪北路209号</div>
+      <div style="font-size:11px;color:var(--gray4);margin-top:2px">📅 今日 14:00-16:00</div>
+      <div style="font-size:11px;color:var(--gray4);margin-top:2px">📞 联系电话：136****5678（已接单后可见）</div>
+    </div>
+    <div style="padding:0 14px 12px;display:flex;gap:8px">
+      <button class="btn btn-sm btn-outline">🗺️ 导航前往</button>
+      <button class="btn btn-sm btn-success">✅ 标记完成</button>
+    </div>
+  </div>
+  <div style="height:20px"></div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   B端：供应商首页
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-sup-home">
+<div class="phone-status-bar">
+  <span class="status-time">9:41</span>
+  <span class="status-icons">📶 🔋</span>
+</div>
+<div class="nav-bar">
+  <div style="flex:1">
+    <div style="font-size:14px;font-weight:700">欢迎，好味道供应商</div>
+    <div class="role-badge role-sup" style="margin-top:4px">供应商</div>
+  </div>
+  <div class="nav-action">🔔</div>
+</div>
+<div class="scroll-content">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">今日订单</div>
+      <div class="stat-value blue">23</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">本月销售额</div>
+      <div class="stat-value green">¥8,920</div>
+    </div>
+  </div>
+
+  <div class="hint-bubble">
+    ℹ️ 供应商仅可上架<strong>零食/饮料</strong>类商品，不可访问抢单大厅
+  </div>
+
+  <div class="quick-grid" style="margin:0 12px;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)">
+    <div class="quick-item" onclick="showPage('sup-goods')">
+      <div class="quick-icon" style="background:#FFF0F6;color:#EB2F96">🍿</div>
+      <div class="quick-label">零食管理</div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon" style="background:var(--blue-light);color:var(--blue)">📄</div>
+      <div class="quick-label">我的订单</div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon" style="background:var(--green-light);color:var(--green)">💰</div>
+      <div class="quick-label">申请提现</div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon" style="background:var(--orange-light);color:var(--orange)">📊</div>
+      <div class="quick-label">数据统计</div>
+    </div>
+  </div>
+  <div style="height:70px"></div>
+</div>
+<div class="tab-bar">
+  <div class="tab-item active"><div class="tab-icon">🏠</div>首页</div>
+  <div class="tab-item" onclick="showPage('sup-goods')"><div class="tab-icon">🍿</div>商品</div>
+  <div class="tab-item"><div class="tab-icon">📄</div>订单</div>
+  <div class="tab-item"><div class="tab-icon">👤</div>我的</div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   B端：供应商商品管理
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-sup-goods">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('sup-home')">‹</div>
+  <div class="nav-title">零食商品管理</div>
+  <button class="btn btn-primary btn-sm">+ 上架</button>
+</div>
+<div class="hint-bubble warn">
+  ⚠️ 仅可上架零食/饮料类商品，上架后需管理员审核通过方可在C端展示
+</div>
+<div class="category-tabs">
+  <div class="cat-tab active">全部</div>
+  <div class="cat-tab">在售</div>
+  <div class="cat-tab">审核中</div>
+  <div class="cat-tab">已下架</div>
+</div>
+<div class="scroll-content">
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="width:60px;height:60px;background:var(--gray7);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🍪</div>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div style="font-size:13px;font-weight:600">薯片混合装 20包</div>
+          <span class="tag tag-green">在售</span>
+        </div>
+        <div style="font-size:11px;color:var(--gray4);margin-top:2px">分类：零食</div>
+        <div style="font-size:12px;color:var(--red);font-weight:700;margin-top:4px">¥38.9 &nbsp;<span style="color:var(--gray4);font-weight:400;font-size:11px">库存：200</span></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;padding:8px 14px;background:var(--gray9)">
+      <button class="btn btn-sm btn-outline" style="flex:1">编辑</button>
+      <button class="btn btn-sm btn-ghost" style="flex:1">下架</button>
+    </div>
+  </div>
+
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="display:flex;gap:10px;padding:12px 14px">
+      <div style="width:60px;height:60px;background:var(--gray7);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🥤</div>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div style="font-size:13px;font-weight:600">农夫山泉 整箱</div>
+          <span class="tag tag-orange">审核中</span>
+        </div>
+        <div style="font-size:11px;color:var(--gray4);margin-top:2px">分类：饮料</div>
+        <div style="font-size:12px;color:var(--red);font-weight:700;margin-top:4px">¥29.9 &nbsp;<span style="color:var(--orange);font-weight:400;font-size:11px">⏳ 等待管理员审核</span></div>
+      </div>
+    </div>
+  </div>
+  <div style="height:20px"></div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   管理员：工作台首页
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-admin-home">
+<div class="phone-status-bar">
+  <span class="status-time">9:41</span>
+  <span class="status-icons">📶 🔋</span>
+</div>
+<div class="nav-bar">
+  <div style="flex:1">
+    <div style="font-size:14px;font-weight:700">平台管理员工作台</div>
+    <div class="role-badge role-admin" style="margin-top:4px">平台管理员</div>
+  </div>
+  <div class="nav-action">🔔 <span style="background:var(--red);color:white;font-size:10px;border-radius:8px;padding:1px 5px;vertical-align:top">5</span></div>
+</div>
+<div class="scroll-content">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">今日总订单</div>
+      <div class="stat-value blue">86</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">今日GMV</div>
+      <div class="stat-value green">¥42,800</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">待审核</div>
+      <div class="stat-value red">5</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">待处理提现</div>
+      <div class="stat-value orange">3</div>
+    </div>
+  </div>
+
+  <div style="margin:0 12px;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)">
+    <div class="quick-grid" style="margin:0">
+      <div class="quick-item" onclick="showPage('admin-accounts')">
+        <div class="quick-icon" style="background:#F9F0FF;color:#722ED1">👥</div>
+        <div class="quick-label">账号管理</div>
+      </div>
+      <div class="quick-item" onclick="showPage('admin-review')">
+        <div class="quick-icon" style="background:var(--red-light);color:var(--red)">✅</div>
+        <div class="quick-label">审核管理</div>
+      </div>
+      <div class="quick-item" onclick="showPage('admin-commission')">
+        <div class="quick-icon" style="background:var(--green-light);color:var(--green)">💰</div>
+        <div class="quick-label">抽点配置</div>
+      </div>
+      <div class="quick-item" onclick="showPage('admin-range')">
+        <div class="quick-icon" style="background:var(--blue-light);color:var(--blue)">📍</div>
+        <div class="quick-label">接单范围</div>
+      </div>
+    </div>
+    <div class="quick-grid" style="margin:0;border-top:1px solid var(--border)">
+      <div class="quick-item" onclick="showPage('admin-orders')">
+        <div class="quick-icon" style="background:var(--orange-light);color:var(--orange)">🗃️</div>
+        <div class="quick-label">全平台单</div>
+      </div>
+      <div class="quick-item">
+        <div class="quick-icon" style="background:var(--gray7);color:var(--gray3)">📊</div>
+        <div class="quick-label">数据统计</div>
+      </div>
+      <div class="quick-item" onclick="showPage('admin-withdraw')">
+        <div class="quick-icon" style="background:#F9F0FF;color:#722ED1">🏦</div>
+        <div class="quick-label">提现审核</div>
+      </div>
+      <div class="quick-item">
+        <div class="quick-icon" style="background:var(--gray7);color:var(--gray3)">⚙️</div>
+        <div class="quick-label">平台设置</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:20px"></div>
+</div>
+<div class="tab-bar">
+  <div class="tab-item active"><div class="tab-icon">🏠</div>工作台</div>
+  <div class="tab-item" onclick="showPage('admin-review')"><div class="tab-icon">✅</div>审核</div>
+  <div class="tab-item" onclick="showPage('admin-orders')"><div class="tab-icon">🗃️</div>订单</div>
+  <div class="tab-item"><div class="tab-icon">👤</div>我的</div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   管理员：审核管理
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-admin-review">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('admin-home')">‹</div>
+  <div class="nav-title">审核管理</div>
+</div>
+<div class="category-tabs">
+  <div class="cat-tab active">商家入驻 <span class="tag tag-red" style="font-size:10px;padding:0 5px;margin-left:2px">2</span></div>
+  <div class="cat-tab">师傅注册</div>
+  <div class="cat-tab">商品审核 <span class="tag tag-red" style="font-size:10px;padding:0 5px;margin-left:2px">3</span></div>
+  <div class="cat-tab">已处理</div>
+</div>
+<div class="scroll-content">
+  <div class="page-tip">
+    👨‍🔧 师傅挂靠审核由服务商自主操作，管理员可查看但不可替代操作。商家入驻审核由<strong>管理员</strong>负责。
+  </div>
+  <!-- Provider Application -->
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between">
+        <div>
+          <div style="font-size:13px;font-weight:700">全城麻将服务商</div>
+          <div style="font-size:11px;color:var(--gray4);margin-top:2px">申请类型：服务商入驻</div>
+          <div style="font-size:11px;color:var(--gray4)">申请时间：2024-12-10 09:30</div>
+          <div style="font-size:11px;color:var(--gray4)">经营范围：麻将机销售/维修</div>
+          <div style="font-size:11px;color:var(--gray4)">服务区域：上海市全区</div>
+        </div>
+        <span class="tag tag-orange">待审核</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;padding:10px 14px;background:var(--gray9)">
+      <button class="btn btn-sm btn-ghost" style="flex:1">查看资质</button>
+      <button class="btn btn-sm btn-success" style="flex:1">✅ 通过</button>
+      <button class="btn btn-sm btn-danger" style="flex:1">❌ 拒绝</button>
+    </div>
+  </div>
+
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between">
+        <div>
+          <div style="font-size:13px;font-weight:700">好味道食品供应商</div>
+          <div style="font-size:11px;color:var(--gray4);margin-top:2px">申请类型：供应商入驻</div>
+          <div style="font-size:11px;color:var(--gray4)">申请时间：2024-12-11 14:20</div>
+          <div style="font-size:11px;color:var(--gray4)">经营品类：零食/饮料</div>
+        </div>
+        <span class="tag tag-orange">待审核</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;padding:10px 14px;background:var(--gray9)">
+      <button class="btn btn-sm btn-ghost" style="flex:1">查看资质</button>
+      <button class="btn btn-sm btn-success" style="flex:1">✅ 通过</button>
+      <button class="btn btn-sm btn-danger" style="flex:1">❌ 拒绝</button>
+    </div>
+  </div>
+  <div style="height:20px"></div>
+</div>
+<div class="tab-bar">
+  <div class="tab-item" onclick="showPage('admin-home')"><div class="tab-icon">🏠</div>工作台</div>
+  <div class="tab-item active"><div class="tab-icon">✅</div>审核</div>
+  <div class="tab-item" onclick="showPage('admin-orders')"><div class="tab-icon">🗃️</div>订单</div>
+  <div class="tab-item"><div class="tab-icon">👤</div>我的</div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   管理员：接单范围配置
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-admin-range">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('admin-home')">‹</div>
+  <div class="nav-title">接单范围配置</div>
+</div>
+<div class="scroll-content">
+  <!-- Core Logic Card -->
+  <div style="background:linear-gradient(135deg,#E6F0FF,#BAE0FF);margin:8px 12px;border-radius:var(--radius);padding:14px;border:1px solid #91CAFF">
+    <div style="font-size:13px;font-weight:800;color:var(--blue-dark);margin-bottom:8px">📍 接单范围判断逻辑</div>
+    <div style="font-size:12px;color:var(--blue-dark);line-height:1.8">
+      ① 以<strong>用户下单地址</strong>为中心（非服务商位置）<br>
+      ② 管理员配置的接单半径作用于<strong>用户地址</strong><br>
+      ③ 判断服务商/师傅是否在<strong>用户地址5km范围内</strong><br>
+      ④ 在范围内：<span style="color:var(--green)">✅ 可见订单 · 可抢单</span><br>
+      ⑤ 不在范围内：<span style="color:var(--gray4)">❌ 不可见 · 不可抢</span>
+    </div>
+  </div>
+
+  <!-- Map Illustration -->
+  <div style="background:white;margin:0 12px;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)">
+    <div style="font-size:12px;font-weight:700;color:var(--gray2);margin-bottom:10px">📌 范围示意图</div>
+    <div class="range-map">
+      <div style="position:relative">
+        <div class="range-circle" style="width:100px;height:100px">
+          <div class="range-center"></div>
+        </div>
+        <div class="range-dot in" style="position:absolute;top:-12px;right:-28px"></div>
+        <div class="range-dot in" style="position:absolute;bottom:-10px;left:-25px"></div>
+        <div class="range-dot out" style="position:absolute;top:15px;right:-65px"></div>
+        <div class="range-dot out" style="position:absolute;bottom:15px;right:-60px"></div>
+      </div>
+      <div class="range-label">
+        🔴 用户地址中心 &nbsp; 🟢 服务商在范围内 &nbsp; ⚫ 超出范围
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Config -->
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="padding:12px 14px;border-bottom:1px solid var(--border);background:var(--gray9)">
+      <div style="font-size:13px;font-weight:700;color:var(--gray1)">⚙️ 全局默认半径</div>
+      <div style="font-size:11px;color:var(--gray4);margin-top:2px">以用户地址为中心的接单范围半径设置（适用未单独配置的服务商）</div>
+    </div>
+    <div style="padding:12px 14px;display:flex;align-items:center;gap:10px">
+      <input class="form-input" value="5" style="width:80px;text-align:center;font-size:18px;font-weight:700" type="number" min="1" max="50">
+      <span style="font-size:13px;color:var(--gray3)">km（范围：1-50km）</span>
+      <button class="btn btn-sm btn-primary" style="margin-left:auto">保存</button>
+    </div>
+  </div>
+
+  <!-- Individual Config Table -->
+  <div style="background:white;margin:0 12px 8px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="padding:10px 14px;background:var(--gray9);border-bottom:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:700">服务商/师傅单独配置</div>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="config-table">
+        <thead>
+          <tr>
+            <th>名称</th>
+            <th>半径</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div style="font-size:12px;font-weight:600">麻将王服务商</div>
+              <div class="tag tag-green" style="font-size:10px;margin-top:2px">服务商</div>
+            </td>
+            <td style="color:var(--blue);font-weight:700">8km</td>
+            <td><span class="tag tag-green">接单中</span></td>
+            <td>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <button class="btn btn-sm btn-outline" style="padding:2px 8px;font-size:11px">编辑</button>
+                <button class="btn btn-sm btn-ghost" style="padding:2px 8px;font-size:11px">禁用</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="font-size:12px;font-weight:600">张师傅</div>
+              <div class="tag tag-orange" style="font-size:10px;margin-top:2px">维修师傅</div>
+            </td>
+            <td style="color:var(--blue);font-weight:700">5km</td>
+            <td><span class="tag tag-green">接单中</span></td>
+            <td>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <button class="btn btn-sm btn-outline" style="padding:2px 8px;font-size:11px">编辑</button>
+                <button class="btn btn-sm btn-ghost" style="padding:2px 8px;font-size:11px">禁用</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="font-size:12px;font-weight:600">全城麻将</div>
+              <div class="tag tag-green" style="font-size:10px;margin-top:2px">服务商</div>
+            </td>
+            <td style="color:var(--gray4)">5km（默认）</td>
+            <td><span class="tag tag-red">已暂停</span></td>
+            <td>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <button class="btn btn-sm btn-outline" style="padding:2px 8px;font-size:11px">编辑</button>
+                <button class="btn btn-sm btn-success" style="padding:2px 8px;font-size:11px">启用</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="hint-bubble warn">
+    ⚠️ 配置变更立即对新维修单生效；已推送的维修单不受影响。禁用状态的服务商不再收到任何维修单推送。
+  </div>
+  <div style="height:20px"></div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   管理员：抽点配置
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-admin-commission">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('admin-home')">‹</div>
+  <div class="nav-title">抽点比例配置</div>
+  <button class="btn btn-primary btn-sm">+ 新增</button>
+</div>
+<div class="scroll-content">
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="overflow-x:auto">
+      <table class="config-table">
+        <thead>
+          <tr>
+            <th>商家名称</th>
+            <th>抽点比例</th>
+            <th>适用类型</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div style="font-size:12px;font-weight:600">麻将王服务商</div>
+              <div style="font-size:10px;color:var(--gray4)">服务商</div>
+            </td>
+            <td style="color:var(--blue);font-weight:700">8%</td>
+            <td style="font-size:11px">全部订单</td>
+            <td><span class="tag tag-green">启用</span></td>
+            <td>
+              <button class="btn btn-sm btn-outline" style="padding:2px 8px;font-size:11px">编辑</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="font-size:12px;font-weight:600">好味道供应商</div>
+              <div style="font-size:10px;color:var(--gray4)">供应商</div>
+            </td>
+            <td style="color:var(--blue);font-weight:700">5%</td>
+            <td style="font-size:11px">商品订单</td>
+            <td><span class="tag tag-green">启用</span></td>
+            <td>
+              <button class="btn btn-sm btn-outline" style="padding:2px 8px;font-size:11px">编辑</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="font-size:12px;font-weight:600">全城麻将</div>
+              <div style="font-size:10px;color:var(--gray4)">服务商</div>
+            </td>
+            <td style="color:var(--gray4)">10%</td>
+            <td style="font-size:11px">维修订单</td>
+            <td><span class="tag tag-gray">禁用</span></td>
+            <td>
+              <button class="btn btn-sm btn-ghost" style="padding:2px 8px;font-size:11px">启用</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="hint-bubble">
+    ℹ️ 修改仅影响新订单，历史订单按原比例结算。同一商家同一订单类型只允许一条有效配置。
+  </div>
+  <div style="height:20px"></div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   管理员：全平台订单
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-admin-orders">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('admin-home')">‹</div>
+  <div class="nav-title">全平台订单</div>
+  <div class="nav-action" style="color:var(--blue)">导出</div>
+</div>
+<div class="category-tabs">
+  <div class="cat-tab active">商品订单</div>
+  <div class="cat-tab">维修订单</div>
+</div>
+<div style="display:flex;gap:6px;padding:8px 12px 4px;flex-wrap:wrap;background:white">
+  <select class="form-input" style="flex:1;min-width:100px;padding:6px 8px;font-size:12px">
+    <option>所有商家</option>
+    <option>麻将王服务商</option>
+    <option>好味道供应商</option>
+  </select>
+  <select class="form-input" style="flex:1;min-width:80px;padding:6px 8px;font-size:12px">
+    <option>全部状态</option>
+    <option>待发货</option>
+    <option>已完成</option>
+  </select>
+</div>
+<div class="page-tip">
+  👁️ 管理员仅有查看权限，不可修改订单状态或替代商家操作
+</div>
+<div class="scroll-content">
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="padding:10px 14px;border-bottom:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div style="font-size:12px;font-weight:700">DD2024120001</div>
+          <div style="font-size:11px;color:var(--gray4);margin-top:2px">商家：麻将王服务商</div>
+          <div style="font-size:11px;color:var(--gray4)">买家：张** 138****0001</div>
+          <div style="font-size:11px;color:var(--gray4)">四口全自动麻将机 × 1</div>
+        </div>
+        <div style="text-align:right">
+          <span class="tag tag-blue">待发货</span>
+          <div style="font-size:13px;color:var(--red);font-weight:700;margin-top:6px">¥2,980</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:8px 14px;background:var(--gray9)">
+      <button class="btn btn-sm btn-ghost">查看详情</button>
+    </div>
+  </div>
+
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="padding:10px 14px;border-bottom:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div style="font-size:12px;font-weight:700">DD2024120002</div>
+          <div style="font-size:11px;color:var(--gray4);margin-top:2px">商家：好味道供应商</div>
+          <div style="font-size:11px;color:var(--gray4)">买家：李** 139****5566</div>
+          <div style="font-size:11px;color:var(--gray4)">薯片混合装 × 2</div>
+        </div>
+        <div style="text-align:right">
+          <span class="tag tag-green">已完成</span>
+          <div style="font-size:13px;color:var(--red);font-weight:700;margin-top:6px">¥77.8</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:8px 14px;background:var(--gray9)">
+      <button class="btn btn-sm btn-ghost">查看详情</button>
+    </div>
+  </div>
+  <div style="height:70px"></div>
+</div>
+<div class="tab-bar">
+  <div class="tab-item" onclick="showPage('admin-home')"><div class="tab-icon">🏠</div>工作台</div>
+  <div class="tab-item" onclick="showPage('admin-review')"><div class="tab-icon">✅</div>审核</div>
+  <div class="tab-item active"><div class="tab-icon">🗃️</div>订单</div>
+  <div class="tab-item"><div class="tab-icon">👤</div>我的</div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   管理员：提现审核
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-admin-withdraw">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('admin-home')">‹</div>
+  <div class="nav-title">提现审核</div>
+</div>
+<div style="display:flex;gap:10px;padding:8px 12px;background:white">
+  <div class="stat-card" style="flex:1;margin:0">
+    <div class="stat-label">待审核数量</div>
+    <div class="stat-value red" style="font-size:18px">3</div>
+  </div>
+  <div class="stat-card" style="flex:1;margin:0">
+    <div class="stat-label">待审核总额</div>
+    <div class="stat-value orange" style="font-size:16px">¥12,600</div>
+  </div>
+</div>
+<div class="category-tabs">
+  <div class="cat-tab active">待审核 <span class="tag tag-red" style="font-size:10px;padding:0 5px;margin-left:2px">3</span></div>
+  <div class="cat-tab">已通过</div>
+  <div class="cat-tab">已拒绝</div>
+</div>
+<div class="scroll-content">
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div style="font-size:13px;font-weight:700">麻将王服务商</div>
+          <div style="font-size:11px;color:var(--gray4);margin-top:2px">提现方式：银行卡 尾号 6411</div>
+          <div style="font-size:11px;color:var(--gray4)">申请时间：2024-12-12 10:30</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:18px;color:var(--red);font-weight:800">¥8,000</div>
+          <span class="tag tag-orange">待审核</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;padding:10px 14px;background:var(--gray9)">
+      <button class="btn btn-sm btn-ghost" style="flex:1">查看详情</button>
+      <button class="btn btn-sm btn-success" style="flex:1">✅ 通过</button>
+      <button class="btn btn-sm btn-danger" style="flex:1">❌ 拒绝</button>
+    </div>
+  </div>
+
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div style="font-size:13px;font-weight:700">张师傅</div>
+          <div style="font-size:11px;color:var(--gray4);margin-top:2px">提现方式：微信</div>
+          <div style="font-size:11px;color:var(--gray4)">申请时间：2024-12-12 14:05</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:18px;color:var(--red);font-weight:800">¥2,400</div>
+          <span class="tag tag-orange">待审核</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;padding:10px 14px;background:var(--gray9)">
+      <button class="btn btn-sm btn-ghost" style="flex:1">查看详情</button>
+      <button class="btn btn-sm btn-success" style="flex:1">✅ 通过</button>
+      <button class="btn btn-sm btn-danger" style="flex:1">❌ 拒绝</button>
+    </div>
+  </div>
+  <div style="height:20px"></div>
+</div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+   管理员：账号管理
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-admin-accounts">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('admin-home')">‹</div>
+  <div class="nav-title">账号管理</div>
+  <button class="btn btn-primary btn-sm">+ 新增</button>
+</div>
+<div class="search-bar" style="margin-top:8px">
+  <span class="search-icon">🔍</span>
+  <input class="search-input" placeholder="搜索账号名称/手机号...">
+</div>
+<div class="category-tabs">
+  <div class="cat-tab active">管理员账号</div>
+  <div class="cat-tab">商家账号</div>
+  <div class="cat-tab">师傅账号</div>
+</div>
+<div class="scroll-content">
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div class="staff-row">
+      <div class="avatar" style="background:linear-gradient(135deg,#722ED1,#531DAB)">管</div>
+      <div class="staff-info">
+        <div class="staff-name">主管理员</div>
+        <div class="staff-meta">📱 130****0000 &nbsp;|&nbsp; 最后登录：今日09:41</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+        <span class="tag tag-green">启用</span>
+        <button class="btn btn-sm btn-ghost" style="font-size:10px;padding:2px 6px">详情</button>
+      </div>
+    </div>
+    <div class="staff-row">
+      <div class="avatar" style="background:linear-gradient(135deg,#722ED1,#531DAB)">子</div>
+      <div class="staff-info">
+        <div class="staff-name">子管理员A</div>
+        <div class="staff-meta">📱 131****1111 &nbsp;|&nbsp; 最后登录：昨日15:30</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+        <span class="tag tag-green">启用</span>
+        <button class="btn btn-sm btn-danger" style="font-size:10px;padding:2px 6px">禁用</button>
+      </div>
+    </div>
+  </div>
+  <div class="hint-bubble warn">
+    ⚠️ 管理员自身账号不可被其他管理员禁用（仅主账号可禁用子账号）。所有操作记录保留审计日志。
+  </div>
+  <div style="height:20px"></div>
+</div>
+            </div>
+
+        </div><!-- /phone-screen -->
+      </div><!-- /phone-frame -->
+    </div><!-- /phone-frame-wrap -->
+  </div><!-- /app-content -->
+</div><!-- /app-shell -->
+
+
+<!-- ═══════════ MOBILE TOAST ═══════════ -->
+<div id="mobile-toast" class="toast-mobile"></div>
+
+<!-- ═══════════ MODAL: 维修单详情 ═══════════ -->
+<div id="modal-repair-detail" class="modal-mobile" onclick="closeMobileModal('modal-repair-detail')">
+  <div class="modal-sheet-inner" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div style="font-size:16px;font-weight:700;text-align:center;padding:0 0 14px">维修单详情</div>
+    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">单号</span><span style="font-size:13px;font-weight:500">WX2024120041</span></div>
+    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">故障类型</span><span style="font-size:13px;font-weight:500">卡牌故障</span></div>
+    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">用户地址</span><span style="font-size:12px;font-weight:500;text-align:right;max-width:60%">上海浦东张江路88号</span></div>
+    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">距用户地址</span><span style="font-size:13px;font-weight:700;color:#52C41A">2.3km ✅ 在范围内</span></div>
+    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">预约时间</span><span style="font-size:13px;font-weight:500">今日 14:00-16:00</span></div>
+    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">联系人</span><span style="font-size:13px;font-weight:500">李** 138****1234</span></div>
+    <div style="padding-top:14px">
+      <button onclick="closeMobileModal('modal-repair-detail');showMobileToast('⚡ 抢单成功！请尽快安排上门服务')"
+        style="width:100%;padding:13px;background:#FF4D4F;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">
+        ⚡ 立即抢单
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MODAL: 拒绝原因 ═══════════ -->
+<div id="modal-reject-reason" class="modal-mobile" onclick="closeMobileModal('modal-reject-reason')">
+  <div class="modal-sheet-inner" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div style="font-size:16px;font-weight:700;text-align:center;padding:0 0 14px">填写拒绝原因</div>
+    <textarea style="width:100%;border:1.5px solid #E8E8E8;border-radius:8px;padding:11px 12px;font-size:15px;min-height:80px;resize:none;font-family:inherit;outline:none" placeholder="请填写拒绝原因（最多200字，必填）..."></textarea>
+    <div style="padding-top:12px">
+      <button onclick="closeMobileModal('modal-reject-reason');showMobileToast('已拒绝，对方已收到通知')"
+        style="width:100%;padding:13px;background:#FF4D4F;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">
+        确认拒绝
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MODAL: 维修费确认支付 ═══════════ -->
+<div id="modal-pay-repair" class="modal-mobile" onclick="closeMobileModal('modal-pay-repair')">
+  <div class="modal-sheet-inner" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div style="font-size:16px;font-weight:700;text-align:center;padding:0 0 14px">确认支付维修费用</div>
+    <div style="background:#FAFAFA;border-radius:8px;padding:14px 16px;margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:#8C8C8C;font-size:13px">维修费</span><span style="font-size:13px">¥200.00</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:#8C8C8C;font-size:13px">配件费</span><span style="font-size:13px">¥80.00</span></div>
+      <div style="display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid #E8E8E8"><span style="font-size:14px;font-weight:700">合计</span><span style="font-size:18px;font-weight:700;color:#FF4D4F">¥280.00</span></div>
+    </div>
+    <button onclick="closeMobileModal('modal-pay-repair');showMobileToast('💰 支付成功！维修单已完成，感谢您的使用')"
+      style="width:100%;padding:13px;background:#1677FF;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">
+      确认支付 ¥280.00
+    </button>
+    <button onclick="closeMobileModal('modal-pay-repair')"
+      style="width:100%;padding:11px;background:#F5F5F5;color:#434343;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:8px">
+      暂不支付
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════ MODAL: 入驻申请成功 ═══════════ -->
+<div id="modal-apply-success" class="modal-mobile" onclick="closeMobileModal('modal-apply-success')">
+  <div class="modal-sheet-inner" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div style="text-align:center;padding:16px 0 20px">
+      <div style="font-size:52px;margin-bottom:12px">📋</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px">申请已提交！</div>
+      <div style="font-size:13px;color:#8C8C8C;line-height:1.6;margin-bottom:20px">管理员将在1-3个工作日内审核<br>审核结果将通过微信通知您</div>
+      <button onclick="closeMobileModal('modal-apply-success')"
+        style="width:100%;padding:13px;background:#1677FF;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">
+        知道了
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+// Annotation data per page
+const annotations = {
+  'login': [
+    { tag: 'action', text: '点击「微信一键登录」→ 微信OAuth授权 → 获取openid/昵称/头像 → 跳转手机号绑定（首次）或直接进首页' },
+    { tag: 'error', text: '未授权或拒绝授权 → 停留登录页，不可进入任何功能页面' },
+    { tag: 'logic', text: '手机号为必填项，绑定后不可更改（需客服处理）' },
+  ],
+  'home': [
+    { tag: 'action', text: '点击「我要维修」→ 跳转维修下单页（1.6）' },
+    { tag: 'action', text: '点击任意商品/卡片 → 跳转对应商城页' },
+    { tag: 'note', text: 'Banner由管理员后台配置，不配置则不显示轮播区，最多5张' },
+    { tag: 'logic', text: '底部Tab导航：首页/商城/维修/订单/我的，全局通用' },
+  ],
+  'mall': [
+    { tag: 'logic', text: '统一商城模式：所有商品不展示商家名称/店铺入口，用户无法感知商家归属' },
+    { tag: 'action', text: '分类Tab：运营动态配置，来源于接口，新增无需发版' },
+    { tag: 'note', text: '默认排序：销量优先；无销量则按上架时间倒序' },
+    { tag: 'error', text: '库存为0的商品显示「暂无库存」标签，不可加购' },
+    { tag: 'error', text: '已下架商品不可见（接口层过滤）' },
+  ],
+  'product': [
+    { tag: 'action', text: '点击「加入购物车」→ 需先选规格 → 加入成功购物车图标数量+1，上限99' },
+    { tag: 'action', text: '点击「立即购买」→ 跳过购物车，直接进订单确认页' },
+    { tag: 'error', text: '库存为0：两个按钮均置灰不可点击' },
+    { tag: 'error', text: '商品已下架：底部操作栏不可点击，显示灰色「商品已下架」' },
+    { tag: 'logic', text: '评价：仅已购买并确认收货的用户可提交；不展示商家名称' },
+  ],
+  'cart': [
+    { tag: 'action', text: '数量-号：当数量为1时点击 → 触发删除确认弹窗' },
+    { tag: 'action', text: '点击「去结算」→ 跳转订单确认页（须选择地址）' },
+    { tag: 'error', text: '已下架商品保留展示但不可勾选结算' },
+    { tag: 'note', text: '购物车最多99件不同规格商品；库存不足时数量上限以当前库存为准' },
+  ],
+  'confirm-order': [
+    { tag: 'action', text: '点击地址区域 → 跳转地址管理页选择/新增，选定后返回自动填充' },
+    { tag: 'error', text: '收货地址必选，无地址时不可提交订单' },
+    { tag: 'action', text: '点击「提交订单」→ 调起微信支付 → 支付成功跳转订单详情+推送通知' },
+    { tag: 'error', text: '支付失败或取消：订单保持「待支付」状态，15分钟内可重新支付，超时自动取消' },
+    { tag: 'logic', text: '商品列表不按商家分组，不展示商家名称（统一商城）' },
+  ],
+  'repair-order': [
+    { tag: 'logic', text: '📍 以用户填写的维修地址为中心，向5km内已配置的服务商和维修师傅推送抢单通知' },
+    { tag: 'action', text: '校验通过 → 调起微信支付¥30 → 生成维修单（状态：待抢单）→ 立即推送' },
+    { tag: 'error', text: '所有*字段必填；联系电话须11位有效手机号；预约时间不可选当日24:00前时段' },
+    { tag: 'note', text: '上门费¥30固定；支付后若无人抢单，退款规则由平台配置' },
+  ],
+  'order-list': [
+    { tag: 'action', text: '待付款订单：「去支付」按钮，15分钟有效期' },
+    { tag: 'action', text: '已发货订单：「确认收货」按钮（操作不可撤销）' },
+    { tag: 'action', text: '已完成订单：「去评价」按钮（未评价时），评价一次后不可修改' },
+    { tag: 'error', text: '待付款订单超过15分钟自动取消' },
+  ],
+  'repair-list': [
+    { tag: 'logic', text: '维修订单状态流：待抢单 → 已接单 → 服务中 → 待确认 → 已完成' },
+    { tag: 'action', text: '「待确认」状态：点击「确认完成并支付」→ 展示费用明细弹窗 → 微信支付' },
+    { tag: 'note', text: '若用户超过X天未确认（平台配置），系统自动确认并结算' },
+  ],
+  'profile': [
+    { tag: 'logic', text: '手机号脱敏展示：138****0001格式' },
+    { tag: 'action', text: '「退出登录」→ 确认弹窗 → 清除登录态 → 跳转登录页' },
+    { tag: 'note', text: '个人信息只读，修改头像/昵称须通过微信授权' },
+  ],
+  'sp-home': [
+    { tag: 'logic', text: '数据仅展示本服务商范围内数据，不跨商家' },
+    { tag: 'action', text: '点击「抢单大厅」→ 查看用户地址5km范围内的待抢维修单' },
+    { tag: 'note', text: '首页数据摘要：今日订单数、本月销售额、待抢维修单数、待处理订单数' },
+  ],
+  'sp-grab': [
+    { tag: 'logic', text: '🔑 接单范围判断：以用户下单地址为中心，服务商在用户地址5km内方可见/抢' },
+    { tag: 'action', text: '「立即抢单」→ 系统检验是否已被抢先（行锁保原子性）→ 成功则订单进入「已接单」状态' },
+    { tag: 'error', text: '已被抢：提示「抢单失败，订单已被其他商家抢先」' },
+    { tag: 'error', text: '超出接单范围的维修单：对该服务商/师傅完全不可见，不展示' },
+  ],
+  'sp-master': [
+    { tag: 'logic', text: '审核权在服务商，管理员可查看但不可替代服务商审核' },
+    { tag: 'action', text: '「拒绝」→ 必填拒绝原因弹窗 → 师傅收到拒绝通知（含原因）' },
+    { tag: 'note', text: '一个师傅可挂靠多个服务商，各自独立审核；禁用仅影响本服务商' },
+    { tag: 'error', text: '禁用后该师傅无法接收本服务商的维修任务' },
+  ],
+  'sp-goods': [
+    { tag: 'logic', text: '上架商品须有至少1张主图，并选择平台统一配置的品类' },
+    { tag: 'error', text: '审核中的商品不可编辑，需等待管理员审核通过' },
+    { tag: 'note', text: '商品审核通过后自动同步至C端统一商城展示（不显示商家信息）' },
+  ],
+  'master-home': [
+    { tag: 'logic', text: '师傅注册→管理员审核通过→方可申请挂靠服务商→服务商审核通过→可接单' },
+    { tag: 'note', text: '师傅可挂靠多个服务商，各自独立；抢单大厅逻辑与服务商相同' },
+    { tag: 'action', text: '提现余额由服务商打款；申请后管理员审核通过方可到账' },
+  ],
+  'master-apply': [
+    { tag: 'logic', text: '挂靠5步流程：师傅注册→管理员审核→提交挂靠→服务商审核→接单' },
+    { tag: 'error', text: '已申请且审核中的服务商不可重复申请；被拒绝后可重新申请' },
+    { tag: 'note', text: '真实姓名、身份证号、联系手机号为必填；证书图片选填' },
+  ],
+  'master-orders': [
+    { tag: 'action', text: '「待接单」：点击「立即接单」→ 状态变「进行中」→ 用户收到接单通知' },
+    { tag: 'action', text: '「进行中」：点击「导航前往」→ 调起手机地图App导航' },
+    { tag: 'action', text: '点击「标记完成」→ 进入服务完成填写页（填写维修内容、配件费用）' },
+    { tag: 'error', text: '师傅只能查看自己的订单，不可查看其他师傅订单' },
+  ],
+  'sup-home': [
+    { tag: 'logic', text: '供应商无权访问抢单大厅，仅可管理零食/饮料商品及查看自身订单' },
+    { tag: 'note', text: '数据统计仅展示本供应商数据，不展示维修相关指标' },
+  ],
+  'sup-goods': [
+    { tag: 'error', text: '仅限零食/饮料品类，不可上架麻将机（接口层拦截）' },
+    { tag: 'logic', text: '供应商上架的商品在C端统一商城展示，不归属任何独立店铺' },
+    { tag: 'note', text: '商品需管理员审核通过方可在C端展示' },
+  ],
+  'admin-home': [
+    { tag: 'logic', text: '管理员拥有最高权限，可查看全平台数据，但不替代商家操作具体业务订单' },
+    { tag: 'note', text: '支持多管理员账号，数据权限相同（全平台）' },
+    { tag: 'action', text: '快捷入口覆盖：账号管理、审核、抽点、接单范围、全平台订单、数据、提现审核' },
+  ],
+  'admin-review': [
+    { tag: 'logic', text: '师傅挂靠审核：由服务商自主操作，管理员可查看但不可替代' },
+    { tag: 'logic', text: '商家入驻审核：服务商/供应商入驻申请由管理员负责' },
+    { tag: 'action', text: '「拒绝」→ 必填拒绝原因（最多200字）→ 申请人收到含原因的通知' },
+    { tag: 'error', text: '审核操作不可撤销；拒绝后商家可修改后重新提交' },
+  ],
+  'admin-range': [
+    { tag: 'logic', text: '🔑 核心逻辑：以用户下单地址为中心，管理员配置半径作用于用户地址，判断服务商/师傅是否在范围内' },
+    { tag: 'action', text: '全局默认半径修改 → 立即对所有无单独配置的商家生效' },
+    { tag: 'action', text: '单独配置编辑 → 保存后立即对新维修单生效，已推送的不受影响' },
+    { tag: 'error', text: '接单状态禁用的商家：维修单推送时跳过该商家，不可见、不可抢' },
+    { tag: 'note', text: '半径范围：1-50km（正整数）' },
+  ],
+  'admin-commission': [
+    { tag: 'note', text: '修改仅影响新订单，历史订单按原比例结算' },
+    { tag: 'error', text: '同一商家同一订单类型只允许一条有效配置' },
+    { tag: 'logic', text: '抽点比例合法范围：0%-100%（含边界），最多2位小数' },
+  ],
+  'admin-orders': [
+    { tag: 'logic', text: '管理员仅有查看权限，不可修改订单状态或替代商家发货/抢单' },
+    { tag: 'note', text: '支持按商家、订单状态、时间范围筛选；支持导出为Excel' },
+    { tag: 'error', text: '导出数据含用户隐私信息（手机号），须合规处理' },
+  ],
+  'admin-withdraw': [
+    { tag: 'action', text: '「通过」→ 系统冻结金额标记已提现 → 管理员在外部打款 → 手动回填「到账确认」' },
+    { tag: 'action', text: '「拒绝」→ 填写原因 → 余额解冻 → 申请人收到通知' },
+    { tag: 'error', text: '审核不可撤销；实际打款须管理员在外部（微信商户/银行）完成' },
+  ],
+  'admin-accounts': [
+    { tag: 'error', text: '管理员自身账号不可被其他管理员禁用（仅主账号可禁用子账号）' },
+    { tag: 'note', text: '禁用商家账号不自动取消其未完成订单，须商家端处理' },
+    { tag: 'logic', text: '所有账号操作记录保留审计日志' },
+  ],
+};
+
+let currentPage = 'login';
+
+function showPage(id) {
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  // Show target
+  const target = document.getElementById('page-' + id);
+  if (target) {
+    target.classList.add('active');
+    document.getElementById('phone-screen').scrollTop = 0;
+  }
+
+  // Update sidebar
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  const navItem = document.getElementById('nav-' + id);
+  if (navItem) navItem.classList.add('active');
+
+  currentPage = id;
+
+  // Update annotations
+  updateAnnotations(id);
+}
+
+function updateAnnotations(id) {
+  const data = annotations[id] || [];
+  const container = document.getElementById('anno-content');
+  if (!data.length) {
+    container.innerHTML = '<div style="font-size:12px;color:var(--gray5);padding:8px 0">暂无标注数据</div>';
+    return;
+  }
+
+  const tagMap = {
+    action: ['tag-action', '操作'],
+    logic: ['tag-logic', '逻辑'],
+    error: ['tag-error', '边界'],
+    note: ['tag-note', '说明'],
+  };
+
+  container.innerHTML = data.map(item => {
+    const [cls, label] = tagMap[item.tag] || ['tag-note', '说明'];
+    return `<div class="anno-item">
+      <span class="anno-tag ${cls}">${label}</span>
+      <div class="anno-text">${item.text}</div>
+    </div>`;
+  }).join('');
+}
+
+// Init
+updateAnnotations('login');
+
+
+// ═══════════ MOBILE ROUTING OVERRIDE ═══════════
+const roleDefaults = {
+  user: 'login',
+  sp: 'sp-home',
+  master: 'master-home',
+  supplier: 'sup-home',
+  admin: 'admin-home'
+};
+
+const rolePageSets = {
+  user:     ['login','home','mall','product','cart','confirm-order','repair-order','order-list','repair-list','profile'],
+  sp:       ['sp-home','sp-grab','sp-master','sp-goods'],
+  master:   ['master-home','master-apply','master-orders'],
+  supplier: ['sup-home','sup-goods'],
+  admin:    ['admin-home','admin-review','admin-range','admin-commission','admin-orders','admin-withdraw','admin-accounts']
+};
+
+let currentRole = 'user';
+const pageHistory = [];
+
+// Override showPage to also scroll to top
+const _originalShowPage = window.showPage;
+window.showPage = function(id) {
+  pageHistory.push(id);
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + id);
+  if (target) {
+    target.classList.add('active');
+    // Scroll all scroll areas to top
+    target.querySelectorAll('.page-scroll, .scroll-area, .phone-scroll').forEach(el => el.scrollTop = 0);
+  }
+};
+
+function mobileGoPage(id) { window.showPage(id); }
+
+function switchRole(role) {
+  currentRole = role;
+  // Update chips
+  document.querySelectorAll('.mrb-chip').forEach(c => c.classList.remove('active'));
+  const chip = document.querySelector('.mrb-chip[data-role="' + role + '"]');
+  if (chip) chip.classList.add('active');
+  // Navigate to default page for this role
+  const def = roleDefaults[role] || 'login';
+  window.showPage(def);
+}
+
+// ═══════════ TOAST ═══════════
+let toastTimer = null;
+function showMobileToast(msg) {
+  let el = document.getElementById('mobile-toast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'mobile-toast';
+    el.className = 'toast-mobile';
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+}
+// Override any existing toast function
+window.showToast = showMobileToast;
+window.toast = showMobileToast;
+
+// ═══════════ MODALS ═══════════
+function showMobileModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('show');
+}
+function closeMobileModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('show');
+}
+window.showModal  = showMobileModal;
+window.closeModal = closeMobileModal;
+
+// ═══════════ CHIP / TAB INTERACTIVITY ═══════════
+document.addEventListener('click', function(e) {
+  // Cat tabs
+  const tab = e.target.closest('.cat-tab, .tab-option, [data-tab]');
+  if (tab) {
+    const parent = tab.parentElement;
+    if (parent) {
+      parent.querySelectorAll('.cat-tab, .tab-option, [data-tab]').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    }
+  }
+  // Spec chips
+  if (e.target.classList.contains('spec-chip') || e.target.classList.contains('option-chip')) {
+    const group = e.target.closest('.spec-group, .option-group');
+    if (group) {
+      group.querySelectorAll('.spec-chip, .option-chip').forEach(c => c.classList.remove('active', 'selected'));
+      e.target.classList.add('active', 'selected');
+    }
+  }
+  // Toggle
+  if (e.target.classList.contains('toggle-switch')) {
+    e.target.classList.toggle('on');
+  }
+});
+
+// ═══════════ PREVENT DOUBLE TAP ZOOM ═══════════
+let lastTap = 0;
+document.addEventListener('touchend', function(e) {
+  const now = Date.now();
+  if (now - lastTap < 300) { e.preventDefault(); }
+  lastTap = now;
+}, { passive: false });
+
+// ═══════════ INIT ═══════════
+window.addEventListener('DOMContentLoaded', function() {
+  // Ensure login page is shown first
+  window.showPage('login');
+  // Mark user role as default
+  const userChip = document.querySelector('.mrb-chip[data-role="user"]');
+  if (userChip) userChip.classList.add('active');
+});
+
+</script>
+</body>
+</html>
