@@ -3678,7 +3678,7 @@ button, [onclick], .tab-item, .quick-item, .cat-tab {
 <div class="nav-bar white">
   <div class="nav-back" onclick="showPage('sup-home')">‹</div>
   <div class="nav-title">零食商品管理</div>
-  <button class="btn btn-primary btn-sm">+ 上架</button>
+  <button class="btn btn-primary btn-sm" onclick="showPage('sup-goods-add')" style="touch-action:manipulation">+ 上架</button>
 </div>
 <div class="hint-bubble warn">
   ⚠️ 仅可上架零食/饮料类商品，上架后需管理员审核通过方可在C端展示
@@ -3724,6 +3724,74 @@ button, [onclick], .tab-item, .quick-item, .cat-tab {
   <div style="height:20px"></div>
 </div>
             </div>
+
+            <!-- ══════════════════════════════════════
+   B端：供应商上架商品
+            ══════════════════════════════════════ -->
+            <div class="page" id="page-sup-goods-add">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('sup-goods')" style="touch-action:manipulation">‹</div>
+  <div class="nav-title">上架商品</div>
+</div>
+<div class="scroll-content">
+  <div style="background:var(--blue-light);margin:8px 12px;border-radius:var(--radius);padding:10px 14px;font-size:12.5px;color:var(--blue);line-height:1.7">
+    ⚠️ 供应商仅可上架<strong>零食/饮料</strong>类商品，提交后需管理员审核通过方可在C端展示
+  </div>
+  <div style="background:white;margin:0 12px 8px;border-radius:var(--radius);box-shadow:var(--shadow);padding:0 16px">
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:8px">商品图片（最多6张）<span style="color:var(--red)">*</span></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <div onclick="showToast('选择商品图片')" style="width:72px;height:72px;border:1.5px dashed var(--border);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;touch-action:manipulation;color:var(--gray4)">
+          <div style="font-size:22px">📷</div><div style="font-size:10px">上传图片</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">商品名称 <span style="color:var(--red)">*</span></div>
+      <input style="width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;outline:none" placeholder="如：薯片混合装 20包">
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">商品分类 <span style="color:var(--red)">*</span></div>
+      <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;outline:none;background:white;-webkit-appearance:none">
+        <option>请选择分类</option>
+        <option>零食</option><option>饮料</option>
+      </select>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">销售价格（元）<span style="color:var(--red)">*</span></div>
+      <div style="display:flex;align-items:center;gap:4px;border:1px solid var(--border);border-radius:6px;padding:10px 12px">
+        <span style="color:var(--red);font-weight:700;font-size:16px">¥</span>
+        <input type="number" style="flex:1;border:none;font-size:16px;outline:none;color:var(--gray1)" placeholder="0.00">
+      </div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">库存数量 <span style="color:var(--red)">*</span></div>
+      <input type="number" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;outline:none" placeholder="请输入库存数量">
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">规格/型号</div>
+      <input style="width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;outline:none" placeholder="如：原味/辣味（选填）">
+    </div>
+    <div style="padding:14px 0">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">商品描述</div>
+      <textarea style="width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;outline:none;resize:none;min-height:80px;font-family:inherit" placeholder="商品详情（选填）"></textarea>
+    </div>
+  </div>
+  <div style="margin:0 12px;font-size:12px;color:var(--gray4);line-height:1.7">
+    · 提交后进入审核队列，管理员审核通过后自动上架至 C 端统一商城<br>
+    · C 端展示不会显示供应商信息
+  </div>
+  <div style="height:16px"></div>
+</div>
+<div style="padding:12px 16px;background:white;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0">
+  <button style="flex:1;padding:11px;background:var(--gray8);color:var(--gray3);border:1px solid var(--border);border-radius:var(--radius);font-size:14px;font-weight:500;cursor:pointer;touch-action:manipulation;font-family:inherit" onclick="showToast('草稿已保存')">保存草稿</button>
+  <button style="flex:1.5;padding:11px;background:var(--blue);color:white;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;touch-action:manipulation;font-family:inherit" onclick="showToast('✅ 已提交审核！等待管理员审核通过后上架');showPage('sup-goods')">提交审核上架</button>
+</div>
+</div>
 
             <!-- ══════════════════════════════════════
    管理员：工作台首页
@@ -4290,87 +4358,6 @@ button, [onclick], .tab-item, .quick-item, .cat-tab {
 </div>
             </div>
 
-        </div><!-- /phone-screen -->
-      </div><!-- /phone-frame -->
-    </div><!-- /phone-frame-wrap -->
-  </div><!-- /app-content -->
-</div><!-- /app-shell -->
-
-
-<!-- ═══════════ MOBILE TOAST ═══════════ -->
-<div id="mobile-toast" class="toast-mobile"></div>
-
-<!-- ═══════════ MODAL: 维修单详情 ═══════════ -->
-<div id="modal-repair-detail" class="modal-mobile" onclick="closeMobileModal('modal-repair-detail')">
-  <div class="modal-sheet-inner" onclick="event.stopPropagation()">
-    <div class="modal-handle"></div>
-    <div style="font-size:16px;font-weight:700;text-align:center;padding:0 0 14px">维修单详情</div>
-    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">单号</span><span style="font-size:13px;font-weight:500">WX2024120041</span></div>
-    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">故障类型</span><span style="font-size:13px;font-weight:500">卡牌故障</span></div>
-    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">用户地址</span><span style="font-size:12px;font-weight:500;text-align:right;max-width:60%">上海浦东张江路88号</span></div>
-    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">距用户地址</span><span style="font-size:13px;font-weight:700;color:#52C41A">2.3km ✅ 在范围内</span></div>
-    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">预约时间</span><span style="font-size:13px;font-weight:500">今日 14:00-16:00</span></div>
-    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">联系人</span><span style="font-size:13px;font-weight:500">李** 138****1234</span></div>
-    <div style="padding-top:14px">
-      <button onclick="closeMobileModal('modal-repair-detail');showMobileToast('⚡ 抢单成功！请尽快安排上门服务')"
-        style="width:100%;padding:13px;background:#FF4D4F;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">
-        ⚡ 立即抢单
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════ MODAL: 拒绝原因 ═══════════ -->
-<div id="modal-reject-reason" class="modal-mobile" onclick="closeMobileModal('modal-reject-reason')">
-  <div class="modal-sheet-inner" onclick="event.stopPropagation()">
-    <div class="modal-handle"></div>
-    <div style="font-size:16px;font-weight:700;text-align:center;padding:0 0 14px">填写拒绝原因</div>
-    <textarea style="width:100%;border:1.5px solid #E8E8E8;border-radius:8px;padding:11px 12px;font-size:15px;min-height:80px;resize:none;font-family:inherit;outline:none" placeholder="请填写拒绝原因（最多200字，必填）..."></textarea>
-    <div style="padding-top:12px">
-      <button onclick="closeMobileModal('modal-reject-reason');showMobileToast('已拒绝，对方已收到通知')"
-        style="width:100%;padding:13px;background:#FF4D4F;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">
-        确认拒绝
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════ MODAL: 维修费确认支付 ═══════════ -->
-<div id="modal-pay-repair" class="modal-mobile" onclick="closeMobileModal('modal-pay-repair')">
-  <div class="modal-sheet-inner" onclick="event.stopPropagation()">
-    <div class="modal-handle"></div>
-    <div style="font-size:16px;font-weight:700;text-align:center;padding:0 0 14px">确认支付维修费用</div>
-    <div style="background:#FAFAFA;border-radius:8px;padding:14px 16px;margin-bottom:14px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:#8C8C8C;font-size:13px">维修费</span><span style="font-size:13px">¥200.00</span></div>
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:#8C8C8C;font-size:13px">配件费</span><span style="font-size:13px">¥80.00</span></div>
-      <div style="display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid #E8E8E8"><span style="font-size:14px;font-weight:700">合计</span><span style="font-size:18px;font-weight:700;color:#FF4D4F">¥280.00</span></div>
-    </div>
-    <button onclick="closeMobileModal('modal-pay-repair');showMobileToast('💰 支付成功！维修单已完成，感谢您的使用')"
-      style="width:100%;padding:13px;background:#1677FF;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">
-      确认支付 ¥280.00
-    </button>
-    <button onclick="closeMobileModal('modal-pay-repair')"
-      style="width:100%;padding:11px;background:#F5F5F5;color:#434343;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:8px">
-      暂不支付
-    </button>
-  </div>
-</div>
-
-<!-- ═══════════ MODAL: 入驻申请成功 ═══════════ -->
-<div id="modal-apply-success" class="modal-mobile" onclick="closeMobileModal('modal-apply-success')">
-  <div class="modal-sheet-inner" onclick="event.stopPropagation()">
-    <div class="modal-handle"></div>
-    <div style="text-align:center;padding:16px 0 20px">
-      <div style="font-size:52px;margin-bottom:12px">📋</div>
-      <div style="font-size:18px;font-weight:700;margin-bottom:8px">申请已提交！</div>
-      <div style="font-size:13px;color:#8C8C8C;line-height:1.6;margin-bottom:20px">管理员将在1-3个工作日内审核<br>审核结果将通过微信通知您</div>
-      <button onclick="closeMobileModal('modal-apply-success')"
-        style="width:100%;padding:13px;background:#1677FF;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">
-        知道了
-      </button>
-    </div>
-  </div>
-</div>
 
 
 
@@ -4645,6 +4632,88 @@ button, [onclick], .tab-item, .quick-item, .cat-tab {
   <div class="tab-item active"><div class="tab-icon">👤</div>我的</div>
 </div>
 </div>
+        </div><!-- /phone-screen -->
+      </div><!-- /phone-frame -->
+    </div><!-- /phone-frame-wrap -->
+  </div><!-- /app-content -->
+</div><!-- /app-shell -->
+
+
+<!-- ═══════════ MOBILE TOAST ═══════════ -->
+<div id="mobile-toast" class="toast-mobile"></div>
+
+<!-- ═══════════ MODAL: 维修单详情 ═══════════ -->
+<div id="modal-repair-detail" class="modal-mobile" onclick="closeMobileModal('modal-repair-detail')">
+  <div class="modal-sheet-inner" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div style="font-size:16px;font-weight:700;text-align:center;padding:0 0 14px">维修单详情</div>
+    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">单号</span><span style="font-size:13px;font-weight:500">WX2024120041</span></div>
+    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">故障类型</span><span style="font-size:13px;font-weight:500">卡牌故障</span></div>
+    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">用户地址</span><span style="font-size:12px;font-weight:500;text-align:right;max-width:60%">上海浦东张江路88号</span></div>
+    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">距用户地址</span><span style="font-size:13px;font-weight:700;color:#52C41A">2.3km ✅ 在范围内</span></div>
+    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">预约时间</span><span style="font-size:13px;font-weight:500">今日 14:00-16:00</span></div>
+    <div class="list-item" style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F0F0F0"><span style="color:#8C8C8C;font-size:13px">联系人</span><span style="font-size:13px;font-weight:500">李** 138****1234</span></div>
+    <div style="padding-top:14px">
+      <button onclick="closeMobileModal('modal-repair-detail');showMobileToast('⚡ 抢单成功！请尽快安排上门服务')"
+        style="width:100%;padding:13px;background:#FF4D4F;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">
+        ⚡ 立即抢单
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MODAL: 拒绝原因 ═══════════ -->
+<div id="modal-reject-reason" class="modal-mobile" onclick="closeMobileModal('modal-reject-reason')">
+  <div class="modal-sheet-inner" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div style="font-size:16px;font-weight:700;text-align:center;padding:0 0 14px">填写拒绝原因</div>
+    <textarea style="width:100%;border:1.5px solid #E8E8E8;border-radius:8px;padding:11px 12px;font-size:15px;min-height:80px;resize:none;font-family:inherit;outline:none" placeholder="请填写拒绝原因（最多200字，必填）..."></textarea>
+    <div style="padding-top:12px">
+      <button onclick="closeMobileModal('modal-reject-reason');showMobileToast('已拒绝，对方已收到通知')"
+        style="width:100%;padding:13px;background:#FF4D4F;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">
+        确认拒绝
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MODAL: 维修费确认支付 ═══════════ -->
+<div id="modal-pay-repair" class="modal-mobile" onclick="closeMobileModal('modal-pay-repair')">
+  <div class="modal-sheet-inner" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div style="font-size:16px;font-weight:700;text-align:center;padding:0 0 14px">确认支付维修费用</div>
+    <div style="background:#FAFAFA;border-radius:8px;padding:14px 16px;margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:#8C8C8C;font-size:13px">维修费</span><span style="font-size:13px">¥200.00</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:#8C8C8C;font-size:13px">配件费</span><span style="font-size:13px">¥80.00</span></div>
+      <div style="display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid #E8E8E8"><span style="font-size:14px;font-weight:700">合计</span><span style="font-size:18px;font-weight:700;color:#FF4D4F">¥280.00</span></div>
+    </div>
+    <button onclick="closeMobileModal('modal-pay-repair');showMobileToast('💰 支付成功！维修单已完成，感谢您的使用')"
+      style="width:100%;padding:13px;background:#1677FF;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">
+      确认支付 ¥280.00
+    </button>
+    <button onclick="closeMobileModal('modal-pay-repair')"
+      style="width:100%;padding:11px;background:#F5F5F5;color:#434343;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:8px">
+      暂不支付
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════ MODAL: 入驻申请成功 ═══════════ -->
+<div id="modal-apply-success" class="modal-mobile" onclick="closeMobileModal('modal-apply-success')">
+  <div class="modal-sheet-inner" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div style="text-align:center;padding:16px 0 20px">
+      <div style="font-size:52px;margin-bottom:12px">📋</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px">申请已提交！</div>
+      <div style="font-size:13px;color:#8C8C8C;line-height:1.6;margin-bottom:20px">管理员将在1-3个工作日内审核<br>审核结果将通过微信通知您</div>
+      <button onclick="closeMobileModal('modal-apply-success')"
+        style="width:100%;padding:13px;background:#1677FF;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">
+        知道了
+      </button>
+    </div>
+  </div>
+</div>
+
 
 <script>
 const annotations = {
