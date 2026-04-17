@@ -386,7 +386,7 @@
   }
 
   .card-title { font-size: 14px; font-weight: 600; }
-  .card-body { padding: 12px 16px; }
+  .card-
 
   /* Product Grid */
   .product-grid {
@@ -604,7 +604,7 @@
   .order-no { font-size: 11px; color: var(--gray4); }
   .order-status { font-size: 12px; color: var(--blue); font-weight: 600; }
 
-  .order-body { padding: 12px 14px; }
+  .order-
   .order-product { display: flex; gap: 10px; margin-bottom: 8px; }
 
   .order-product-img {
@@ -646,7 +646,7 @@
 
   .repair-card.urgent { border-left-color: var(--red); }
 
-  .repair-body { padding: 12px 14px; }
+  .repair-
   .repair-type { font-size: 14px; font-weight: 700; color: var(--gray1); }
   .repair-meta { font-size: 11px; color: var(--gray4); margin-top: 4px; }
   .repair-distance {
@@ -1360,26 +1360,9 @@ body {
 .annotation-panel { display: none !important; }
 
 /* ═══════════ PHONE FRAME → FULL SCREEN ═══════════ */
-.phone-frame-wrap {
-  flex: 1 !important;
-  width: 100% !important;
-  padding: 0 !important;
-  display: flex !important;
-  align-items: stretch !important;
-  justify-content: stretch !important;
-  background: transparent !important;
-}
 
-.phone-frame {
-  width: 100% !important;
-  height: 100% !important;
-  max-width: 100% !important;
-  border-radius: 0 !important;
-  border: none !important;
-  box-shadow: none !important;
-  margin: 0 !important;
-  overflow: hidden !important;
-}
+
+
 
 /* ═══════════ PAGES ═══════════ */
 #phone-screen {
@@ -1664,36 +1647,168 @@ input:focus, select:focus, textarea:focus {
 
 </style>
 <style id="mobile-fixes-final">
-html,body{padding:0!important;margin:0!important}
-body{height:100vh!important;height:100dvh!important;overflow:hidden!important;display:flex!important;flex-direction:column!important}
-.mobile-role-bar{position:relative!important;z-index:200!important;flex-shrink:0!important;touch-action:pan-x!important;pointer-events:auto!important;min-height:44px!important}
-.mrb-chip{touch-action:manipulation!important;pointer-events:auto!important;-webkit-user-select:none!important;user-select:none!important;-webkit-tap-highlight-color:transparent!important;cursor:pointer!important}
-.mrb-chip.on,.mrb-chip.active{color:#fff!important}
-.mrb-chip[data-role="user"].on,.mrb-chip[data-role="user"].active{background:#60A5FA!important;border-color:#60A5FA!important}
-.mrb-chip[data-role="sp"].on,.mrb-chip[data-role="sp"].active{background:#34D399!important;border-color:#34D399!important}
-.mrb-chip[data-role="master"].on,.mrb-chip[data-role="master"].active{background:#FBBF24!important;border-color:#FBBF24!important}
-.mrb-chip[data-role="supplier"].on,.mrb-chip[data-role="supplier"].active{background:#F472B6!important;border-color:#F472B6!important}
-.mrb-chip[data-role="admin"].on,.mrb-chip[data-role="admin"].active{background:#A78BFA!important;border-color:#A78BFA!important}
-.app-shell{flex:1!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;min-height:0!important}
-.app-content{flex:1!important;overflow:hidden!important;display:flex!important;min-height:0!important}
-.sidebar,.right-panel,.annotation-panel,.top-bar{display:none!important}
-.phone-frame-wrap{flex:1!important;width:100%!important;padding:0!important;display:flex!important}
-.phone-frame{width:100%!important;height:100%!important;border-radius:0!important;border:none!important;box-shadow:none!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
-#phone-screen{flex:1!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;min-height:0!important}
-.page{display:none!important;flex-direction:column!important;height:100%!important;overflow:hidden!important;background:#F0F2F5}
-.page.active{display:flex!important;animation:pgIn .15s ease}
-@keyframes pgIn{from{opacity:.5;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
-.scroll-content,.page-scroll{flex:1!important;overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior:contain!important}
-.scroll-content::-webkit-scrollbar,.page-scroll::-webkit-scrollbar{display:none}
-.phone-status-bar{display:none!important}
-.tab-bar{flex-shrink:0!important;padding-bottom:max(6px,env(safe-area-inset-bottom,6px))!important}
-.pay-bar,.bottom-bar,.action-bar{flex-shrink:0!important;padding-bottom:max(12px,env(safe-area-inset-bottom,12px))!important}
-.login-page{flex:1!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;padding:40px 28px!important;min-height:0!important}
-input,select,textarea{font-size:max(16px,1em)!important}
-button,[onclick]{touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important;cursor:pointer!important}
-.cat-tab{cursor:pointer!important;touch-action:manipulation!important}
-.cat-tab.active{color:var(--blue)!important;border-bottom-color:var(--blue)!important;font-weight:700!important}
-.tab-item{cursor:pointer!important;touch-action:manipulation!important}
+/* ══════════════════════════════════════
+   手机端布局 — 唯一覆盖规则，无冲突
+   ══════════════════════════════════════ */
+
+/* 1. 清零 body */
+html, body { padding: 0 !important; margin: 0 !important; }
+body {
+  height: 100vh !important;
+  height: 100dvh !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: #F0F2F5 !important;
+}
+
+/* 2. 角色切换栏 */
+.mobile-role-bar {
+  position: relative !important;
+  z-index: 200 !important;
+  flex-shrink: 0 !important;
+  min-height: 44px !important;
+  touch-action: pan-x !important;
+  pointer-events: auto !important;
+}
+.mrb-chip {
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: transparent !important;
+  cursor: pointer !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+.mrb-chip.on, .mrb-chip.active { color: #fff !important; }
+.mrb-chip[data-role="user"].on,    .mrb-chip[data-role="user"].active    { background: #60A5FA !important; border-color: #60A5FA !important; }
+.mrb-chip[data-role="sp"].on,      .mrb-chip[data-role="sp"].active      { background: #34D399 !important; border-color: #34D399 !important; }
+.mrb-chip[data-role="master"].on,  .mrb-chip[data-role="master"].active  { background: #FBBF24 !important; border-color: #FBBF24 !important; }
+.mrb-chip[data-role="supplier"].on,.mrb-chip[data-role="supplier"].active { background: #F472B6 !important; border-color: #F472B6 !important; }
+.mrb-chip[data-role="admin"].on,   .mrb-chip[data-role="admin"].active   { background: #A78BFA !important; border-color: #A78BFA !important; }
+
+/* 3. 隐藏桌面面板 */
+.top-bar, .sidebar, .right-panel, .annotation-panel { display: none !important; }
+
+/* 4. app 容器层级：全部用 flex:1 填满 */
+.app-shell {
+  flex: 1 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+.app-content {
+  flex: 1 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* 5. ★ 消除空白核心：phone-frame-wrap 原为 position:sticky */
+.phone-frame-wrap {
+  position: static !important;
+  top: auto !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+}
+
+/* 6. ★ phone-frame 原为 375×700px 固定尺寸 */
+.phone-frame {
+  position: static !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: #F0F2F5 !important;
+}
+
+/* 7. phone-screen */
+#phone-screen {
+  flex: 1 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* 8. 页面系统 */
+.page {
+  display: none !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  background: #F0F2F5;
+}
+.page.active {
+  display: flex !important;
+  animation: pgIn 0.15s ease;
+}
+@keyframes pgIn {
+  from { opacity: 0.5; transform: translateX(8px); }
+  to   { opacity: 1;   transform: translateX(0); }
+}
+
+/* 9. 滚动区域 */
+.scroll-content, .page-scroll {
+  flex: 1 !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+}
+.scroll-content::-webkit-scrollbar,
+.page-scroll::-webkit-scrollbar { display: none; }
+
+/* 10. 固定高度元素 */
+.phone-status-bar { display: none !important; }
+.tab-bar {
+  flex-shrink: 0 !important;
+  padding-bottom: max(6px, env(safe-area-inset-bottom, 6px)) !important;
+}
+.pay-bar, .bottom-bar, .action-bar, .nav-bar { flex-shrink: 0 !important; }
+
+/* 11. 登录页 */
+.login-page {
+  flex: 1 !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 40px 28px !important;
+}
+
+/* 12. iOS 防放大 */
+input, select, textarea { font-size: max(16px, 1em) !important; }
+
+/* 13. 可点击元素 */
+button, [onclick], .tab-item, .quick-item, .cat-tab {
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: transparent !important;
+  cursor: pointer !important;
+}
+.cat-tab.active {
+  color: var(--blue) !important;
+  border-bottom-color: var(--blue) !important;
+  font-weight: 700 !important;
+}
 </style></head>
 <body>
 
@@ -2770,7 +2885,7 @@ button,[onclick]{touch-action:manipulation!important;-webkit-tap-highlight-color
   <div class="tab-item" onclick="showPage('sp-goods')"><div class="tab-icon">📦</div>商品</div>
   <div class="tab-item active"><div class="tab-icon">⚡</div>抢单</div>
   <div class="tab-item"><div class="tab-icon">📄</div>订单</div>
-  <div class="tab-item"><div class="tab-icon">👤</div>我的</div>
+  <div class="tab-item" onclick="showPage('admin-mine')" style="touch-action:manipulation"><div class="tab-icon">👤</div>我的</div>
 </div>
             </div>
 
@@ -3362,7 +3477,7 @@ button,[onclick]{touch-action:manipulation!important;-webkit-tap-highlight-color
   <div class="tab-item active"><div class="tab-icon">🏠</div>首页</div>
   <div class="tab-item" onclick="showPage('sp-grab')"><div class="tab-icon">⚡</div>抢单</div>
   <div class="tab-item" onclick="showPage('master-orders')"><div class="tab-icon">📋</div>任务</div>
-  <div class="tab-item"><div class="tab-icon">👤</div>我的</div>
+  <div class="tab-item" onclick="showPage('admin-mine')" style="touch-action:manipulation"><div class="tab-icon">👤</div>我的</div>
 </div>
             </div>
 
@@ -3511,10 +3626,6 @@ button,[onclick]{touch-action:manipulation!important;-webkit-tap-highlight-color
    B端：供应商首页
             ══════════════════════════════════════ -->
             <div class="page" id="page-sup-home">
-<div class="phone-status-bar">
-  <span class="status-time">9:41</span>
-  <span class="status-icons">📶 🔋</span>
-</div>
 <div class="nav-bar">
   <div style="flex:1">
     <div style="font-size:14px;font-weight:700">欢迎，好味道供应商</div>
@@ -3524,47 +3635,37 @@ button,[onclick]{touch-action:manipulation!important;-webkit-tap-highlight-color
 </div>
 <div class="scroll-content">
   <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-label">今日订单</div>
-      <div class="stat-value blue">23</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">本月销售额</div>
-      <div class="stat-value green">¥8,920</div>
-    </div>
+    <div class="stat-card"><div class="stat-label">今日订单</div><div class="stat-value blue">23</div></div>
+    <div class="stat-card"><div class="stat-label">本月销售额</div><div class="stat-value green">¥8,920</div></div>
   </div>
-
-  <div class="hint-bubble">
-    ℹ️ 供应商仅可上架<strong>零食/饮料</strong>类商品，不可访问抢单大厅
-  </div>
-
+  <div class="hint-bubble">ℹ️ 供应商仅可上架<strong>零食/饮料</strong>类商品，不可访问抢单大厅</div>
   <div class="quick-grid" style="margin:0 12px;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)">
-    <div class="quick-item" onclick="showPage('sup-goods')">
+    <div class="quick-item" onclick="showPage('sup-goods')" style="touch-action:manipulation">
       <div class="quick-icon" style="background:#FFF0F6;color:#EB2F96">🍿</div>
       <div class="quick-label">零食管理</div>
     </div>
-    <div class="quick-item">
+    <div class="quick-item" onclick="showPage('sup-orders')" style="touch-action:manipulation">
       <div class="quick-icon" style="background:var(--blue-light);color:var(--blue)">📄</div>
       <div class="quick-label">我的订单</div>
     </div>
-    <div class="quick-item">
+    <div class="quick-item" onclick="showPage('sup-mine')" style="touch-action:manipulation">
       <div class="quick-icon" style="background:var(--green-light);color:var(--green)">💰</div>
       <div class="quick-label">申请提现</div>
     </div>
-    <div class="quick-item">
+    <div class="quick-item" onclick="showToast('数据统计功能开发中')" style="touch-action:manipulation">
       <div class="quick-icon" style="background:var(--orange-light);color:var(--orange)">📊</div>
       <div class="quick-label">数据统计</div>
     </div>
   </div>
-  <div style="height:70px"></div>
+  <div style="height:12px"></div>
 </div>
 <div class="tab-bar">
-  <div class="tab-item active"><div class="tab-icon">🏠</div>首页</div>
-  <div class="tab-item" onclick="showPage('sup-goods')"><div class="tab-icon">🍿</div>商品</div>
-  <div class="tab-item"><div class="tab-icon">📄</div>订单</div>
-  <div class="tab-item"><div class="tab-icon">👤</div>我的</div>
+  <div class="tab-item active" onclick="showPage('sup-home')" style="touch-action:manipulation"><div class="tab-icon">🏠</div>首页</div>
+  <div class="tab-item" onclick="showPage('sup-goods')" style="touch-action:manipulation"><div class="tab-icon">🍿</div>商品</div>
+  <div class="tab-item" onclick="showPage('sup-orders')" style="touch-action:manipulation"><div class="tab-icon">📄</div>订单</div>
+  <div class="tab-item" onclick="showPage('sup-mine')" style="touch-action:manipulation"><div class="tab-icon">👤</div>我的</div>
 </div>
-            </div>
+</div>
 
             <!-- ══════════════════════════════════════
    B端：供应商商品管理
@@ -3701,10 +3802,10 @@ button,[onclick]{touch-action:manipulation!important;-webkit-tap-highlight-color
   <div style="height:20px"></div>
 </div>
 <div class="tab-bar">
-  <div class="tab-item active"><div class="tab-icon">🏠</div>工作台</div>
-  <div class="tab-item" onclick="showPage('admin-review')"><div class="tab-icon">✅</div>审核</div>
-  <div class="tab-item" onclick="showPage('admin-orders')"><div class="tab-icon">🗃️</div>订单</div>
-  <div class="tab-item"><div class="tab-icon">👤</div>我的</div>
+  <div class="tab-item active" onclick="showPage('admin-home')" style="touch-action:manipulation"><div class="tab-icon">🏠</div>工作台</div>
+  <div class="tab-item" onclick="showPage('admin-review')" style="touch-action:manipulation"><div class="tab-icon">✅</div>审核</div>
+  <div class="tab-item" onclick="showPage('admin-orders')" style="touch-action:manipulation"><div class="tab-icon">🗃️</div>订单</div>
+  <div class="tab-item" onclick="showPage('admin-mine')" style="touch-action:manipulation"><div class="tab-icon">👤</div>我的</div>
 </div>
             </div>
 
@@ -3772,10 +3873,10 @@ button,[onclick]{touch-action:manipulation!important;-webkit-tap-highlight-color
   <div style="height:20px"></div>
 </div>
 <div class="tab-bar">
-  <div class="tab-item" onclick="showPage('admin-home')"><div class="tab-icon">🏠</div>工作台</div>
-  <div class="tab-item active"><div class="tab-icon">✅</div>审核</div>
-  <div class="tab-item" onclick="showPage('admin-orders')"><div class="tab-icon">🗃️</div>订单</div>
-  <div class="tab-item"><div class="tab-icon">👤</div>我的</div>
+  <div class="tab-item" onclick="showPage('admin-home')" style="touch-action:manipulation"><div class="tab-icon">🏠</div>工作台</div>
+  <div class="tab-item active" onclick="showPage('admin-review')" style="touch-action:manipulation"><div class="tab-icon">✅</div>审核</div>
+  <div class="tab-item" onclick="showPage('admin-orders')" style="touch-action:manipulation"><div class="tab-icon">🗃️</div>订单</div>
+  <div class="tab-item" onclick="showPage('admin-mine')" style="touch-action:manipulation"><div class="tab-icon">👤</div>我的</div>
 </div>
             </div>
 
@@ -4055,10 +4156,10 @@ button,[onclick]{touch-action:manipulation!important;-webkit-tap-highlight-color
   <div style="height:70px"></div>
 </div>
 <div class="tab-bar">
-  <div class="tab-item" onclick="showPage('admin-home')"><div class="tab-icon">🏠</div>工作台</div>
-  <div class="tab-item" onclick="showPage('admin-review')"><div class="tab-icon">✅</div>审核</div>
-  <div class="tab-item active"><div class="tab-icon">🗃️</div>订单</div>
-  <div class="tab-item"><div class="tab-icon">👤</div>我的</div>
+  <div class="tab-item" onclick="showPage('admin-home')" style="touch-action:manipulation"><div class="tab-icon">🏠</div>工作台</div>
+  <div class="tab-item" onclick="showPage('admin-review')" style="touch-action:manipulation"><div class="tab-icon">✅</div>审核</div>
+  <div class="tab-item active" onclick="showPage('admin-orders')" style="touch-action:manipulation"><div class="tab-icon">🗃️</div>订单</div>
+  <div class="tab-item" onclick="showPage('admin-mine')" style="touch-action:manipulation"><div class="tab-icon">👤</div>我的</div>
 </div>
             </div>
 
@@ -4272,6 +4373,279 @@ button,[onclick]{touch-action:manipulation!important;-webkit-tap-highlight-color
 </div>
 
 
+
+<div class="page" id="page-sup-orders">
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('sup-home')" style="touch-action:manipulation">‹</div>
+  <div class="nav-title">商品订单管理</div>
+</div>
+<div class="category-tabs">
+  <div class="cat-tab active" onclick="supOrdersTab('all',this)" style="touch-action:manipulation">全部</div>
+  <div class="cat-tab" onclick="supOrdersTab('pending',this)" style="touch-action:manipulation">待发货<span style="background:var(--red);color:white;font-size:10px;padding:0 4px;border-radius:8px;margin-left:3px">2</span></div>
+  <div class="cat-tab" onclick="supOrdersTab('shipped',this)" style="touch-action:manipulation">已发货</div>
+  <div class="cat-tab" onclick="supOrdersTab('done',this)" style="touch-action:manipulation">已完成</div>
+</div>
+<div class="scroll-content" id="sup-orders-list">
+  <div class="soitem" data-s="pending" style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;cursor:pointer" onclick="showPage('sup-order-detail')">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:var(--gray9);border-bottom:1px solid var(--border)">
+      <span style="font-size:11.5px;font-weight:600;color:var(--gray3)">DD2024120015</span>
+      <span style="font-size:11.5px;color:var(--orange);font-weight:600">待发货</span>
+    </div>
+    <div style="display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="width:52px;height:52px;background:var(--gray7);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">🍿</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:500;margin-bottom:2px">薯片混合装（20包）</div>
+        <div style="font-size:11px;color:var(--gray4)">原味/辣味/烤肉味 × 2</div>
+        <div style="font-size:13px;color:var(--red);font-weight:700;margin-top:4px">¥68 × 2</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px" onclick="event.stopPropagation()">
+      <span style="font-size:12px;color:var(--gray4)">实付：<strong style="color:var(--red);font-size:14px">¥136</strong></span>
+      <div style="display:flex;gap:8px">
+        <button onclick="showToast('请填写快递单号')" style="padding:6px 12px;font-size:12px;color:var(--blue);background:none;border:1px solid var(--blue);border-radius:6px;cursor:pointer;touch-action:manipulation;font-family:inherit">填写发货</button>
+        <button onclick="showToast('✅ 已确认发货')" style="padding:6px 12px;font-size:12px;color:white;background:var(--blue);border:none;border-radius:6px;cursor:pointer;touch-action:manipulation;font-family:inherit">确认发货</button>
+      </div>
+    </div>
+  </div>
+  <div class="soitem" data-s="pending" style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;cursor:pointer" onclick="showPage('sup-order-detail')">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:var(--gray9);border-bottom:1px solid var(--border)">
+      <span style="font-size:11.5px;font-weight:600;color:var(--gray3)">DD2024120018</span>
+      <span style="font-size:11.5px;color:var(--orange);font-weight:600">待发货</span>
+    </div>
+    <div style="display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="width:52px;height:52px;background:var(--gray7);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">🥤</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:500;margin-bottom:2px">农夫山泉整箱（24瓶）</div>
+        <div style="font-size:11px;color:var(--gray4)">550ml × 1箱</div>
+        <div style="font-size:13px;color:var(--red);font-weight:700;margin-top:4px">¥29.9</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px" onclick="event.stopPropagation()">
+      <span style="font-size:12px;color:var(--gray4)">实付：<strong style="color:var(--red);font-size:14px">¥29.9</strong></span>
+      <div style="display:flex;gap:8px">
+        <button onclick="showToast('请填写快递单号')" style="padding:6px 12px;font-size:12px;color:var(--blue);background:none;border:1px solid var(--blue);border-radius:6px;cursor:pointer;touch-action:manipulation;font-family:inherit">填写发货</button>
+        <button onclick="showToast('✅ 已确认发货')" style="padding:6px 12px;font-size:12px;color:white;background:var(--blue);border:none;border-radius:6px;cursor:pointer;touch-action:manipulation;font-family:inherit">确认发货</button>
+      </div>
+    </div>
+  </div>
+  <div class="soitem" data-s="done" style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;cursor:pointer" onclick="showPage('sup-order-detail')">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:var(--gray9);border-bottom:1px solid var(--border)">
+      <span style="font-size:11.5px;font-weight:600;color:var(--gray3)">DD2024110062</span>
+      <span style="font-size:11.5px;color:var(--green);font-weight:600">已完成</span>
+    </div>
+    <div style="display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="width:52px;height:52px;background:var(--gray7);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">🥜</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:500;margin-bottom:2px">坚果混合装 500g</div>
+        <div style="font-size:11px;color:var(--gray4)">混合坚果 × 3</div>
+        <div style="font-size:13px;color:var(--red);font-weight:700;margin-top:4px">¥68 × 3</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px" onclick="event.stopPropagation()">
+      <span style="font-size:12px;color:var(--gray4)">实付：<strong style="color:var(--red);font-size:14px">¥204</strong></span>
+      <button onclick="showToast('查看物流详情')" style="padding:6px 12px;font-size:12px;color:var(--gray3);background:var(--gray8);border:none;border-radius:6px;cursor:pointer;touch-action:manipulation;font-family:inherit">查看物流</button>
+    </div>
+  </div>
+  <div style="height:12px"></div>
+</div>
+<div class="tab-bar">
+  <div class="tab-item" onclick="showPage('sup-home')" style="touch-action:manipulation"><div class="tab-icon">🏠</div>首页</div>
+  <div class="tab-item" onclick="showPage('sup-goods')" style="touch-action:manipulation"><div class="tab-icon">🍿</div>商品</div>
+  <div class="tab-item active"><div class="tab-icon">📄</div>订单</div>
+  <div class="tab-item" onclick="showPage('sup-mine')" style="touch-action:manipulation"><div class="tab-icon">👤</div>我的</div>
+</div>
+</div>
+
+
+<div class="page" id="page-sup-order-detail">
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('sup-orders')" style="touch-action:manipulation">‹</div>
+  <div class="nav-title">订单详情</div>
+</div>
+<div class="scroll-content">
+  <div style="background:linear-gradient(135deg,#FA8C16,#D46B08);padding:14px 16px;color:white;flex-shrink:0">
+    <div style="font-size:15px;font-weight:700;margin-bottom:3px">📦 待发货</div>
+    <div style="font-size:12px;opacity:.85">请尽快安排发货，买家正在等待</div>
+  </div>
+  <div style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px">
+    <div style="font-size:13px;font-weight:600;margin-bottom:8px">📍 收货信息</div>
+    <div style="font-size:14px;font-weight:700;margin-bottom:3px">李四 &nbsp; 139****5566</div>
+    <div style="font-size:12.5px;color:var(--gray4)">上海市静安区南京西路 1266号</div>
+  </div>
+  <div style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="padding:9px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--gray4)">📦 统一商城（不展示供应商信息）</div>
+    <div style="display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="width:60px;height:60px;background:var(--gray7);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🍿</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:500;margin-bottom:3px">薯片混合装（20包）</div>
+        <div style="font-size:11.5px;color:var(--gray4)">原味/辣味/烤肉味 × 2</div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px">
+          <span style="font-size:14px;color:var(--red);font-weight:700">¥68</span>
+          <span style="font-size:12px;color:var(--gray4)">× 2</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:10px 14px;display:flex;justify-content:flex-end;align-items:center;gap:4px;font-size:13px">
+      实付：<span style="font-size:16px;color:var(--red);font-weight:700">¥136</span>
+    </div>
+  </div>
+  <div style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow)">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600">订单信息</div>
+    <div style="padding:0 16px">
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="color:var(--gray4)">订单编号</span><span>DD2024120015</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="color:var(--gray4)">下单时间</span><span>2024-12-03 10:20</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:13px"><span style="color:var(--gray4)">支付方式</span><span>微信支付</span></div>
+    </div>
+  </div>
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px">
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px">填写发货信息</div>
+    <div style="margin-bottom:10px">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:5px">快递公司</div>
+      <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 12px;font-size:16px;outline:none;background:white;-webkit-appearance:none">
+        <option>请选择快递公司</option><option>顺丰速运</option><option>中通快递</option><option>圆通速递</option>
+      </select>
+    </div>
+    <div>
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:5px">快递单号</div>
+      <input style="width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 12px;font-size:16px;outline:none" placeholder="请输入快递单号">
+    </div>
+  </div>
+  <div style="height:12px"></div>
+</div>
+<div style="padding:12px 16px;background:white;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0">
+  <button onclick="showToast('联系买家：139****5566')" style="flex:1;padding:11px;background:var(--gray8);color:var(--gray3);border:1px solid var(--border);border-radius:var(--radius);font-size:14px;font-weight:500;cursor:pointer;touch-action:manipulation;font-family:inherit">联系买家</button>
+  <button onclick="showToast('✅ 已确认发货！');showPage('sup-orders')" style="flex:1.5;padding:11px;background:var(--blue);color:white;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;touch-action:manipulation;font-family:inherit">确认发货</button>
+</div>
+</div>
+
+
+<div class="page" id="page-sup-mine">
+<div style="background:linear-gradient(135deg,#EB2F96,#C0006A);padding:20px 16px 30px;color:white;flex-shrink:0">
+  <div style="display:flex;align-items:center;gap:14px">
+    <div style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:26px;border:2px solid rgba(255,255,255,.4)">🏭</div>
+    <div>
+      <div style="font-size:17px;font-weight:700">好味道食品供应商</div>
+      <div style="font-size:12px;opacity:.85;margin-top:2px">📱 139****8888 &nbsp;|&nbsp; ID: SUP20012</div>
+      <div style="background:rgba(255,255,255,.25);color:white;font-size:11px;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:5px">供应商</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;margin-top:16px">
+    <div><div style="font-size:18px;font-weight:700">¥8,920</div><div style="font-size:11px;opacity:.75;margin-top:2px">本月营业额</div></div>
+    <div style="border-left:1px solid rgba(255,255,255,.3);border-right:1px solid rgba(255,255,255,.3)">
+      <div style="font-size:18px;font-weight:700">64</div><div style="font-size:11px;opacity:.75;margin-top:2px">累计订单</div>
+    </div>
+    <div><div style="font-size:18px;font-weight:700">4.9</div><div style="font-size:11px;opacity:.75;margin-top:2px">服务评分</div></div>
+  </div>
+</div>
+<div class="scroll-content">
+  <div style="background:white;margin:-16px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;position:relative;z-index:1">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600">💰 资金管理</div>
+    <div style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:12px;color:var(--gray4)">可提现余额</div>
+        <div style="font-size:22px;font-weight:700;color:var(--red);margin-top:2px">¥6,430.00</div>
+      </div>
+      <button onclick="showToast('提现申请已提交，等待管理员审核')" style="background:var(--blue);color:white;border:none;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;font-family:inherit">申请提现</button>
+    </div>
+    <div onclick="showToast('查看提现记录')" style="padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">提现记录</span><span style="color:var(--gray4)">›</span>
+    </div>
+  </div>
+  <div style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600">🛠 账号管理</div>
+    <div onclick="showPage('sup-goods')" style="padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">🍿 商品管理</span><span style="color:var(--gray4)">›</span>
+    </div>
+    <div onclick="showPage('sup-orders')" style="padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">📄 我的订单</span><span style="color:var(--gray4)">›</span>
+    </div>
+    <div onclick="showToast('数据统计功能开发中')" style="padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">📊 数据统计</span><span style="color:var(--gray4)">›</span>
+    </div>
+    <div onclick="showToast('联系平台客服：400-888-8888')" style="padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">💬 联系平台</span><span style="color:var(--gray4)">›</span>
+    </div>
+  </div>
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow)">
+    <div onclick="showPage('login');showToast('已退出登录')" style="text-align:center;padding:14px;color:var(--red);font-size:14px;font-weight:500;cursor:pointer;touch-action:manipulation">退出登录</div>
+  </div>
+  <div style="height:12px"></div>
+</div>
+<div class="tab-bar">
+  <div class="tab-item" onclick="showPage('sup-home')" style="touch-action:manipulation"><div class="tab-icon">🏠</div>首页</div>
+  <div class="tab-item" onclick="showPage('sup-goods')" style="touch-action:manipulation"><div class="tab-icon">🍿</div>商品</div>
+  <div class="tab-item" onclick="showPage('sup-orders')" style="touch-action:manipulation"><div class="tab-icon">📄</div>订单</div>
+  <div class="tab-item active"><div class="tab-icon">👤</div>我的</div>
+</div>
+</div>
+
+
+<div class="page" id="page-admin-mine">
+<div style="background:linear-gradient(135deg,#722ED1,#391085);padding:20px 16px 30px;color:white;flex-shrink:0">
+  <div style="display:flex;align-items:center;gap:14px">
+    <div style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:26px;border:2px solid rgba(255,255,255,.4)">🛡️</div>
+    <div>
+      <div style="font-size:17px;font-weight:700">平台管理员</div>
+      <div style="font-size:12px;opacity:.85;margin-top:2px">📱 130****0000 &nbsp;|&nbsp; 超级管理员</div>
+      <div style="background:rgba(255,255,255,.25);color:white;font-size:11px;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:5px">平台管理员</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;margin-top:16px">
+    <div><div style="font-size:18px;font-weight:700">26</div><div style="font-size:11px;opacity:.75;margin-top:2px">已注册商家</div></div>
+    <div style="border-left:1px solid rgba(255,255,255,.3);border-right:1px solid rgba(255,255,255,.3)">
+      <div style="font-size:18px;font-weight:700">¥42,800</div><div style="font-size:11px;opacity:.75;margin-top:2px">今日 GMV</div>
+    </div>
+    <div><div style="font-size:18px;font-weight:700">86</div><div style="font-size:11px;opacity:.75;margin-top:2px">今日订单</div></div>
+  </div>
+</div>
+<div class="scroll-content">
+  <div style="background:white;margin:-16px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;position:relative;z-index:1">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600">⚙️ 平台配置</div>
+    <div onclick="showPage('admin-range')" style="padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">📍 接单范围配置</span><span style="color:var(--gray4)">›</span>
+    </div>
+    <div onclick="showPage('admin-commission')" style="padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">💸 抽点比例配置</span><span style="color:var(--gray4)">›</span>
+    </div>
+    <div onclick="showPage('admin-accounts')" style="padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">👥 账号管理</span><span style="color:var(--gray4)">›</span>
+    </div>
+  </div>
+  <div style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600">💰 提现管理</div>
+    <div onclick="showPage('admin-withdraw')" style="padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">🏦 提现审核</span>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="background:var(--red);color:white;font-size:10px;border-radius:8px;padding:1px 6px">3</span>
+        <span style="color:var(--gray4)">›</span>
+      </div>
+    </div>
+    <div onclick="showToast('数据统计功能开发中')" style="padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">📊 全平台数据统计</span><span style="color:var(--gray4)">›</span>
+    </div>
+  </div>
+  <div style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600">🔒 安全设置</div>
+    <div onclick="showToast('查看操作审计日志')" style="padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">📋 操作审计日志</span><span style="color:var(--gray4)">›</span>
+    </div>
+    <div onclick="showToast('修改登录密码')" style="padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">🔑 修改登录密码</span><span style="color:var(--gray4)">›</span>
+    </div>
+  </div>
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow)">
+    <div onclick="showPage('login');showToast('已退出管理员登录')" style="text-align:center;padding:14px;color:var(--red);font-size:14px;font-weight:500;cursor:pointer;touch-action:manipulation">退出登录</div>
+  </div>
+  <div style="height:12px"></div>
+</div>
+<div class="tab-bar">
+  <div class="tab-item" onclick="showPage('admin-home')" style="touch-action:manipulation"><div class="tab-icon">🏠</div>工作台</div>
+  <div class="tab-item" onclick="showPage('admin-review')" style="touch-action:manipulation"><div class="tab-icon">✅</div>审核</div>
+  <div class="tab-item" onclick="showPage('admin-orders')" style="touch-action:manipulation"><div class="tab-icon">🗃️</div>订单</div>
+  <div class="tab-item active"><div class="tab-icon">👤</div>我的</div>
+</div>
+</div>
+
 <script>
 const annotations = {
   'login': [
@@ -4420,136 +4794,82 @@ const annotations = {
     { tag: 'logic', text: '所有账号操作记录保留审计日志' },
   ],
 };
-
-// ─── PAGE ENGINE ──────────────────────────────────────────────────
-var currentPage = 'login';
-
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
-  var target = document.getElementById('page-' + id);
-  if (!target) { console.warn('showPage: page not found → page-' + id); return; }
-  target.classList.add('active');
-  currentPage = id;
-  target.querySelectorAll('.scroll-content, .page-scroll').forEach(function(el) { el.scrollTop = 0; });
+var currentPage="login";
+function showPage(id){
+  document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active");});
+  var t=document.getElementById("page-"+id);
+  if(!t){console.warn("showPage: not found ->",id);return;}
+  t.classList.add("active");currentPage=id;
+  t.querySelectorAll(".scroll-content,.page-scroll").forEach(function(el){el.scrollTop=0;});
 }
-
-function updateAnnotations(id) {
-  var c = document.getElementById('anno-content');
-  if (!c) return;
-  var data = annotations[id] || [];
-  if (!data.length) { c.innerHTML = '<div style="font-size:12px;color:#bfbfbf;padding:8px 0">暂无标注</div>'; return; }
-  var tm = { action:['tag-action','操作'], logic:['tag-logic','逻辑'], error:['tag-error','边界'], note:['tag-note','说明'] };
-  c.innerHTML = data.map(function(item) {
-    var t = tm[item.tag] || ['tag-note','说明'];
-    return '<div class="anno-item"><span class="anno-tag '+t[0]+'">'+t[1]+'</span><div class="anno-text">'+item.text+'</div></div>';
-  }).join('');
+function updateAnnotations(id){
+  var c=document.getElementById("anno-content");if(!c)return;
+  var data=annotations[id]||[];
+  if(!data.length){c.innerHTML="<div style=\"font-size:12px;color:#bfbfbf;padding:8px 0\">暂无标注</div>";return;}
+  var tm={action:["tag-action","操作"],logic:["tag-logic","逻辑"],error:["tag-error","边界"],note:["tag-note","说明"]};
+  c.innerHTML=data.map(function(item){var t=tm[item.tag]||["tag-note","说明"];return"<div class=\"anno-item\"><span class=\"anno-tag "+t[0]+"\">"+t[1]+"</span><div class=\"anno-text\">"+item.text+"</div></div>";}).join("");
 }
-
-// ─── ROLE SWITCHER ────────────────────────────────────────────────
-var roleDefaults = { user:'login', sp:'sp-home', master:'master-home', supplier:'sup-home', admin:'admin-home' };
-var currentRole = 'user';
-
-function switchRole(role) {
-  currentRole = role;
-  document.querySelectorAll('.mrb-chip, [data-role]').forEach(function(c) { c.classList.remove('active','on'); });
-  var chip = document.querySelector('[data-role="'+role+'"]');
-  if (chip) chip.classList.add('active','on');
-  showPage(roleDefaults[role] || 'login');
+var roleDefaults={user:"login",sp:"sp-home",master:"master-home",supplier:"sup-home",admin:"admin-home"};
+var currentRole="user";
+function switchRole(role){
+  currentRole=role;
+  document.querySelectorAll(".mrb-chip,[data-role]").forEach(function(c){c.classList.remove("active","on");});
+  var chip=document.querySelector("[data-role=\""+role+"\"]");
+  if(chip)chip.classList.add("active","on");
+  showPage(roleDefaults[role]||"login");
 }
-
-// ─── CAT TABS generic ─────────────────────────────────────────────
-function switchTab(el) {
-  var parent = el.parentElement;
-  if (!parent) return;
-  parent.querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('active'); });
-  el.classList.add('active');
+function switchTab(el){
+  var p=el.parentElement;
+  if(p)p.querySelectorAll(".cat-tab").forEach(function(t){t.classList.remove("active");});
+  el.classList.add("active");
 }
-
-// ─── SP ORDERS TAB ────────────────────────────────────────────────
-function spOrdersTab(status, el) {
-  // update tab highlight
-  var tabsEl = document.getElementById('sp-orders-tabs');
-  if (tabsEl) tabsEl.querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('active'); });
-  if (el) el.classList.add('active');
-  // filter cards
-  var cards = document.querySelectorAll('.sp-order-card');
-  cards.forEach(function(card) {
-    var s = card.getAttribute('data-status');
-    card.style.display = (status === 'all' || s === status) ? '' : 'none';
+function supOrdersTab(status,el){
+  var list=document.getElementById("sup-orders-list");if(!list)return;
+  list.closest(".page").querySelectorAll(".cat-tab").forEach(function(t){t.classList.remove("active");});
+  if(el)el.classList.add("active");
+  list.querySelectorAll(".soitem").forEach(function(item){
+    item.style.display=(status==="all"||item.getAttribute("data-s")===status)?"":"none";
   });
 }
-
-// ─── SP GOODS TAB ─────────────────────────────────────────────────
-function spGoodsTab(status, el) {
-  var list = document.getElementById('sp-goods-list');
-  if (!list) return;
-  // update tab
-  list.closest('.page').querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('active'); });
-  if (el) el.classList.add('active');
-  // filter items
-  var items = list.querySelectorAll('.sp-goods-item');
-  items.forEach(function(item) {
-    var s = item.getAttribute('data-gstatus');
-    item.style.display = (status === 'all' || s === status) ? '' : 'none';
+function spOrdersTab(status,el){
+  var list=document.getElementById("sp-orders-list");if(!list)return;
+  list.closest(".page").querySelectorAll(".cat-tab").forEach(function(t){t.classList.remove("active");});
+  if(el)el.classList.add("active");
+  list.querySelectorAll(".sp-order-card").forEach(function(card){
+    card.style.display=(status==="all"||card.getAttribute("data-status")===status)?"":"none";
   });
 }
-
-// ─── BIZ TYPE TAB ─────────────────────────────────────────────────
-function bizTypeTab(type, el) {
-  var tabs = document.getElementById('biz-type-tabs');
-  if (tabs) tabs.querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('active'); });
-  if (el) el.classList.add('active');
-  var catRow = document.getElementById('biz-category-row');
-  if (catRow) catRow.style.display = type === 'sup' ? 'block' : 'none';
+function spGoodsTab(status,el){
+  var list=document.getElementById("sp-goods-list");if(!list)return;
+  list.closest(".page").querySelectorAll(".cat-tab").forEach(function(t){t.classList.remove("active");});
+  if(el)el.classList.add("active");
+  list.querySelectorAll(".sp-goods-item").forEach(function(item){
+    item.style.display=(status==="all"||item.getAttribute("data-gstatus")===status)?"":"none";
+  });
 }
-
-// ─── TOAST ────────────────────────────────────────────────────────
-var _tt = null;
-function showToast(msg) {
-  var el = document.getElementById('__toast__');
-  if (!el) {
-    el = document.createElement('div');
-    el.id = '__toast__';
-    el.style.cssText = [
-      'position:fixed','top:68px','left:50%','transform:translateX(-50%)',
-      'background:rgba(0,0,0,0.85)','color:#fff',
-      'padding:10px 22px','border-radius:22px',
-      'font-size:13.5px','font-weight:500',
-      'z-index:99999','white-space:nowrap',
-      'max-width:88vw','text-align:center',
-      'pointer-events:none',
-      'opacity:0','transition:opacity 0.2s',
-      'line-height:1.5','word-break:keep-all'
-    ].join(';');
-    document.body.appendChild(el);
-  }
-  el.textContent = msg;
-  el.style.opacity = '1';
-  clearTimeout(_tt);
-  _tt = setTimeout(function() { el.style.opacity = '0'; }, 2800);
+function bizTypeTab(type,el){
+  var tabs=document.getElementById("biz-type-tabs");
+  if(tabs)tabs.querySelectorAll(".cat-tab").forEach(function(t){t.classList.remove("active");});
+  if(el)el.classList.add("active");
+  var row=document.getElementById("biz-category-row");
+  if(row)row.style.display=type==="sup"?"block":"none";
 }
-var showMobileToast = showToast;
-
-// ─── MODALS ───────────────────────────────────────────────────────
-function showModal(id) { var el=document.getElementById(id); if(el){el.style.display='flex';el.classList.add('show');} }
-function closeModal(id){ var el=document.getElementById(id); if(el){el.style.display='none';el.classList.remove('show');} }
-var showMobileModal=showModal, closeMobileModal=closeModal;
-
-// ─── EVENT DELEGATION ─────────────────────────────────────────────
-document.addEventListener('click', function(e) {
-  if (e.target.classList.contains('toggle-switch')) e.target.classList.toggle('on');
-  // generic cat-tab without explicit handler (fallback)
-  if (e.target.classList.contains('cat-tab') && !e.target.getAttribute('onclick')) {
-    switchTab(e.target);
-  }
-}, true);
-
-// ─── INIT ─────────────────────────────────────────────────────────
-(function() {
-  showPage('login');
-  var chip = document.querySelector('[data-role="user"]');
-  if (chip) chip.classList.add('active','on');
-  updateAnnotations('login');
+var _tt=null;
+function showToast(msg){
+  var el=document.getElementById("__toast__");
+  if(!el){el=document.createElement("div");el.id="__toast__";el.style.cssText="position:fixed;top:68px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;padding:10px 22px;border-radius:22px;font-size:13.5px;font-weight:500;z-index:99999;white-space:nowrap;max-width:88vw;text-align:center;pointer-events:none;opacity:0;transition:opacity .2s;line-height:1.5;word-break:keep-all";document.body.appendChild(el);}
+  el.textContent=msg;el.style.opacity="1";clearTimeout(_tt);_tt=setTimeout(function(){el.style.opacity="0";},2800);
+}
+var showMobileToast=showToast;
+function showModal(id){var e=document.getElementById(id);if(e){e.style.display="flex";e.classList.add("show");}}
+function closeModal(id){var e=document.getElementById(id);if(e){e.style.display="none";e.classList.remove("show");}}
+var showMobileModal=showModal,closeMobileModal=closeModal;
+document.addEventListener("click",function(e){if(e.target.classList.contains("toggle-switch"))e.target.classList.toggle("on");},true);
+(function(){
+  showPage("login");
+  var chip=document.querySelector("[data-role=\"user\"]");
+  if(chip)chip.classList.add("active","on");
+  updateAnnotations("login");
 })();
 </script>
 </body>
