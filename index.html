@@ -386,7 +386,7 @@
   }
 
   .card-title { font-size: 14px; font-weight: 600; }
-  .card-body { padding: 0 !important; }
+  .card-body { padding: 12px 16px; }
 
   /* Product Grid */
   .product-grid {
@@ -1310,15 +1310,12 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: env(safe-area-inset-top, 0px) 12px 0;
-  min-height: 44px;
+  padding: 0 12px;
+  height: 44px;
   overflow-x: auto;
   flex-shrink: 0;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  touch-action: pan-x;
-  position: relative;
-  z-index: 100;
 }
 .mobile-role-bar::-webkit-scrollbar { display: none; }
 
@@ -1339,12 +1336,8 @@ body {
   cursor: pointer;
   border: 1.5px solid transparent;
   white-space: nowrap;
-  transition: background 0.15s, color 0.15s;
+  transition: all 0.2s;
   line-height: 1.5;
-  touch-action: manipulation;
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
 }
 .mrb-chip.active { color: #fff !important; }
 .mrb-chip[data-role="user"]     { border-color:#60A5FA; color:#60A5FA; }
@@ -1670,158 +1663,38 @@ input:focus, select:focus, textarea:focus {
 .safe-bottom { height: calc(8px + var(--safe-b)); flex-shrink: 0; }
 
 </style>
-
-<style id="mobile-fix">
-/* ── CRITICAL MOBILE FIXES ── */
-
-/* 1. Remove all body/html padding that breaks layout */
-html, body { padding: 0 !important; margin: 0 !important; }
-body { 
-  height: 100vh !important; 
-  height: 100dvh !important; 
-  overflow: hidden !important;
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-/* 2. Role bar always on top, always clickable */
-.mobile-role-bar {
-  position: relative !important;
-  z-index: 200 !important;
-  flex-shrink: 0 !important;
-  touch-action: pan-x !important;
-  pointer-events: auto !important;
-  min-height: 44px !important;
-  padding-top: env(safe-area-inset-top, 0px) !important;
-}
-
-/* 3. Chips must be clickable */
-.mrb-chip {
-  touch-action: manipulation !important;
-  pointer-events: auto !important;
-  -webkit-user-select: none !important;
-  user-select: none !important;
-  -webkit-tap-highlight-color: transparent !important;
-  cursor: pointer !important;
-}
-.mrb-chip.on, .mrb-chip.active { color: #fff !important; }
-.mrb-chip[data-role="user"].on, .mrb-chip[data-role="user"].active { background: #60A5FA !important; border-color: #60A5FA !important; }
-.mrb-chip[data-role="sp"].on, .mrb-chip[data-role="sp"].active { background: #34D399 !important; border-color: #34D399 !important; }
-.mrb-chip[data-role="master"].on, .mrb-chip[data-role="master"].active { background: #FBBF24 !important; border-color: #FBBF24 !important; }
-.mrb-chip[data-role="supplier"].on, .mrb-chip[data-role="supplier"].active { background: #F472B6 !important; border-color: #F472B6 !important; }
-.mrb-chip[data-role="admin"].on, .mrb-chip[data-role="admin"].active { background: #A78BFA !important; border-color: #A78BFA !important; }
-
-/* 4. App shell fills remaining space */
-.app-shell {
-  flex: 1 !important;
-  overflow: hidden !important;
-  display: flex !important;
-  flex-direction: column !important;
-  min-height: 0 !important;
-}
-.app-content {
-  flex: 1 !important;
-  overflow: hidden !important;
-  display: flex !important;
-  min-height: 0 !important;
-}
-
-/* 5. Phone frame fills all space */
-.phone-frame-wrap {
-  flex: 1 !important;
-  width: 100% !important;
-  padding: 0 !important;
-  display: flex !important;
-}
-.phone-frame {
-  width: 100% !important;
-  height: 100% !important;
-  border-radius: 0 !important;
-  border: none !important;
-  box-shadow: none !important;
-  display: flex !important;
-  flex-direction: column !important;
-  overflow: hidden !important;
-}
-
-/* 6. Phone screen and pages */
-#phone-screen {
-  flex: 1 !important;
-  overflow: hidden !important;
-  display: flex !important;
-  flex-direction: column !important;
-  min-height: 0 !important;
-}
-.page { 
-  display: none !important; 
-  flex-direction: column !important;
-  height: 100% !important;
-  overflow: hidden !important;
-  background: #F0F2F5;
-}
-.page.active { 
-  display: flex !important;
-}
-
-/* 7. Scrollable content areas */
-.page-scroll, .scroll-content {
-  flex: 1 !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  -webkit-overflow-scrolling: touch !important;
-  overscroll-behavior: contain !important;
-}
-.page-scroll::-webkit-scrollbar, .scroll-content::-webkit-scrollbar { display: none; }
-
-/* 8. Fix desktop sidebar hidden */
-.sidebar, .right-panel, .annotation-panel, .top-bar { display: none !important; }
-
-/* 9. Phone status bar hidden */
-.phone-status-bar { display: none !important; }
-
-/* 10. Tab bar safe area */
-.tab-bar { 
-  flex-shrink: 0 !important; 
-  padding-bottom: max(6px, env(safe-area-inset-bottom, 6px)) !important;
-}
-
-/* 11. Bottom action bars */
-.bottom-bar, .pay-bar, .action-bar, .submit-bar {
-  flex-shrink: 0 !important;
-  padding-bottom: max(12px, env(safe-area-inset-bottom, 12px)) !important;
-}
-
-/* 12. Inputs: prevent iOS zoom on focus */
-input, select, textarea {
-  font-size: 16px !important;
-}
-
-/* 13. All buttons & clickables work on touch */
-button, [onclick], .tab-item, .quick-item, .product-card, .list-item {
-  touch-action: manipulation !important;
-  -webkit-tap-highlight-color: transparent !important;
-  cursor: pointer !important;
-}
-
-/* 14. Login page fills its page */
-.login-page {
-  flex: 1 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 40px 28px !important;
-  min-height: 0 !important;
-}
-
-/* 15. Page animation */
-.page.active { animation: pgIn 0.17s ease; }
-@keyframes pgIn {
-  from { opacity: 0.5; transform: translateX(8px); }
-  to   { opacity: 1;   transform: translateX(0); }
-}
-</style>
-</head>
+<style id="mobile-fixes-final">
+html,body{padding:0!important;margin:0!important}
+body{height:100vh!important;height:100dvh!important;overflow:hidden!important;display:flex!important;flex-direction:column!important}
+.mobile-role-bar{position:relative!important;z-index:200!important;flex-shrink:0!important;touch-action:pan-x!important;pointer-events:auto!important;min-height:44px!important}
+.mrb-chip{touch-action:manipulation!important;pointer-events:auto!important;-webkit-user-select:none!important;user-select:none!important;-webkit-tap-highlight-color:transparent!important;cursor:pointer!important}
+.mrb-chip.on,.mrb-chip.active{color:#fff!important}
+.mrb-chip[data-role="user"].on,.mrb-chip[data-role="user"].active{background:#60A5FA!important;border-color:#60A5FA!important}
+.mrb-chip[data-role="sp"].on,.mrb-chip[data-role="sp"].active{background:#34D399!important;border-color:#34D399!important}
+.mrb-chip[data-role="master"].on,.mrb-chip[data-role="master"].active{background:#FBBF24!important;border-color:#FBBF24!important}
+.mrb-chip[data-role="supplier"].on,.mrb-chip[data-role="supplier"].active{background:#F472B6!important;border-color:#F472B6!important}
+.mrb-chip[data-role="admin"].on,.mrb-chip[data-role="admin"].active{background:#A78BFA!important;border-color:#A78BFA!important}
+.app-shell{flex:1!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;min-height:0!important}
+.app-content{flex:1!important;overflow:hidden!important;display:flex!important;min-height:0!important}
+.sidebar,.right-panel,.annotation-panel,.top-bar{display:none!important}
+.phone-frame-wrap{flex:1!important;width:100%!important;padding:0!important;display:flex!important}
+.phone-frame{width:100%!important;height:100%!important;border-radius:0!important;border:none!important;box-shadow:none!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
+#phone-screen{flex:1!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;min-height:0!important}
+.page{display:none!important;flex-direction:column!important;height:100%!important;overflow:hidden!important;background:#F0F2F5}
+.page.active{display:flex!important;animation:pgIn .15s ease}
+@keyframes pgIn{from{opacity:.5;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
+.scroll-content,.page-scroll{flex:1!important;overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior:contain!important}
+.scroll-content::-webkit-scrollbar,.page-scroll::-webkit-scrollbar{display:none}
+.phone-status-bar{display:none!important}
+.tab-bar{flex-shrink:0!important;padding-bottom:max(6px,env(safe-area-inset-bottom,6px))!important}
+.pay-bar,.bottom-bar,.action-bar{flex-shrink:0!important;padding-bottom:max(12px,env(safe-area-inset-bottom,12px))!important}
+.login-page{flex:1!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;padding:40px 28px!important;min-height:0!important}
+input,select,textarea{font-size:max(16px,1em)!important}
+button,[onclick]{touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important;cursor:pointer!important}
+.cat-tab{cursor:pointer!important;touch-action:manipulation!important}
+.cat-tab.active{color:var(--blue)!important;border-bottom-color:var(--blue)!important;font-weight:700!important}
+.tab-item{cursor:pointer!important;touch-action:manipulation!important}
+</style></head>
 <body>
 
 <div class="mobile-role-bar">
@@ -1847,17 +1720,183 @@ button, [onclick], .tab-item, .quick-item, .product-card, .list-item {
   <div class="login-logo">🀄</div>
   <div class="login-title">麻将机服务平台</div>
   <div class="login-sub">麻将机销售 · 零食饮料 · 维修服务<br>一体化微信小程序</div>
-  <button class="login-btn" onclick="showPage('home')">
+  <button class="login-btn" onclick="showPage('home')" style="touch-action:manipulation">
     <span>💬</span> 微信一键登录
   </button>
-  <div style="font-size:12px;opacity:0.5;color:white;margin-top:8px">
-    首次登录需绑定手机号
+  <div style="font-size:12px;opacity:0.55;color:white;margin-top:8px">首次登录需绑定手机号</div>
+  <div style="display:flex;gap:28px;margin-top:22px">
+    <span onclick="showPage('biz-apply')" style="font-size:13.5px;color:rgba(255,255,255,0.85);text-decoration:underline;cursor:pointer;touch-action:manipulation;padding:6px 0;min-height:44px;display:flex;align-items:center">商家入驻申请</span>
+    <span onclick="showPage('master-reg')" style="font-size:13.5px;color:rgba(255,255,255,0.85);text-decoration:underline;cursor:pointer;touch-action:manipulation;padding:6px 0;min-height:44px;display:flex;align-items:center">师傅注册申请</span>
   </div>
-  <div class="login-terms">
-    登录即代表您同意《用户服务协议》和《隐私政策》
-  </div>
+  <div class="login-terms">登录即代表您同意《用户服务协议》和《隐私政策》</div>
 </div>
-            </div>
+</div>
+
+<div class="page" id="page-biz-apply">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('login')" style="touch-action:manipulation">‹</div>
+  <div class="nav-title">商家入驻申请</div>
+</div>
+<div class="category-tabs" id="biz-type-tabs">
+  <div class="cat-tab active" onclick="bizTypeTab('sp',this)" style="touch-action:manipulation">服务商入驻</div>
+  <div class="cat-tab" onclick="bizTypeTab('sup',this)" style="touch-action:manipulation">供应商入驻</div>
+</div>
+<div class="scroll-content">
+  <div style="background:var(--blue-light);margin:8px 12px;border-radius:var(--radius);padding:10px 14px;font-size:12.5px;color:var(--blue);line-height:1.7">
+    📋 <strong>服务商</strong>：可销售麻将机及配件，提供维修服务。<br>
+    <strong>供应商</strong>：仅限上架零食/饮料类商品。<br>
+    提交后平台将在 1-3 个工作日内完成审核。
+  </div>
+  <div style="background:white;margin:0 12px 8px;border-radius:var(--radius);box-shadow:var(--shadow);padding:0 16px">
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">企业 / 商家名称 <span style="color:var(--red)">*</span></div>
+      <input style="width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;outline:none" placeholder="请输入营业执照上的名称">
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">法人姓名 <span style="color:var(--red)">*</span></div>
+      <input style="width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;outline:none" placeholder="请输入法人真实姓名">
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">联系手机号 <span style="color:var(--red)">*</span></div>
+      <input type="tel" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;outline:none" placeholder="请输入手机号">
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">经营城市 <span style="color:var(--red)">*</span></div>
+      <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;outline:none;background:white;-webkit-appearance:none">
+        <option>请选择服务城市</option>
+        <option>上海市</option><option>北京市</option><option>广州市</option><option>深圳市</option><option>杭州市</option>
+      </select>
+    </div>
+    <div id="biz-category-row" style="display:none;padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">经营品类（供应商）<span style="color:var(--red)">*</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <div onclick="this.classList.toggle('tag-selected')" style="padding:6px 14px;border:1.5px solid var(--border);border-radius:20px;font-size:13px;color:var(--gray4);cursor:pointer;touch-action:manipulation">饮料</div>
+        <div onclick="this.classList.toggle('tag-selected')" style="padding:6px 14px;border:1.5px solid var(--border);border-radius:20px;font-size:13px;color:var(--gray4);cursor:pointer;touch-action:manipulation">零食</div>
+        <div onclick="this.classList.toggle('tag-selected')" style="padding:6px 14px;border:1.5px solid var(--border);border-radius:20px;font-size:13px;color:var(--gray4);cursor:pointer;touch-action:manipulation">坚果</div>
+      </div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:8px">营业执照照片 <span style="color:var(--red)">*</span></div>
+      <div onclick="showToast('请选择营业执照照片')" style="width:80px;height:80px;border:1.5px dashed var(--border);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;touch-action:manipulation;color:var(--gray4)">
+        <div style="font-size:24px">📷</div><div style="font-size:10px">上传照片</div>
+      </div>
+    </div>
+    <div style="padding:14px 0">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:8px">身份证正反面 <span style="color:var(--red)">*</span></div>
+      <div style="display:flex;gap:10px">
+        <div onclick="showToast('上传身份证正面')" style="flex:1;height:70px;border:1.5px dashed var(--border);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;touch-action:manipulation;color:var(--gray4)">
+          <div style="font-size:18px">🪪</div><div style="font-size:10px">正面</div>
+        </div>
+        <div onclick="showToast('上传身份证反面')" style="flex:1;height:70px;border:1.5px dashed var(--border);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;touch-action:manipulation;color:var(--gray4)">
+          <div style="font-size:18px">🪪</div><div style="font-size:10px">反面</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="margin:0 12px;font-size:12px;color:var(--gray4);line-height:1.7">
+    · 提交后不可修改，请确认信息准确<br>
+    · 审核通过后系统自动开通账号并发送通知<br>
+    · 如有疑问请联系客服：400-888-8888
+  </div>
+  <div style="height:16px"></div>
+</div>
+<div style="padding:12px 16px;background:white;border-top:1px solid var(--border);flex-shrink:0;padding-bottom:max(12px,env(safe-area-inset-bottom,12px))">
+  <button class="btn btn-primary" style="width:100%;font-size:15px;padding:13px;touch-action:manipulation" onclick="showToast('✅ 申请已提交！平台将在 1-3 个工作日内审核');showPage('login')">提交入驻申请</button>
+</div>
+</div>
+
+<div class="page" id="page-master-reg">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('login')" style="touch-action:manipulation">‹</div>
+  <div class="nav-title">师傅注册申请</div>
+</div>
+<div class="scroll-content">
+  <!-- 5-step flow -->
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px">
+    <div style="font-size:12px;color:var(--gray4);text-align:center;margin-bottom:12px">注册流程（共5步）</div>
+    <div style="display:flex;align-items:center">
+      <div style="display:flex;flex-direction:column;align-items:center;flex:1">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--blue);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">1</div>
+        <div style="font-size:9.5px;color:var(--blue);margin-top:4px;text-align:center;font-weight:600">提交<br>申请</div>
+      </div>
+      <div style="flex:1;height:2px;background:var(--border);margin-bottom:16px"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;flex:1">
+        <div style="width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--gray5)">2</div>
+        <div style="font-size:9.5px;color:var(--gray4);margin-top:4px;text-align:center">管理员<br>审核</div>
+      </div>
+      <div style="flex:1;height:2px;background:var(--border);margin-bottom:16px"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;flex:1">
+        <div style="width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--gray5)">3</div>
+        <div style="font-size:9.5px;color:var(--gray4);margin-top:4px;text-align:center">申请<br>挂靠</div>
+      </div>
+      <div style="flex:1;height:2px;background:var(--border);margin-bottom:16px"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;flex:1">
+        <div style="width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--gray5)">4</div>
+        <div style="font-size:9.5px;color:var(--gray4);margin-top:4px;text-align:center">服务商<br>审核</div>
+      </div>
+      <div style="flex:1;height:2px;background:var(--border);margin-bottom:16px"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;flex:1">
+        <div style="width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--gray5)">5</div>
+        <div style="font-size:9.5px;color:var(--gray4);margin-top:4px;text-align:center">开始<br>接单</div>
+      </div>
+    </div>
+  </div>
+  <div style="background:white;margin:0 12px 8px;border-radius:var(--radius);box-shadow:var(--shadow);padding:0 16px">
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">真实姓名 <span style="color:var(--red)">*</span></div>
+      <input style="width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;outline:none" placeholder="与身份证一致">
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">手机号 <span style="color:var(--red)">*</span></div>
+      <input type="tel" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;outline:none" placeholder="11位手机号">
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">维修技能 <span style="color:var(--red)">*</span>（可多选）</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <div onclick="this.style.background=this.style.background?'':'var(--blue-light)';this.style.borderColor=this.style.borderColor?'':'var(--blue)';this.style.color=this.style.color?'':'var(--blue)'" style="padding:6px 14px;border:1.5px solid var(--border);border-radius:20px;font-size:13px;color:var(--gray4);cursor:pointer;touch-action:manipulation">不上牌维修</div>
+        <div onclick="this.style.background='var(--blue-light)';this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" style="padding:6px 14px;border:1.5px solid var(--blue);border-radius:20px;font-size:13px;color:var(--blue);background:var(--blue-light);cursor:pointer;touch-action:manipulation">换桌面维修</div>
+        <div onclick="this.style.background='var(--blue-light)';this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" style="padding:6px 14px;border:1.5px solid var(--border);border-radius:20px;font-size:13px;color:var(--gray4);cursor:pointer;touch-action:manipulation">安装调试</div>
+        <div onclick="this.style.background='var(--blue-light)';this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" style="padding:6px 14px;border:1.5px solid var(--border);border-radius:20px;font-size:13px;color:var(--gray4);cursor:pointer;touch-action:manipulation">卡牌故障</div>
+        <div onclick="this.style.background='var(--blue-light)';this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" style="padding:6px 14px;border:1.5px solid var(--border);border-radius:20px;font-size:13px;color:var(--gray4);cursor:pointer;touch-action:manipulation">综合维修</div>
+      </div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:8px">身份证正反面 <span style="color:var(--red)">*</span></div>
+      <div style="display:flex;gap:10px">
+        <div onclick="showToast('上传身份证正面')" style="flex:1;height:70px;border:1.5px dashed var(--border);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;touch-action:manipulation;color:var(--gray4)">
+          <div style="font-size:18px">🪪</div><div style="font-size:10px">正面</div>
+        </div>
+        <div onclick="showToast('上传身份证反面')" style="flex:1;height:70px;border:1.5px dashed var(--border);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;touch-action:manipulation;color:var(--gray4)">
+          <div style="font-size:18px">🪪</div><div style="font-size:10px">反面</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:14px 0">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:8px">技能证书（选填，最多3张）</div>
+      <div onclick="showToast('上传技能证书')" style="width:72px;height:72px;border:1.5px dashed var(--border);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;touch-action:manipulation;color:var(--gray4)">
+        <div style="font-size:22px">📜</div><div style="font-size:10px">上传</div>
+      </div>
+    </div>
+  </div>
+  <div style="margin:0 12px;font-size:12px;color:var(--gray4);line-height:1.7">
+    · 注册后等待管理员审核（1-3个工作日）<br>
+    · 审核通过后方可申请挂靠服务商并接单<br>
+    · 一个师傅可同时挂靠多个服务商
+  </div>
+  <div style="height:16px"></div>
+</div>
+<div style="padding:12px 16px;background:white;border-top:1px solid var(--border);flex-shrink:0;padding-bottom:max(12px,env(safe-area-inset-bottom,12px))">
+  <button class="btn btn-primary" style="width:100%;font-size:15px;padding:13px;touch-action:manipulation" onclick="showToast('✅ 注册申请已提交！等待管理员审核');showPage('login')">提交注册申请</button>
+</div>
+</div>
 
             <!-- ══════════════════════════════════════
    C端：首页
@@ -2640,11 +2679,11 @@ button, [onclick], .tab-item, .quick-item, .product-card, .list-item {
   </div>
 </div>
 <div class="tab-bar">
-  <div class="tab-item active"><div class="tab-icon">🏠</div>首页</div>
-  <div class="tab-item" onclick="showPage('sp-goods')"><div class="tab-icon">📦</div>商品</div>
-  <div class="tab-item" onclick="showPage('sp-grab')"><div class="tab-icon">⚡</div>抢单</div>
-  <div class="tab-item"><div class="tab-icon">📄</div>订单</div>
-  <div class="tab-item"><div class="tab-icon">👤</div>我的</div>
+  <div class="tab-item active" onclick="showPage('sp-home')" style="touch-action:manipulation"><div class="tab-icon">🏠</div>首页</div>
+  <div class="tab-item" onclick="showPage('sp-goods')" style="touch-action:manipulation"><div class="tab-icon">📦</div>商品</div>
+  <div class="tab-item" onclick="showPage('sp-grab')" style="touch-action:manipulation"><div class="tab-icon">⚡</div>抢单</div>
+  <div class="tab-item" onclick="showPage('sp-orders')" style="touch-action:manipulation"><div class="tab-icon">📄</div>订单</div>
+  <div class="tab-item" onclick="showPage('sp-mine')" style="touch-action:manipulation"><div class="tab-icon">👤</div>我的</div>
 </div>
             </div>
 
@@ -2817,54 +2856,436 @@ button, [onclick], .tab-item, .quick-item, .product-card, .list-item {
   <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
 </div>
 <div class="nav-bar white">
-  <div class="nav-back" onclick="showPage('sp-home')">‹</div>
+  <div class="nav-back" onclick="showPage('sp-home')" style="touch-action:manipulation">‹</div>
   <div class="nav-title">商品管理</div>
-  <button class="btn btn-primary btn-sm">+ 上架</button>
+  <button onclick="showPage('sp-goods-add')" style="background:var(--blue);color:white;border:none;border-radius:6px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;gap:4px">+ 上架</button>
 </div>
 <div class="category-tabs">
-  <div class="cat-tab active">全部</div>
-  <div class="cat-tab">在售</div>
-  <div class="cat-tab">审核中</div>
-  <div class="cat-tab">已下架</div>
+  <div class="cat-tab active" onclick="spGoodsTab('all',this)" style="touch-action:manipulation">全部</div>
+  <div class="cat-tab" onclick="spGoodsTab('onsale',this)" style="touch-action:manipulation">在售</div>
+  <div class="cat-tab" onclick="spGoodsTab('review',this)" style="touch-action:manipulation">审核中</div>
+  <div class="cat-tab" onclick="spGoodsTab('off',this)" style="touch-action:manipulation">已下架</div>
 </div>
-<div class="scroll-content">
-  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+<div class="scroll-content" id="sp-goods-list">
+
+  <!-- 商品1: 在售 -->
+  <div class="sp-goods-item" data-gstatus="onsale" style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
     <div style="display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
-      <div style="width:60px;height:60px;background:var(--gray7);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🀄</div>
-      <div style="flex:1">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div style="font-size:13px;font-weight:600;color:var(--gray1);flex:1">四口全自动麻将机 豪华版</div>
-          <span class="tag tag-green">在售</span>
+      <div style="width:68px;height:68px;background:var(--gray7);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0">🀄</div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:4px">
+          <div style="font-size:13px;font-weight:600;color:var(--gray1);line-height:1.3;flex:1">四口全自动麻将机 豪华版</div>
+          <span style="background:var(--green-light);color:var(--green);font-size:11px;padding:2px 7px;border-radius:10px;font-weight:600;flex-shrink:0">在售</span>
         </div>
-        <div style="font-size:12px;color:var(--red);font-weight:700;margin-top:4px">¥2,980</div>
-        <div style="font-size:11px;color:var(--gray4);margin-top:2px">库存：15件 &nbsp;|&nbsp; 月销：28</div>
+        <div style="font-size:13px;color:var(--red);font-weight:700">¥2,980</div>
+        <div style="font-size:11px;color:var(--gray4);margin-top:3px">库存：15件 &nbsp;|&nbsp; 月销：28件</div>
       </div>
     </div>
-    <div style="display:flex;gap:8px;padding:8px 14px;background:var(--gray9)">
-      <button class="btn btn-sm btn-outline" style="flex:1">编辑</button>
-      <button class="btn btn-sm btn-ghost" style="flex:1">下架</button>
+    <div style="display:flex;border-top:1px solid var(--border)">
+      <button onclick="showPage('sp-goods-add')" style="flex:1;padding:10px;font-size:13px;color:var(--blue);background:none;border:none;border-right:1px solid var(--border);cursor:pointer;touch-action:manipulation;font-family:inherit">✏️ 编辑</button>
+      <button onclick="showToast('已下架，商品不再展示给买家')" style="flex:1;padding:10px;font-size:13px;color:var(--orange);background:none;border:none;border-right:1px solid var(--border);cursor:pointer;touch-action:manipulation;font-family:inherit">⬇️ 下架</button>
+      <button onclick="showToast('查看商品销售数据')" style="flex:1;padding:10px;font-size:13px;color:var(--gray3);background:none;border:none;cursor:pointer;touch-action:manipulation;font-family:inherit">📊 数据</button>
     </div>
   </div>
 
-  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+  <!-- 商品2: 在售 -->
+  <div class="sp-goods-item" data-gstatus="onsale" style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
     <div style="display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
-      <div style="width:60px;height:60px;background:var(--gray7);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🎮</div>
-      <div style="flex:1">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div style="font-size:13px;font-weight:600;color:var(--gray1);flex:1">旋翼三口麻将机 新款</div>
-          <span class="tag tag-orange">审核中</span>
+      <div style="width:68px;height:68px;background:var(--gray7);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0">💡</div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:4px">
+          <div style="font-size:13px;font-weight:600;color:var(--gray1);line-height:1.3;flex:1">麻将机吸烟灯 防雾款</div>
+          <span style="background:var(--green-light);color:var(--green);font-size:11px;padding:2px 7px;border-radius:10px;font-weight:600;flex-shrink:0">在售</span>
         </div>
-        <div style="font-size:12px;color:var(--red);font-weight:700;margin-top:4px">¥1,880</div>
-        <div style="font-size:11px;color:var(--orange);margin-top:2px">⏳ 等待平台管理员审核</div>
+        <div style="font-size:13px;color:var(--red);font-weight:700">¥198</div>
+        <div style="font-size:11px;color:var(--gray4);margin-top:3px">库存：86件 &nbsp;|&nbsp; 月销：34件</div>
       </div>
     </div>
-    <div style="display:flex;gap:8px;padding:8px 14px;background:var(--gray9)">
-      <button class="btn btn-sm btn-ghost btn-disabled" style="flex:1">审核中不可编辑</button>
+    <div style="display:flex;border-top:1px solid var(--border)">
+      <button onclick="showPage('sp-goods-add')" style="flex:1;padding:10px;font-size:13px;color:var(--blue);background:none;border:none;border-right:1px solid var(--border);cursor:pointer;touch-action:manipulation;font-family:inherit">✏️ 编辑</button>
+      <button onclick="showToast('已下架')" style="flex:1;padding:10px;font-size:13px;color:var(--orange);background:none;border:none;border-right:1px solid var(--border);cursor:pointer;touch-action:manipulation;font-family:inherit">⬇️ 下架</button>
+      <button onclick="showToast('查看数据')" style="flex:1;padding:10px;font-size:13px;color:var(--gray3);background:none;border:none;cursor:pointer;touch-action:manipulation;font-family:inherit">📊 数据</button>
     </div>
   </div>
-  <div style="height:20px"></div>
+
+  <!-- 商品3: 审核中 -->
+  <div class="sp-goods-item" data-gstatus="review" style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="width:68px;height:68px;background:var(--gray7);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0">🎮</div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:4px">
+          <div style="font-size:13px;font-weight:600;color:var(--gray1);line-height:1.3;flex:1">旋翼三口麻将机 新款</div>
+          <span style="background:var(--orange-light);color:var(--orange);font-size:11px;padding:2px 7px;border-radius:10px;font-weight:600;flex-shrink:0">审核中</span>
+        </div>
+        <div style="font-size:13px;color:var(--red);font-weight:700">¥1,880</div>
+        <div style="font-size:11px;color:var(--orange);margin-top:3px">⏳ 等待平台管理员审核，审核通过后上架</div>
+      </div>
+    </div>
+    <div style="display:flex;border-top:1px solid var(--border)">
+      <button style="flex:1;padding:10px;font-size:12px;color:var(--gray5);background:none;border:none;border-right:1px solid var(--border);cursor:not-allowed;font-family:inherit" disabled>✏️ 编辑（审核中不可编辑）</button>
+      <button onclick="showToast('已撤回审核申请')" style="flex:1;padding:10px;font-size:13px;color:var(--red);background:none;border:none;cursor:pointer;touch-action:manipulation;font-family:inherit">❌ 撤回申请</button>
+    </div>
+  </div>
+
+  <!-- 商品4: 已下架 -->
+  <div class="sp-goods-item" data-gstatus="off" style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;opacity:0.85">
+    <div style="display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="width:68px;height:68px;background:var(--gray7);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;filter:grayscale(0.5)">🪑</div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:4px">
+          <div style="font-size:13px;font-weight:600;color:var(--gray4);line-height:1.3;flex:1">麻将桌专用椅 加厚款</div>
+          <span style="background:var(--gray7);color:var(--gray4);font-size:11px;padding:2px 7px;border-radius:10px;font-weight:600;flex-shrink:0">已下架</span>
+        </div>
+        <div style="font-size:13px;color:var(--gray5);font-weight:700">¥480</div>
+        <div style="font-size:11px;color:var(--gray4);margin-top:3px">库存：50件 &nbsp;|&nbsp; 月销：0件</div>
+      </div>
+    </div>
+    <div style="display:flex;border-top:1px solid var(--border)">
+      <button onclick="showPage('sp-goods-add')" style="flex:1;padding:10px;font-size:13px;color:var(--blue);background:none;border:none;border-right:1px solid var(--border);cursor:pointer;touch-action:manipulation;font-family:inherit">✏️ 编辑</button>
+      <button onclick="showToast('✅ 已提交上架审核，等待管理员审核通过')" style="flex:1;padding:10px;font-size:13px;color:var(--green);background:none;border:none;border-right:1px solid var(--border);cursor:pointer;touch-action:manipulation;font-family:inherit">⬆️ 申请上架</button>
+      <button onclick="showToast('商品已删除')" style="flex:1;padding:10px;font-size:13px;color:var(--red);background:none;border:none;cursor:pointer;touch-action:manipulation;font-family:inherit">🗑 删除</button>
+    </div>
+  </div>
+
+  <div style="height:12px"></div>
 </div>
-            </div>
+</div>
+
+<div class="page" id="page-sp-goods-add">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('sp-goods')" style="touch-action:manipulation">‹</div>
+  <div class="nav-title">上架商品</div>
+</div>
+<div class="scroll-content">
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);padding:0 16px">
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:8px">商品图片（最多6张）<span style="color:var(--red)">*</span></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <div onclick="showToast('选择商品图片')" style="width:72px;height:72px;border:1.5px dashed var(--border);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;touch-action:manipulation;color:var(--gray4)">
+          <div style="font-size:22px">📷</div><div style="font-size:10px">上传图片</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">商品名称 <span style="color:var(--red)">*</span></div>
+      <input style="width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;outline:none" placeholder="如：四口全自动麻将机 豪华版">
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">商品分类 <span style="color:var(--red)">*</span></div>
+      <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;outline:none;background:white;-webkit-appearance:none">
+        <option>请选择分类</option>
+        <option>麻将机</option><option>吸烟灯</option><option>桌椅</option><option>配件</option>
+      </select>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">销售价格（元）<span style="color:var(--red)">*</span></div>
+      <div style="display:flex;align-items:center;gap:4px;border:1px solid var(--border);border-radius:6px;padding:10px 12px">
+        <span style="color:var(--red);font-weight:700;font-size:16px">¥</span>
+        <input type="number" style="flex:1;border:none;font-size:16px;outline:none;color:var(--gray1)" placeholder="0.00">
+      </div>
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">库存数量 <span style="color:var(--red)">*</span></div>
+      <input type="number" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;outline:none" placeholder="请输入库存数量">
+    </div>
+    <div style="padding:14px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">规格/型号</div>
+      <input style="width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;outline:none" placeholder="如：棕色木纹/四口标准（选填）">
+    </div>
+    <div style="padding:14px 0">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:6px">商品描述</div>
+      <textarea style="width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;outline:none;resize:none;min-height:80px;font-family:inherit" placeholder="商品详情（选填）"></textarea>
+    </div>
+  </div>
+  <div style="margin:0 12px;font-size:12px;color:var(--gray4);line-height:1.7">
+    · 提交后进入审核队列，管理员审核通过后自动上架至 C 端统一商城<br>
+    · C 端展示不会显示商家信息
+  </div>
+  <div style="height:16px"></div>
+</div>
+<div style="padding:12px 16px;background:white;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0;padding-bottom:max(12px,env(safe-area-inset-bottom,12px))">
+  <button style="flex:1;padding:11px;background:var(--gray8);color:var(--gray3);border:1px solid var(--border);border-radius:var(--radius);font-size:14px;font-weight:500;cursor:pointer;touch-action:manipulation;font-family:inherit" onclick="showToast('草稿已保存')">保存草稿</button>
+  <button style="flex:1.5;padding:11px;background:var(--blue);color:white;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;touch-action:manipulation;font-family:inherit" onclick="showToast('✅ 已提交审核！等待管理员审核通过后上架');showPage('sp-goods')">提交审核上架</button>
+</div>
+</div>
+
+<div class="page" id="page-sp-orders">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('sp-home')" style="touch-action:manipulation">‹</div>
+  <div class="nav-title">商品订单管理</div>
+  <div style="font-size:12px;color:var(--blue);cursor:pointer;touch-action:manipulation" onclick="showToast('数据已导出')">导出</div>
+</div>
+<div class="category-tabs" id="sp-orders-tabs">
+  <div class="cat-tab active" onclick="spOrdersTab('all',this)" style="touch-action:manipulation">全部</div>
+  <div class="cat-tab" onclick="spOrdersTab('pending',this)" style="touch-action:manipulation">待发货 <span style="background:var(--red);color:white;font-size:10px;padding:0 4px;border-radius:8px;margin-left:2px">3</span></div>
+  <div class="cat-tab" onclick="spOrdersTab('shipped',this)" style="touch-action:manipulation">已发货</div>
+  <div class="cat-tab" onclick="spOrdersTab('done',this)" style="touch-action:manipulation">已完成</div>
+  <div class="cat-tab" onclick="spOrdersTab('after',this)" style="touch-action:manipulation">售后</div>
+</div>
+
+<div class="scroll-content" id="sp-orders-list">
+
+  <!-- 待发货订单 -->
+  <div class="sp-order-card" data-status="pending" style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;cursor:pointer" onclick="showPage('sp-order-detail')">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--gray9);border-bottom:1px solid var(--border)">
+      <span style="font-size:11.5px;font-weight:600;color:var(--gray3)">DD2024120001</span>
+      <span style="font-size:11.5px;color:var(--orange);font-weight:600">待发货</span>
+    </div>
+    <div style="display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="width:52px;height:52px;background:var(--gray7);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">🀄</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:500;color:var(--gray1);margin-bottom:2px">四口全自动麻将机 豪华版</div>
+        <div style="font-size:11px;color:var(--gray4)">棕色木纹/四口标准 × 1</div>
+        <div style="font-size:13px;color:var(--red);font-weight:700;margin-top:4px">¥2,980</div>
+      </div>
+    </div>
+    <div style="padding:8px 14px;font-size:11.5px;color:var(--gray4);border-bottom:1px solid var(--border)">
+      买家：张** &nbsp; 📱 138****0001 &nbsp;|&nbsp; 2024-12-01 10:23
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px" onclick="event.stopPropagation()">
+      <span style="font-size:12px;color:var(--gray4)">实付：<strong style="color:var(--red);font-size:14px">¥2,980</strong></span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-sm btn-outline" onclick="showToast('请填写快递单号后发货')" style="touch-action:manipulation">填写发货</button>
+        <button class="btn btn-sm btn-primary" onclick="showToast('✅ 已确认发货，买家已收到通知')" style="touch-action:manipulation">确认发货</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 待发货订单2 -->
+  <div class="sp-order-card" data-status="pending" style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;cursor:pointer" onclick="showPage('sp-order-detail')">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--gray9);border-bottom:1px solid var(--border)">
+      <span style="font-size:11.5px;font-weight:600;color:var(--gray3)">DD2024120003</span>
+      <span style="font-size:11.5px;color:var(--orange);font-weight:600">待发货</span>
+    </div>
+    <div style="display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="width:52px;height:52px;background:var(--gray7);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">🪑</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:500;color:var(--gray1);margin-bottom:2px">麻将桌专用椅 加厚款</div>
+        <div style="font-size:11px;color:var(--gray4)">棕色木纹 × 4</div>
+        <div style="font-size:13px;color:var(--red);font-weight:700;margin-top:4px">¥480 × 4</div>
+      </div>
+    </div>
+    <div style="padding:8px 14px;font-size:11.5px;color:var(--gray4);border-bottom:1px solid var(--border)">
+      买家：王** &nbsp; 📱 136****7788 &nbsp;|&nbsp; 2024-12-03 09:15
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px" onclick="event.stopPropagation()">
+      <span style="font-size:12px;color:var(--gray4)">实付：<strong style="color:var(--red);font-size:14px">¥1,920</strong></span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-sm btn-outline" onclick="showToast('请填写快递单号后发货')" style="touch-action:manipulation">填写发货</button>
+        <button class="btn btn-sm btn-primary" onclick="showToast('✅ 已确认发货')" style="touch-action:manipulation">确认发货</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 已发货订单 -->
+  <div class="sp-order-card" data-status="shipped" style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;cursor:pointer" onclick="showPage('sp-order-detail')">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--gray9);border-bottom:1px solid var(--border)">
+      <span style="font-size:11.5px;font-weight:600;color:var(--gray3)">DD2024120008</span>
+      <span style="font-size:11.5px;color:var(--blue);font-weight:600">已发货</span>
+    </div>
+    <div style="display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="width:52px;height:52px;background:var(--gray7);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">💡</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:500;color:var(--gray1);margin-bottom:2px">麻将机吸烟灯 防雾款</div>
+        <div style="font-size:11px;color:var(--gray4)">标准尺寸 × 2</div>
+        <div style="font-size:13px;color:var(--red);font-weight:700;margin-top:4px">¥198 × 2</div>
+      </div>
+    </div>
+    <div style="padding:8px 14px;font-size:11.5px;color:var(--gray4);border-bottom:1px solid var(--border)">
+      买家：李** &nbsp; 📱 139****5566 &nbsp;|&nbsp; 快递：顺丰 SF123456789
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px" onclick="event.stopPropagation()">
+      <span style="font-size:12px;color:var(--gray4)">实付：<strong style="color:var(--red);font-size:14px">¥396</strong></span>
+      <button class="btn btn-sm btn-ghost" onclick="showToast('查看物流详情')" style="touch-action:manipulation">查看物流</button>
+    </div>
+  </div>
+
+  <!-- 已完成订单 -->
+  <div class="sp-order-card" data-status="done" style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;cursor:pointer" onclick="showPage('sp-order-detail')">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--gray9);border-bottom:1px solid var(--border)">
+      <span style="font-size:11.5px;font-weight:600;color:var(--gray3)">DD2024110028</span>
+      <span style="font-size:11.5px;color:var(--green);font-weight:600">已完成</span>
+    </div>
+    <div style="display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="width:52px;height:52px;background:var(--gray7);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">🀄</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:500;color:var(--gray1);margin-bottom:2px">四口全自动麻将机 豪华版</div>
+        <div style="font-size:11px;color:var(--gray4)">黑色简约/四口标准 × 1</div>
+        <div style="font-size:13px;color:var(--red);font-weight:700;margin-top:4px">¥2,980</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px" onclick="event.stopPropagation()">
+      <span style="font-size:12px;color:var(--gray4)">实付：<strong style="color:var(--red);font-size:14px">¥2,980</strong></span>
+      <button class="btn btn-sm btn-ghost" onclick="showToast('联系买家')" style="touch-action:manipulation">联系买家</button>
+    </div>
+  </div>
+
+  <div style="height:12px"></div>
+</div>
+
+<div class="tab-bar">
+  <div class="tab-item" onclick="showPage('sp-home')" style="touch-action:manipulation"><div class="tab-icon">🏠</div>首页</div>
+  <div class="tab-item" onclick="showPage('sp-goods')" style="touch-action:manipulation"><div class="tab-icon">📦</div>商品</div>
+  <div class="tab-item" onclick="showPage('sp-grab')" style="touch-action:manipulation"><div class="tab-icon">⚡</div>抢单</div>
+  <div class="tab-item active" style="touch-action:manipulation"><div class="tab-icon">📄</div>订单</div>
+  <div class="tab-item" onclick="showPage('sp-mine')" style="touch-action:manipulation"><div class="tab-icon">👤</div>我的</div>
+</div>
+</div>
+
+<div class="page" id="page-sp-mine">
+<div class="phone-status-bar">
+  <span class="status-time">9:41</span>
+  <span class="status-icons">📶 🔋</span>
+</div>
+<div style="background:linear-gradient(135deg,#52C41A,#237804);padding:20px 16px 30px;color:white;flex-shrink:0">
+  <div style="display:flex;align-items:center;gap:14px">
+    <div style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:26px;border:2px solid rgba(255,255,255,0.4)">🏪</div>
+    <div>
+      <div style="font-size:17px;font-weight:700">麻将王服务商</div>
+      <div style="font-size:12px;opacity:0.85;margin-top:2px">📱 138****6666 &nbsp;|&nbsp; ID: SP10086</div>
+      <div style="background:rgba(255,255,255,0.25);color:white;font-size:11px;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:5px">服务商</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;margin-top:16px">
+    <div><div style="font-size:18px;font-weight:700">¥23,800</div><div style="font-size:11px;opacity:0.75;margin-top:2px">本月营业额</div></div>
+    <div style="border-left:1px solid rgba(255,255,255,0.3);border-right:1px solid rgba(255,255,255,0.3)">
+      <div style="font-size:18px;font-weight:700">128</div><div style="font-size:11px;opacity:0.75;margin-top:2px">累计订单</div>
+    </div>
+    <div><div style="font-size:18px;font-weight:700">4.8</div><div style="font-size:11px;opacity:0.75;margin-top:2px">服务评分</div></div>
+  </div>
+</div>
+<div class="scroll-content">
+  <div style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;position:relative;z-index:1;margin-top:-16px">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:13px;font-weight:600">💰 资金管理</div>
+    </div>
+    <div style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:12px;color:var(--gray4)">可提现余额</div>
+        <div style="font-size:22px;font-weight:700;color:var(--red);margin-top:2px">¥12,680.00</div>
+      </div>
+      <button onclick="showToast('提现申请已提交')" style="background:var(--blue);color:white;border:none;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;font-family:inherit">申请提现</button>
+    </div>
+    <div onclick="showToast('查看提现记录')" style="padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">提现记录</span><span style="color:var(--gray4)">›</span>
+    </div>
+  </div>
+  <div style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600">🛠 商家服务</div>
+    <div onclick="showPage('sp-master')" style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">👨‍🔧 师傅管理</span><span style="color:var(--gray4)">›</span>
+    </div>
+    <div onclick="showToast('数据统计')" style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">📊 数据统计</span><span style="color:var(--gray4)">›</span>
+    </div>
+    <div onclick="showToast('店铺设置')" style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">⚙️ 店铺设置</span><span style="color:var(--gray4)">›</span>
+    </div>
+    <div onclick="showToast('联系客服：400-888-8888')" style="padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">
+      <span style="font-size:13px">💬 联系平台</span><span style="color:var(--gray4)">›</span>
+    </div>
+  </div>
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow)">
+    <div onclick="showPage('login');showToast('已退出登录')" style="text-align:center;padding:14px;color:var(--red);font-size:14px;font-weight:500;cursor:pointer;touch-action:manipulation">退出登录</div>
+  </div>
+  <div style="height:12px"></div>
+</div>
+<div class="tab-bar">
+  <div class="tab-item" onclick="showPage('sp-home')" style="touch-action:manipulation"><div class="tab-icon">🏠</div>首页</div>
+  <div class="tab-item" onclick="showPage('sp-goods')" style="touch-action:manipulation"><div class="tab-icon">📦</div>商品</div>
+  <div class="tab-item" onclick="showPage('sp-grab')" style="touch-action:manipulation"><div class="tab-icon">⚡</div>抢单</div>
+  <div class="tab-item" onclick="showPage('sp-orders')" style="touch-action:manipulation"><div class="tab-icon">📄</div>订单</div>
+  <div class="tab-item active"><div class="tab-icon">👤</div>我的</div>
+</div>
+</div>
+
+<div class="page" id="page-sp-order-detail">
+<div class="phone-status-bar white-bar">
+  <span class="status-time" style="color:var(--gray1)">9:41</span>
+  <span class="status-icons" style="color:var(--gray1)">📶 🔋</span>
+</div>
+<div class="nav-bar white">
+  <div class="nav-back" onclick="showPage('sp-orders')" style="touch-action:manipulation">‹</div>
+  <div class="nav-title">订单详情</div>
+</div>
+<div class="scroll-content">
+  <!-- 状态横幅 -->
+  <div style="background:linear-gradient(135deg,#FA8C16,#D46B08);padding:14px 16px;color:white;flex-shrink:0">
+    <div style="font-size:15px;font-weight:700;margin-bottom:3px">📦 待发货</div>
+    <div style="font-size:12px;opacity:0.85">请尽快安排发货，买家正在等待</div>
+  </div>
+  <!-- 买家信息 -->
+  <div style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px">
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--gray2)">📍 收货信息</div>
+    <div style="font-size:14px;font-weight:700;margin-bottom:3px">张三 &nbsp; 138****0001</div>
+    <div style="font-size:12.5px;color:var(--gray4);line-height:1.5">上海市浦东新区张江高科技园区博云路2号</div>
+  </div>
+  <!-- 商品信息 -->
+  <div style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--gray4)">📦 统一商城（不展示商家信息）</div>
+    <div style="display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)">
+      <div style="width:60px;height:60px;background:var(--gray7);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🀄</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:500;margin-bottom:3px">四口全自动麻将机 豪华版</div>
+        <div style="font-size:11.5px;color:var(--gray4)">棕色木纹/四口标准</div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px">
+          <span style="font-size:14px;color:var(--red);font-weight:700">¥2,980</span>
+          <span style="font-size:12px;color:var(--gray4)">× 1</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:10px 14px;display:flex;justify-content:flex-end;align-items:center;gap:4px;font-size:13px;color:var(--gray3)">
+      共1件 &nbsp; 实付：<span style="font-size:16px;color:var(--red);font-weight:700">¥2,980</span>
+    </div>
+  </div>
+  <!-- 订单信息 -->
+  <div style="background:white;margin:8px 12px 0;border-radius:var(--radius);box-shadow:var(--shadow)">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600">订单信息</div>
+    <div style="padding:0 16px">
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px">
+        <span style="color:var(--gray4)">订单编号</span><span style="color:var(--gray2)">DD2024120001</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px">
+        <span style="color:var(--gray4)">下单时间</span><span style="color:var(--gray2)">2024-12-01 10:23</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px">
+        <span style="color:var(--gray4)">支付方式</span><span style="color:var(--gray2)">微信支付</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:13px">
+        <span style="color:var(--gray4)">商品金额</span><span style="color:var(--red);font-weight:700">¥2,980</span>
+      </div>
+    </div>
+  </div>
+  <!-- 发货区 -->
+  <div style="background:white;margin:8px 12px;border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px">
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px">发货信息</div>
+    <div style="margin-bottom:8px">
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:5px">快递公司</div>
+      <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 12px;font-size:16px;outline:none;background:white;-webkit-appearance:none">
+        <option>请选择快递公司</option>
+        <option>顺丰速运</option><option>中通快递</option><option>圆通速递</option><option>韵达快递</option>
+      </select>
+    </div>
+    <div>
+      <div style="font-size:12px;color:var(--gray4);margin-bottom:5px">快递单号</div>
+      <input style="width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 12px;font-size:16px;outline:none" placeholder="请输入快递单号">
+    </div>
+  </div>
+  <div style="height:12px"></div>
+</div>
+<div style="padding:12px 16px;background:white;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0;padding-bottom:max(12px,env(safe-area-inset-bottom,12px))">
+  <button class="btn btn-ghost" style="flex:1;touch-action:manipulation" onclick="showToast('联系买家：138****0001')">联系买家</button>
+  <button class="btn btn-primary" style="flex:1.5;touch-action:manipulation" onclick="showToast('✅ 已确认发货！买家已收到通知');showPage('sp-orders')">确认发货</button>
+</div>
+</div>
 
             <!-- ══════════════════════════════════════
    B端：维修师傅首页
@@ -4000,148 +4421,134 @@ const annotations = {
   ],
 };
 
-// ─── PAGE ENGINE ───────────────────────────────────────────────
+// ─── PAGE ENGINE ──────────────────────────────────────────────────
 var currentPage = 'login';
 
 function showPage(id) {
-  // Hide all
-  document.querySelectorAll('.page').forEach(function(p) {
-    p.classList.remove('active');
-  });
-  // Show target
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
   var target = document.getElementById('page-' + id);
-  if (!target) { console.warn('Page not found: page-' + id); return; }
+  if (!target) { console.warn('showPage: page not found → page-' + id); return; }
   target.classList.add('active');
   currentPage = id;
-  // Scroll scroll-areas to top
-  target.querySelectorAll('.page-scroll, .scroll-content').forEach(function(el) {
-    el.scrollTop = 0;
-  });
-  // Update annotations panel (desktop only, no-op on mobile)
-  if (typeof updateAnnotations === 'function') updateAnnotations(id);
+  target.querySelectorAll('.scroll-content, .page-scroll').forEach(function(el) { el.scrollTop = 0; });
 }
 
 function updateAnnotations(id) {
-  var container = document.getElementById('anno-content');
-  if (!container) return;
+  var c = document.getElementById('anno-content');
+  if (!c) return;
   var data = annotations[id] || [];
-  if (!data.length) {
-    container.innerHTML = '<div style="font-size:12px;color:#bfbfbf;padding:8px 0">暂无标注数据</div>';
-    return;
-  }
-  var tagMap = { action: ['tag-action','操作'], logic: ['tag-logic','逻辑'], error: ['tag-error','边界'], note: ['tag-note','说明'] };
-  container.innerHTML = data.map(function(item) {
-    var tInfo = tagMap[item.tag] || ['tag-note','说明'];
-    return '<div class="anno-item"><span class="anno-tag ' + tInfo[0] + '">' + tInfo[1] + '</span><div class="anno-text">' + item.text + '</div></div>';
+  if (!data.length) { c.innerHTML = '<div style="font-size:12px;color:#bfbfbf;padding:8px 0">暂无标注</div>'; return; }
+  var tm = { action:['tag-action','操作'], logic:['tag-logic','逻辑'], error:['tag-error','边界'], note:['tag-note','说明'] };
+  c.innerHTML = data.map(function(item) {
+    var t = tm[item.tag] || ['tag-note','说明'];
+    return '<div class="anno-item"><span class="anno-tag '+t[0]+'">'+t[1]+'</span><div class="anno-text">'+item.text+'</div></div>';
   }).join('');
 }
 
-// ─── ROLE SWITCHER ──────────────────────────────────────────────
-var roleDefaults = {
-  user: 'login',
-  sp: 'sp-home',
-  master: 'master-home',
-  supplier: 'sup-home',
-  admin: 'admin-home'
-};
-
+// ─── ROLE SWITCHER ────────────────────────────────────────────────
+var roleDefaults = { user:'login', sp:'sp-home', master:'master-home', supplier:'sup-home', admin:'admin-home' };
 var currentRole = 'user';
 
 function switchRole(role) {
   currentRole = role;
-  // Update chip active states
-  document.querySelectorAll('.mrb-chip').forEach(function(chip) {
-    chip.classList.remove('active', 'on');
-  });
-  var activeChip = document.querySelector('.mrb-chip[data-role="' + role + '"]');
-  if (activeChip) activeChip.classList.add('active', 'on');
-  // Navigate
-  var dest = roleDefaults[role] || 'login';
-  showPage(dest);
+  document.querySelectorAll('.mrb-chip, [data-role]').forEach(function(c) { c.classList.remove('active','on'); });
+  var chip = document.querySelector('[data-role="'+role+'"]');
+  if (chip) chip.classList.add('active','on');
+  showPage(roleDefaults[role] || 'login');
 }
 
-// ─── TOAST ──────────────────────────────────────────────────────
-var _toastTimer = null;
+// ─── CAT TABS generic ─────────────────────────────────────────────
+function switchTab(el) {
+  var parent = el.parentElement;
+  if (!parent) return;
+  parent.querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+}
 
+// ─── SP ORDERS TAB ────────────────────────────────────────────────
+function spOrdersTab(status, el) {
+  // update tab highlight
+  var tabsEl = document.getElementById('sp-orders-tabs');
+  if (tabsEl) tabsEl.querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  // filter cards
+  var cards = document.querySelectorAll('.sp-order-card');
+  cards.forEach(function(card) {
+    var s = card.getAttribute('data-status');
+    card.style.display = (status === 'all' || s === status) ? '' : 'none';
+  });
+}
+
+// ─── SP GOODS TAB ─────────────────────────────────────────────────
+function spGoodsTab(status, el) {
+  var list = document.getElementById('sp-goods-list');
+  if (!list) return;
+  // update tab
+  list.closest('.page').querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  // filter items
+  var items = list.querySelectorAll('.sp-goods-item');
+  items.forEach(function(item) {
+    var s = item.getAttribute('data-gstatus');
+    item.style.display = (status === 'all' || s === status) ? '' : 'none';
+  });
+}
+
+// ─── BIZ TYPE TAB ─────────────────────────────────────────────────
+function bizTypeTab(type, el) {
+  var tabs = document.getElementById('biz-type-tabs');
+  if (tabs) tabs.querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  var catRow = document.getElementById('biz-category-row');
+  if (catRow) catRow.style.display = type === 'sup' ? 'block' : 'none';
+}
+
+// ─── TOAST ────────────────────────────────────────────────────────
+var _tt = null;
 function showToast(msg) {
   var el = document.getElementById('__toast__');
   if (!el) {
     el = document.createElement('div');
     el.id = '__toast__';
     el.style.cssText = [
-      'position:fixed', 'top:68px', 'left:50%', 'transform:translateX(-50%)',
-      'background:rgba(0,0,0,0.82)', 'color:#fff', 'padding:9px 20px',
-      'border-radius:22px', 'font-size:13px', 'font-weight:500',
-      'z-index:99999', 'white-space:nowrap', 'max-width:88vw',
-      'text-align:center', 'pointer-events:none',
-      'opacity:0', 'transition:opacity 0.2s',
-      'word-break:keep-all'
+      'position:fixed','top:68px','left:50%','transform:translateX(-50%)',
+      'background:rgba(0,0,0,0.85)','color:#fff',
+      'padding:10px 22px','border-radius:22px',
+      'font-size:13.5px','font-weight:500',
+      'z-index:99999','white-space:nowrap',
+      'max-width:88vw','text-align:center',
+      'pointer-events:none',
+      'opacity:0','transition:opacity 0.2s',
+      'line-height:1.5','word-break:keep-all'
     ].join(';');
     document.body.appendChild(el);
   }
   el.textContent = msg;
   el.style.opacity = '1';
-  clearTimeout(_toastTimer);
-  _toastTimer = setTimeout(function() { el.style.opacity = '0'; }, 2600);
+  clearTimeout(_tt);
+  _tt = setTimeout(function() { el.style.opacity = '0'; }, 2800);
 }
-
-// also expose as showMobileToast
 var showMobileToast = showToast;
 
-// ─── MODALS ─────────────────────────────────────────────────────
-function showModal(id) {
-  var el = document.getElementById(id);
-  if (el) {
-    el.style.display = 'flex';
-    el.classList.add('show');
-  }
-}
-function closeModal(id) {
-  var el = document.getElementById(id);
-  if (el) {
-    el.style.display = 'none';
-    el.classList.remove('show');
-  }
-}
-var showMobileModal  = showModal;
-var closeMobileModal = closeModal;
+// ─── MODALS ───────────────────────────────────────────────────────
+function showModal(id) { var el=document.getElementById(id); if(el){el.style.display='flex';el.classList.add('show');} }
+function closeModal(id){ var el=document.getElementById(id); if(el){el.style.display='none';el.classList.remove('show');} }
+var showMobileModal=showModal, closeMobileModal=closeModal;
 
-// ─── CAT-TABS & CHIPS: delegate click ───────────────────────────
+// ─── EVENT DELEGATION ─────────────────────────────────────────────
 document.addEventListener('click', function(e) {
-  // Category tabs
-  var tab = e.target;
-  if (tab.classList.contains('cat-tab') || tab.classList.contains('tab-option')) {
-    var parent = tab.parentElement;
-    if (parent) {
-      parent.querySelectorAll('.cat-tab, .tab-option').forEach(function(t) {
-        t.classList.remove('active', 'on');
-      });
-      tab.classList.add('active', 'on');
-    }
+  if (e.target.classList.contains('toggle-switch')) e.target.classList.toggle('on');
+  // generic cat-tab without explicit handler (fallback)
+  if (e.target.classList.contains('cat-tab') && !e.target.getAttribute('onclick')) {
+    switchTab(e.target);
   }
-  // Spec chips
-  if (tab.classList.contains('spec-chip') || tab.classList.contains('cat-chip') || tab.classList.contains('option-chip')) {
-    var grp = tab.closest('.spec-group, .option-group, .chip-group');
-    if (grp) {
-      grp.querySelectorAll('.spec-chip, .cat-chip, .option-chip').forEach(function(c) {
-        c.classList.remove('active', 'selected', 'on');
-      });
-      tab.classList.add('active', 'selected', 'on');
-    }
-  }
-  // Toggle switch
-  if (tab.classList.contains('toggle-switch')) {
-    tab.classList.toggle('on');
-  }
-}, true); // useCapture=true ensures we get the event even with stopPropagation
+}, true);
 
-// ─── INIT ───────────────────────────────────────────────────────
-(function init() {
-  // Show login page on load
+// ─── INIT ─────────────────────────────────────────────────────────
+(function() {
   showPage('login');
-  // Mark C端用户 chip as active
-  var chip = document.querySelector('.mrb-chip[data-role="user"]');
-  if (chip) chip.classList.add('active', 'on');
+  var chip = document.querySelector('[data-role="user"]');
+  if (chip) chip.classList.add('active','on');
   updateAnnotations('login');
 })();
 </script>
